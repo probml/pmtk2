@@ -23,7 +23,7 @@ end
 excludeList = {'dependsOn','viewClassTree','getClasses',...
               'Graphlayout','Abstractlayout','Circlelayout',...
               'Circularlayout','GraphlayoutNode','Radiallayout','Gvizlayout'...
-              'Randlayout','Springlayout','Treelayout','handle','hgsetget','dynamicprops'};
+              'Randlayout','Springlayout','Treelayout','handle','hgsetget','dynamicprops','Plotable'};
 
 info = removeUnwanted(dirinfo(directory));
 errors = {};
@@ -68,8 +68,14 @@ matrix(markForDeletion,:) = [];
 matrix(:,markForDeletion) = [];
 
 shortClassNames = shortenClassNames(allClasses);
+nodeColors = repmat([0.9,0.9,0.5],numel(allClasses),1);
+for c=1:numel(allClasses)
+   if isabstract(allClasses{c})
+      nodeColors(c,:) = [0.8,0.3,0.2]; 
+   end
+end
 
-h = Graphlayout('adjMatrix',matrix,'nodeLabels',shortClassNames,'splitLabels',true,'currentLayout',Radiallayout());
+h = Graphlayout('adjMatrix',matrix,'nodeLabels',shortClassNames,'splitLabels',true,'currentLayout',Radiallayout(),'nodeColors',nodeColors);
 
 if(~isempty(errors))
     fprintf('\nThe following m-files were\nthought to be classes\nbecause they contain the\nclassdef keyword, but did\nnot respond to queries.\nThey were not included in the graph.\n\n');
@@ -147,7 +153,7 @@ end
 
 
 function classNames = shortenClassNames(classNames)
-    remove = {'Dist','_'};            % add to this list to remove other partial strings - case sensitive
+    remove = {};            % add to this list to remove other partial strings - case sensitive
     for i=1:numel(remove)
         ndx = strfind(classNames,remove{i});
         for j=1:numel(classNames)
