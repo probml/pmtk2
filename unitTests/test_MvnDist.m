@@ -22,16 +22,15 @@ classdef test_MvnDist < UnitTest
 		function test_MvnDistConstructor(obj)
 			% add assert statements here...
 		end
+		function test_cov(obj)
+			% add assert statements here...
+		end
 
 		function test_fit(obj)
 			% add assert statements here...
 		end
 
-		function test_cov(obj)
-			% add assert statements here...
-		end
-
-		function test_mode(obj)
+		function test_logprob(obj)
 			% add assert statements here...
 		end
 
@@ -39,11 +38,11 @@ classdef test_MvnDist < UnitTest
 			% add assert statements here...
 		end
 
-		function test_sample(obj)
+		function test_mode(obj)
 			% add assert statements here...
 		end
 
-		function test_logprob(obj)
+		function test_sample(obj)
 			% add assert statements here...
 		end
 
