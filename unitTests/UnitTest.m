@@ -10,6 +10,7 @@ classdef UnitTest
        results;               % a struct, storing the results of each test
        errors;                % a struct, storing any errors generated. 
        verbose;
+       comprehensive;         % boolean, true iff all locally implemented methods have been tested
    end
    
    methods
@@ -46,9 +47,16 @@ classdef UnitTest
             m = methods(obj);
             testMethods = m(cellfun(@(c)strncmp(c,obj.testPrefix,length(obj.testPrefix)),m));
             testMethods = setdiff(testMethods,class(obj));
+            obj = checkComprehensive(obj,testMethods,localMethods(className));
             obj.results = createStruct(testMethods);
             ndots = 40; nleft = floor((ndots -length(className))/2); nright = ceil((ndots -length(className))/2); 
-            if obj.verbose, fprintf('%s%s%s\n',dots(nleft),className,dots(nright)); end
+            if obj.verbose, 
+                if obj.comprehensive
+                    fprintf('%s%s%s\n',dots(nleft),className,dots(nright));
+                else
+                    fprintf('%s%s%s%s\n',dots(nleft),className,dots(nright),' (missing test methods)');
+                end
+            end
             for i=1:numel(testMethods)
                try
                    obj.(testMethods{i});                    %#ok
@@ -64,5 +72,23 @@ classdef UnitTest
             if obj.verbose,fprintf('\n'); end
             obj = teardown(obj);
        end   
+   end
+   
+   methods(Access = 'protected')
+      
+       function obj = checkComprehensive(obj,testMethods,classMethods)
+          obj.comprehensive = false;
+           for c=1:numel(classMethods)
+              found = false;
+              for t =1: numel(testMethods)
+                if strcmpi([UnitTest.testPrefix,classMethods{c}],testMethods{t});
+                    found = true; break;
+                end
+              end
+              if ~found; return; end
+           end
+           obj.comprehensive = true;
+       end
+       
    end
 end
