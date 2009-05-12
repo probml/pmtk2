@@ -5,7 +5,9 @@ function [local,implemented] = localMethods(classname)
     m = methods(classname);
     [localBool,implementedBool] = islocal(m,classname);
     local = m(localBool);
-    implemented = m(implementedBool);
+    if nargout ~= 1
+        implemented = m(implementedBool);
+    end
 
 
 

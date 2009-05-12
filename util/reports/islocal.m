@@ -1,7 +1,7 @@
 function [local,implemented] = islocal(methodname,classname)
 % ISLOCAL Test if a method is defined locally in a class. 
 % Return false if methodname is not a method of the class, or if it is 
-% inherited, (but not overridden), static, abstract, hidden, private,
+% inherited, (but not overridden), abstract, hidden, private,
 % protected, or the class constructor. 
 %
 % The second output is true, iff the method is publically implemented 
@@ -13,6 +13,11 @@ function [local,implemented] = islocal(methodname,classname)
 % See also, localMethods
 
         error(nargchk(2,2,nargin));
+        
+        if strcmp(classname(end-1:end),'.m')
+            classname = classname(1:end-2);
+        end
+        implemented = {}; local = {};
         
         if iscellstr(methodname)
            local = false(numel(methodname),1);  implemented = false(numel(methodname),1); 
@@ -33,5 +38,5 @@ function [local,implemented] = islocal(methodname,classname)
         end
         if ~found, local = false; return; end
         implemented = strcmp(m.Access,'public') && ~m.Abstract && ~m.Hidden;
-        local = implemented && ~m.Static && strcmp(m.DefiningClass.Name,classname) && ~strcmp(m.Name,classname);   
+        local = implemented && strcmp(m.DefiningClass.Name,classname) && ~strcmp(m.Name,classname);   
 end
