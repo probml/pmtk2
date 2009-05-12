@@ -31,5 +31,5 @@ function [table,methodNames,classes] = methodReport(source,exclude)
           table(methodLookup.(extern{i}),classLookup.(classes{c})) = 1; 
        end
     end
-    htmlTable('-data',table,'-rowNames',methodNames,'-colNames',classes,'-title',{'Methods Report';'inherits = 1, implements = 2'},'-colormap',jet(10)/2+0.5,'-vertCols',true);
+    htmlTable('-data',table,'-rowNames',methodNames,'-colNames',classes,'-title','Methods Report','-colormap',jet(10)/2+0.5,'-vertCols',true,'-caption','inherits = 1, implements = 2','-captionSize',5);
 end

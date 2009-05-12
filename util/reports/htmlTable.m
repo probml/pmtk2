@@ -3,7 +3,7 @@ function out = htmlTable(varargin)
 %#author Gus Brown
 %#url http://www.mathworks.com/matlabcentral/fileexchange/18329
 % Modified by Matthew Dunham to use processArgs for arg management. Also
-% added a few additional options.
+% added a number of additional options.
 %
 % INPUTS:
 %        '-data'          the data to display, an array or cell array         
@@ -15,7 +15,7 @@ function out = htmlTable(varargin)
 %                         like hsv, summer(), etc. Only works for numeric
 %                         arrays. 
 %        '-doshow'        [DEFAULT = true] if true, display the table in
-%        the Matlab web browser   
+%                         the Matlab web browser   
 %        '-dosave'        [DEFAULT = false] if true, save the html table   
 %        '-filename'      save to this file
 %        '-newWindow'     [DEFAULT = true] if true, a new window is opened.   
@@ -28,6 +28,11 @@ function out = htmlTable(varargin)
 %        '-borderColor'   [DEFAULT = 'grey'  ] color of the border: any%        valid html color spec
 %        '-cellPad'       [DEFAULT = 9] minimum cell padding applied
 %        '-vertCols'      [DEFAULT = false] if true, the column names, (if any) are displayed vertically.
+%        '-caption'       text displayed above or below the table
+%        '-captionLoc'    [DEFAULT = 'bottom'] Options are ['bottom' | 'top']
+%        '-dataColors'    a cell array of colors, the same size as data -
+%                         if specified, each cell is colored according to the corresponding
+%                         entry in dataColors.
 %
 % OUTPUT: The html text as a char array
 %
@@ -37,7 +42,7 @@ function out = htmlTable(varargin)
 % htmlTable({{'one';{'two','three'}},1;2,3;4,'four'})
 % You can nest as many levels as you like. 
 
-     [data,rowNames,colNames,title,colormap,doshow,dosave,filename,newWindow,dataFormat,rowFormat,colFormat,dataAlign,dataValign,bgColor,borderColor,cellPad,vertCols] = processArgs(varargin,...
+     [data,rowNames,colNames,title,colormap,doshow,dosave,filename,newWindow,dataFormat,rowFormat,colFormat,dataAlign,dataValign,bgColor,borderColor,cellPad,vertCols,caption,captionLoc,captionSize,dataColors] = processArgs(varargin,...
         '*-data'            ,[]       ,...
         '-rowNames'         ,{}       ,...
         '-colNames'         ,{}       ,...
@@ -55,7 +60,11 @@ function out = htmlTable(varargin)
         '-bgColor'          ,'white'  ,...
         '-borderColor'      ,'grey'   ,...
         '-cellPad'          ,9        ,...
-        '-vertCols'         ,false    );
+        '-vertCols'         ,false    ,...
+        '-caption'          ,''       ,...
+        '-captionLoc'       ,'bottom' ,...
+        '-captionSize'      , 4       ,...
+        '-dataColors'       ,{}       );
     
     
     if vertCols && ~isempty(colNames)
@@ -63,7 +72,7 @@ function out = htmlTable(varargin)
             name = colNames{i};
             newname = '';
             for j=1:numel(name);
-                newname = [newname,name(j),'<br>'];
+                newname = [newname,name(j),'<br>']; %#ok
             end
             colNames{i} = newname;
         end
@@ -73,6 +82,10 @@ function out = htmlTable(varargin)
        title = cellString(title,' <br> '); 
     end
     
+    if ischar(dataColors), dataColors = {dataColors}; end
+    if numel(dataColors) == 1
+        dataColors = repmat(dataColors,size(data));
+    end
     
     
 %%       
@@ -153,9 +166,8 @@ function out = htmlTable(varargin)
     else
         szcols = size(data,2);
     end;
-    
     % HTML table
-    HTML = [HTML sprintf('<TABLE BGCOLOR=%s ALIGN=left CELLPADDING=%d VALIGN="top">',borderColor,cellPad)];
+    HTML = [HTML sprintf('<TABLE BGCOLOR=%s ALIGN=left CELLPADDING=%d VALIGN="top" <CAPTION ALIGN=%s><font size=%d>%s</font></CAPTION>',borderColor,cellPad,captionLoc,captionSize,caption)];
     % Table title row
     if ~isempty(title)
         HTML = [HTML sprintf('<TR><TH COLSPAN=%g ALIGN=CENTER VALIGN="top" BGCOLOR=%s>%s</TH></TR>',szcols,bgColor,title)];
@@ -211,13 +223,13 @@ function out = htmlTable(varargin)
                     if iscell(page{ii,jj}) && length(page{ii,jj})>1,
                         % create a sub table
                         tFORMAT = '%s';             % format for sting
-                        page{ii,jj} = GTHTMLtable(page{ii,jj});
+                        page{ii,jj} = htmlTable(page{ii,jj});
                     elseif ischar(page{ii,jj}),
                         tFORMAT = '%s';             % format for sting
                     elseif length(page{ii,jj})>1,
                         % create a sub table
                         tFORMAT = '%s';             % format for sting
-                        page{ii,jj} = GTHTMLtable(page{ii,jj});
+                        page{ii,jj} = htmlTable(page{ii,jj});
                     else
                         if isempty(dataFormat)
                             tFORMAT = '%g';
@@ -225,17 +237,33 @@ function out = htmlTable(varargin)
                             tFORMAT = dataFormat;         % use user format
                         end;
                     end;
-                    HTML = [HTML sprintf(['<TD BGCOLOR=%s ALIGN=%s VALIGN=%s>' tFORMAT  '</TD>'],bgColor,dataAlign,dataValign,page{ii,jj})]; %#ok add data cell
+                    if isempty(dataColors)
+                        HTML = [HTML sprintf(['<TD BGCOLOR=%s ALIGN=%s VALIGN=%s>' tFORMAT  '</TD>'],bgColor,dataAlign,dataValign,page{ii,jj})]; %#ok add data cell
+                    else
+                        HTML = [HTML sprintf(['<TD BGCOLOR=%s ALIGN=%s VALIGN=%s>' tFORMAT  '</TD>'],dataColors{ii,jj},dataAlign,dataValign,page{ii,jj})]; %#ok add data cell
+                    end
                 end;
             else  % if data is no a cell array
                 if (~isempty(colormap) && isnumeric(data)),
                     for icol = 1:size(page,2),
                         % color cells according to value
-                        color = dec2hex( floor(255*interp1((0:1/(size(colormap,1)-1):1),colormap,(page(ii,icol)-MATmin)/MATrange)) );
-                        HTML = [HTML sprintf(['<TD BGCOLOR=#%6s ALIGN=%s VALIGN=%s>' dataFormat  '</TD>'],color',dataAlign,dataValign,page(ii,icol))]; %#ok
+                        if isempty(dataColors)
+                            color = dec2hex( floor(255*interp1((0:1/(size(colormap,1)-1):1),colormap,(page(ii,icol)-MATmin)/MATrange)) )';
+                        else
+                            color = dataColors{ii,icol}; 
+                        end
+                        HTML = [HTML sprintf(['<TD BGCOLOR=#%6s ALIGN=%s VALIGN=%s>' dataFormat  '</TD>'],color,dataAlign,dataValign,page(ii,icol))]; %#ok
                     end;
                 else
-                    HTML = [HTML sprintf(['<TD BGCOLOR=%s ALIGN=%s VALIGN=%s>' dataFormat  '</TD>'],bgColor,dataAlign,dataValign,page(ii,:))]; %#ok
+                   
+                    for icol = 1:size(page,2)
+                        if isempty(dataColors)
+                            color = bgColor;
+                        else
+                            color = dataColors{ii,icol};
+                        end
+                        HTML = [HTML sprintf(['<TD BGCOLOR=%s ALIGN=%s VALIGN=%s>' dataFormat  '</TD>'],color,dataAlign,dataValign,page(ii,icol))]; %#ok
+                    end
                 end;
             end;
             HTML = [HTML sprintf('\n</TR>')]; %#ok close data row 
