@@ -1,9 +1,13 @@
 function out = htmlTable(varargin)
-%HTMLTABLE Convert and display a Matlab table to html. 
+%HTMLTABLE Display a Matlab cell array or numeric matrix in html. 
+%
 %#author Gus Brown
 %#url http://www.mathworks.com/matlabcentral/fileexchange/18329
-% Modified by Matthew Dunham to use processArgs for arg management. Also
+%
+%
+% Modified by Matthew Dunham to use processArgs for arg management - also
 % added a number of additional options.
+%
 %
 % INPUTS:
 %        '-data'          the data to display, an array or cell array         
@@ -34,6 +38,8 @@ function out = htmlTable(varargin)
 %                         if specified, each cell is colored according to the corresponding
 %                         entry in dataColors.
 %
+% ADDITIONAL INPUTS: See processArgs code below for additional inputs
+%
 % OUTPUT: The html text as a char array
 %
 % Notes: 
@@ -42,7 +48,12 @@ function out = htmlTable(varargin)
 % htmlTable({{'one';{'two','three'}},1;2,3;4,'four'})
 % You can nest as many levels as you like. 
 
-     [data,rowNames,colNames,title,colormap,doshow,dosave,filename,newWindow,dataFormat,rowFormat,colFormat,dataAlign,dataValign,bgColor,borderColor,cellPad,vertCols,caption,captionLoc,captionSize,dataColors] = processArgs(varargin,...
+     [data         , rowNames      , colNames    , title       , colormap   , doshow      , ...
+      dosave       , filename      , newWindow   , dataFormat  , rowFormat  , colFormat   , ...
+      dataAlign    , dataValign    , bgColor     , borderColor , cellPad    , vertCols    , ...
+      caption      , captionLoc    , captionSize , dataColors  , tableAlign , tableValign , ...
+      colNameAlign , colNameValign ,rowNameAlign , rowNameValign ...
+      ] = processArgs(varargin,...
         '*-data'            ,[]       ,...
         '-rowNames'         ,{}       ,...
         '-colNames'         ,{}       ,...
@@ -64,7 +75,13 @@ function out = htmlTable(varargin)
         '-caption'          ,''       ,...
         '-captionLoc'       ,'bottom' ,...
         '-captionSize'      , 4       ,...
-        '-dataColors'       ,{}       );
+        '-dataColors'       ,{}       ,...
+        '-tableAlign'       ,'left'   ,...
+        '-tableValign'      ,'top'    ,...
+        '-colNameAlign'     ,'center' ,...
+        '-colNameValign'    ,'top'    ,...
+        '-rowNameAlign'     ,'left'   ,...
+        '-rowNameValign'    ,'center' );
     
     
     if vertCols && ~isempty(colNames)
@@ -167,7 +184,7 @@ function out = htmlTable(varargin)
         szcols = size(data,2);
     end;
     % HTML table
-    HTML = [HTML sprintf('<TABLE BGCOLOR=%s ALIGN=left CELLPADDING=%d VALIGN="top" <CAPTION ALIGN=%s><font size=%d>%s</font></CAPTION>',borderColor,cellPad,captionLoc,captionSize,caption)];
+    HTML = [HTML sprintf('<TABLE BGCOLOR=%s ALIGN=%s CELLPADDING=%d VALIGN=%s <CAPTION ALIGN=%s><font size=%d>%s</font></CAPTION>',borderColor,tableAlign,cellPad,tableValign,captionLoc,captionSize,caption)];
     % Table title row
     if ~isempty(title)
         HTML = [HTML sprintf('<TR><TH COLSPAN=%g ALIGN=CENTER VALIGN="top" BGCOLOR=%s>%s</TH></TR>',szcols,bgColor,title)];
@@ -188,10 +205,10 @@ function out = htmlTable(varargin)
             end;
             if (iscell(colNames)),
                 for jj = 1:length(colNames),
-                    HTML = [HTML sprintf(['<TH BGCOLOR=%s ALIGN=center VALIGN="top">' colFormat '</TH>'],bgColor,[colNames{jj}])]; %#ok
+                    HTML = [HTML sprintf(['<TH BGCOLOR=%s ALIGN=%s VALIGN=%s>' colFormat '</TH>'],bgColor,colNameAlign,colNameValign,[colNames{jj}])]; %#ok
                 end;
             else
-                HTML = [HTML sprintf(['<TH BGCOLOR=%s ALIGN=center VALIGN="top">' colFormat '</TH>'],bgColor,colNames)]; %#ok
+                HTML = [HTML sprintf(['<TH BGCOLOR=%s ALIGN=%s VALIGN=%s>' colFormat '</TH>'],bgColor,colNameAlign,colNameValign,colNames)]; %#ok
             end;
             HTML = [HTML sprintf('</TR>\n')]; %#ok
         end;
@@ -203,9 +220,9 @@ function out = htmlTable(varargin)
             if ~isempty(rowNames),
                 if ii<=length(rowNames),
                     if (iscell(rowNames)),
-                        HTML = [HTML sprintf(['<TH BGCOLOR=%s ALIGN=LEFT VALIGN="top">' rowFormat '</TH>'],bgColor,[rowNames{ii}])]; %#ok
+                        HTML = [HTML sprintf(['<TH BGCOLOR=%s ALIGN=%s VALIGN=%s>' rowFormat '</TH>'],bgColor,rowNameAlign,rowNameValign,[rowNames{ii}])]; %#ok
                     else
-                        HTML = [HTML sprintf(['<TH BGCOLOR=%s ALIGN=LEFT VALIGN="top">' rowFormat '</TH>'],bgColor,rowNames(ii))]; %#ok
+                        HTML = [HTML sprintf(['<TH BGCOLOR=%s ALIGN=%s VALIGN=%s>' rowFormat '</TH>'],bgColor,rowNameAlign,rowNameValign,rowNames(ii))]; %#ok
                     end;
                 else
                     HTML = [HTML sprintf('<TH></TH>')];  %#ok empty row
