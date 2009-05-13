@@ -5,9 +5,8 @@ classdef CRFgrid < LaticeDist
 	properties
 
 		fitEng;
+		modelSelEng;
 		params;
-		stateEstEng;
-        modelSelEng;
 
 	end
 
@@ -16,6 +15,12 @@ classdef CRFgrid < LaticeDist
 
 		function model = CRFgrid(varargin)
 		%
+		end
+
+
+		function dof(model,varargin)
+		%
+			notYetImplemented('CRFgrid.dof()');
 		end
 
 
@@ -46,6 +51,12 @@ classdef CRFgrid < LaticeDist
 		function mode(model,varargin)
 		%
 			notYetImplemented('CRFgrid.mode()');
+		end
+
+
+		function ndimensions(model,varargin)
+		%
+			notYetImplemented('CRFgrid.ndimensions()');
 		end
 
 

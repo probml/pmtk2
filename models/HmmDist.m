@@ -5,9 +5,8 @@ classdef HmmDist < ChainModel
 	properties
 
 		fitEng;
+		modelSelEng;
 		params;
-		stateEstEng;
-        modelSelEng;
 
 	end
 
@@ -16,6 +15,12 @@ classdef HmmDist < ChainModel
 
 		function model = HmmDist(varargin)
 		%
+		end
+
+
+		function dof(model,varargin)
+		%
+			notYetImplemented('HmmDist.dof()');
 		end
 
 
@@ -46,6 +51,12 @@ classdef HmmDist < ChainModel
 		function mode(model,varargin)
 		%
 			notYetImplemented('HmmDist.mode()');
+		end
+
+
+		function ndimensions(model,varargin)
+		%
+			notYetImplemented('HmmDist.ndimensions()');
 		end
 
 

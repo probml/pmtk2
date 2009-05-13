@@ -7,9 +7,9 @@ classdef UgmDist < GraphicalModel
 		domain;
 		fitEng;
 		graph;
+		modelSelEng;
 		params;
 		stateEstEng;
-        modelSelEng;
 
 	end
 
@@ -18,6 +18,12 @@ classdef UgmDist < GraphicalModel
 
 		function model = UgmDist(varargin)
 		%
+		end
+
+
+		function dof(model,varargin)
+		%
+			notYetImplemented('UgmDist.dof()');
 		end
 
 
@@ -54,6 +60,12 @@ classdef UgmDist < GraphicalModel
 		function mode(model,varargin)
 		%
 			notYetImplemented('UgmDist.mode()');
+		end
+
+
+		function ndimensions(model,varargin)
+		%
+			notYetImplemented('UgmDist.ndimensions()');
 		end
 
 

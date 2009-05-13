@@ -20,8 +20,7 @@ classdef test_SampleDist < UnitTest
 
 
 		function test_Cnstr(obj)
-			% test object construction here...
-			error('empty test method'); % remove this error
+			target = feval(obj.targetClass);
 		end
 		function test_entropy(obj)
 			% add assert statements here...
@@ -39,6 +38,11 @@ classdef test_SampleDist < UnitTest
 		end
 
 		function test_mode(obj)
+			% add assert statements here...
+			error('empty test method'); % remove this error
+		end
+
+		function test_ndimensions(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end

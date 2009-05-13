@@ -5,9 +5,8 @@ classdef PoissonDist < ScalarDist
 	properties
 
 		fitEng;
+		modelSelEng;
 		params;
-		stateEstEng;
-        modelSelEng;
 
 	end
 
@@ -16,6 +15,12 @@ classdef PoissonDist < ScalarDist
 
 		function model = PoissonDist(varargin)
 		%
+		end
+
+
+		function dof(model,varargin)
+		%
+			notYetImplemented('PoissonDist.dof()');
 		end
 
 
@@ -46,6 +51,12 @@ classdef PoissonDist < ScalarDist
 		function mode(model,varargin)
 		%
 			notYetImplemented('PoissonDist.mode()');
+		end
+
+
+		function ndimensions(model,varargin)
+		%
+			notYetImplemented('PoissonDist.ndimensions()');
 		end
 
 

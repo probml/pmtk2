@@ -10,36 +10,42 @@ classdef SampleDist < ProbDist
 
 	methods
 
-		function dist = SampleDist(varargin)
+		function model = SampleDist(varargin)
 		%
 		end
 
 
-		function entropy(dist,varargin)
+		function entropy(model,varargin)
 		%
 			notYetImplemented('SampleDist.entropy()');
 		end
 
 
-		function marginal(dist,varargin)
+		function marginal(model,varargin)
 		%
 			notYetImplemented('SampleDist.marginal()');
 		end
 
 
-		function mean(dist,varargin)
+		function mean(model,varargin)
 		%
 			notYetImplemented('SampleDist.mean()');
 		end
 
 
-		function mode(dist,varargin)
+		function mode(model,varargin)
 		%
 			notYetImplemented('SampleDist.mode()');
 		end
 
 
-		function var(dist,varargin)
+		function ndimensions(model,varargin)
+		%
+			notYetImplemented('SampleDist.ndimensions()');
+		end
+
+
+		function var(model,varargin)
 		%
 			notYetImplemented('SampleDist.var()');
 		end

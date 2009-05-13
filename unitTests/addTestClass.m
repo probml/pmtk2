@@ -1,11 +1,13 @@
-function addTestClass(baseClass)
+function addTestClass(baseClass,allowOverwrite)
 % Generate a test_class template for the specified class. 
         
+        
         savedDir = pwd;
+        if nargin < 2, allowOverwrite = false; end
         cd(fullfile(PMTKroot(),'unitTests'));
         if ~exist(baseClass,'file'), error('Could not find class %s',baseClass);end
         testClass = [UnitTest.testPrefix,baseClass];
-        if exist(testClass,'file'), error('%s already exists',testClass);end
+        if exist(testClass,'file') && ~allowOverwrite, error('%s already exists',testClass);end
         methodNames = localMethods(baseClass);
         if isempty(methodNames) && isabstract(baseClass), error('Class %s is abstract, and has no implemented methods to test.',baseClass);end
         
@@ -34,8 +36,7 @@ function addTestClass(baseClass)
                  if ~isabstract(baseClass)
                     classText = [classText;
                                  sprintf('\t\tfunction %sCnstr(obj)',UnitTest.testPrefix);
-                                 sprintf('\t\t\t%% test object construction here...');
-                                 sprintf('\t\t\terror(''empty test method''); %% remove this error');
+                                 sprintf('\t\t\ttarget = feval(obj.targetClass);');
                                  sprintf('\t\tend');
                                   '';
                                   '';

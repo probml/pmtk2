@@ -5,9 +5,8 @@ classdef LogregMC < CondScalarDist
 	properties
 
 		fitEng;
+		modelSelEng;
 		params;
-		stateEstEng;
-        modelSelEng;
 
 	end
 
@@ -16,6 +15,12 @@ classdef LogregMC < CondScalarDist
 
 		function model = LogregMC(varargin)
 		%
+		end
+
+
+		function dof(model,varargin)
+		%
+			notYetImplemented('LogregMC.dof()');
 		end
 
 
@@ -46,6 +51,12 @@ classdef LogregMC < CondScalarDist
 		function mode(model,varargin)
 		%
 			notYetImplemented('LogregMC.mode()');
+		end
+
+
+		function ndimensions(model,varargin)
+		%
+			notYetImplemented('LogregMC.ndimensions()');
 		end
 
 

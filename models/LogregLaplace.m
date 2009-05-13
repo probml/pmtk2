@@ -5,9 +5,8 @@ classdef LogregLaplace < CondScalarDist
 	properties
 
 		fitEng;
+		modelSelEng;
 		params;
-		stateEstEng;
-        modelSelEng;
 
 	end
 
@@ -16,6 +15,12 @@ classdef LogregLaplace < CondScalarDist
 
 		function model = LogregLaplace(varargin)
 		%
+		end
+
+
+		function dof(model,varargin)
+		%
+			notYetImplemented('LogregLaplace.dof()');
 		end
 
 
@@ -46,6 +51,12 @@ classdef LogregLaplace < CondScalarDist
 		function mode(model,varargin)
 		%
 			notYetImplemented('LogregLaplace.mode()');
+		end
+
+
+		function ndimensions(model,varargin)
+		%
+			notYetImplemented('LogregLaplace.ndimensions()');
 		end
 
 

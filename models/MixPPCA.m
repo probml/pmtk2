@@ -5,9 +5,8 @@ classdef MixPPCA < MixtureDist
 	properties
 
 		fitEng;
+		modelSelEng;
 		params;
-		stateEstEng;
-        modelSelEng;
 
 	end
 
@@ -16,6 +15,12 @@ classdef MixPPCA < MixtureDist
 
 		function model = MixPPCA(varargin)
 		%
+		end
+
+
+		function dof(model,varargin)
+		%
+			notYetImplemented('MixPPCA.dof()');
 		end
 
 
@@ -46,6 +51,12 @@ classdef MixPPCA < MixtureDist
 		function mode(model,varargin)
 		%
 			notYetImplemented('MixPPCA.mode()');
+		end
+
+
+		function ndimensions(model,varargin)
+		%
+			notYetImplemented('MixPPCA.ndimensions()');
 		end
 
 

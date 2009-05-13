@@ -5,9 +5,8 @@ classdef MarkovDist < ChainModel
 	properties
 
 		fitEng;
+		modelSelEng;
 		params;
-		stateEstEng;
-        modelSelEng;
 
 	end
 
@@ -16,6 +15,12 @@ classdef MarkovDist < ChainModel
 
 		function model = MarkovDist(varargin)
 		%
+		end
+
+
+		function dof(model,varargin)
+		%
+			notYetImplemented('MarkovDist.dof()');
 		end
 
 
@@ -46,6 +51,12 @@ classdef MarkovDist < ChainModel
 		function mode(model,varargin)
 		%
 			notYetImplemented('MarkovDist.mode()');
+		end
+
+
+		function ndimensions(model,varargin)
+		%
+			notYetImplemented('MarkovDist.ndimensions()');
 		end
 
 

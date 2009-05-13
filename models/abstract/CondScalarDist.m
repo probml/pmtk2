@@ -5,6 +5,10 @@ classdef CondScalarDist < ProbModel
            M = marginal(model,varargin{:}); 
         end
         
+        function Y = predictResponse(model, D)
+            Y = mode(model, Query('output'), D);
+        end
+        
     end
 end
 

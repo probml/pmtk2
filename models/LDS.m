@@ -5,9 +5,8 @@ classdef LDS < ChainModel
 	properties
 
 		fitEng;
+		modelSelEng;
 		params;
-		stateEstEng;
-        modelSelEng;
 
 	end
 
@@ -16,6 +15,12 @@ classdef LDS < ChainModel
 
 		function model = LDS(varargin)
 		%
+		end
+
+
+		function dof(model,varargin)
+		%
+			notYetImplemented('LDS.dof()');
 		end
 
 
@@ -46,6 +51,12 @@ classdef LDS < ChainModel
 		function mode(model,varargin)
 		%
 			notYetImplemented('LDS.mode()');
+		end
+
+
+		function ndimensions(model,varargin)
+		%
+			notYetImplemented('LDS.ndimensions()');
 		end
 
 

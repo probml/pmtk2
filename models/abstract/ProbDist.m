@@ -10,6 +10,7 @@ classdef ProbDist
         mode;
         var;
         marginal;
+        ndimensions;
     end
     
     methods

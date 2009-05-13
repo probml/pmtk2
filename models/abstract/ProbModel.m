@@ -4,7 +4,6 @@ classdef ProbModel < ProbDist
     
     properties(Abstract = true)
         fitEng;
-        stateEstEng;
         modelSelEng;
         params;
     end
@@ -13,6 +12,7 @@ classdef ProbModel < ProbDist
         sample;
         logprob;
         fit;
+        dof;
     end
     
     
@@ -25,6 +25,15 @@ classdef ProbModel < ProbDist
         function M = marginal(model,D,Q)
            M = computeMarginal(model.stateEstEng,D,Q); 
         end
+        
+        function lp = logprior(model)
+           lp = 0; 
+        end
+        
+        function J = penNLL(model,D)
+            J = -sum(logprob(model,D)) - logprior(model);
+        end
+        
         
     end
     

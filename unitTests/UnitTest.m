@@ -81,5 +81,101 @@ classdef UnitTest
        end   
    end
    
+   methods(Static = true)
+   % These assert functions should be used inside the unit tests. Most
+   % optionally take a message, which is displayed in the test report on
+   % failure. 
+   
+      function assertTrue(predicate,message)    
+       % Assert predicate    
+            if ~predicate
+                id = 'UnitTest:assertTrueFailure';
+                if nargin < 2, message = id; end
+                throwAsCaller(MException(id,message));
+            end
+       end
+       
+       function assertFalse(predicate,message)
+       % Assert ~predicate    
+            if predicate
+                id = 'UnitTest:assertFalseFailure';
+                if nargin < 2, message = id; end
+                throwAsCaller(MException(id,message));
+            end
+       end
+       
+       function assertEqual(a,b,message)    
+       % Assert that a,b are equal.     
+           if ~isequal(a,b)
+              id = 'UnitTest:assertEqualFailure';
+              if nargin < 3; message = id; end
+              throwAsCaller(MException(id,message));
+           end
+       end
+       
+       function assertApproxEq(a,b,message)
+       % Assert that a,b are approximately equal - only used for numeric args.    
+          if ~approxeq(a,b)
+             id = 'UnitTest:assertApproxEqFailure';
+             if nargin < 3; message = id; end
+             throwAsCaller(MException(id,message));
+          end
+       end
+       
+       function assertType(obj,className,message)
+       % Assert that obj is of type className.     
+           if ~isa(obj,className)
+              id = 'UnitTest:assertTypeFailure';
+              if nargin < 3, message = sprintf('%s  a(n) %s is not a(n) %s',id,class(obj),className); end
+              throwAsCaller(MException(id,message));
+           end
+       end
+       
+       function assertEval(code,message)
+       % Assert the that code does not throw an error when evaluated.     
+           try
+               eval(code);
+           catch ME
+                id = 'UnitTest:assertEvalFailure';
+                if nargin < 2, message = id; end
+                err = MException(id,message);
+                err = addCause(err,ME);
+                throwAsCaller(err);
+           end
+       end
+       
+              
+       function assertError(code,errID)
+       % Assert that the code, when evaluated, does throw an error. You can 
+       % optionally check that it throws a particular error by specifying
+       % the error identifier. 
+           try
+               eval(code); % if it fails here as required, execution jumps right to catch block 
+               id = 'UnitTest:assertErrorFailure';
+               if nargin < 2
+                   message = sprintf('Code did not throw an error as required');
+               else
+                   message = sprintf('Code did not throw error %s as required',errID);
+               end
+               err = MException(id,message);
+               throw(err);
+           catch ME
+               if strcmp(ME.identifier,'UnitTest:assertErrorFailure')
+                  throwAsCaller(ME); 
+               end
+             
+               if nargin == 2 && ~strcmpi(ME.identifier,errID)
+                   id = 'UnitTest:assertErrorWrongError';
+                   message = sprintf('Expected error id %s but caught error %s',errID,ME.identifier);
+                   err = MException(id,message);
+                   err = addCause(err,ME);
+                   throwAsCaller(err);
+               end
+          
+           end
+       end
+       
+   end
+   
    
 end

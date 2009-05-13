@@ -5,9 +5,8 @@ classdef KnnDist < CondScalarDist
 	properties
 
 		fitEng;
+		modelSelEng;
 		params;
-		stateEstEng;
-        modelSelEng;
 
 	end
 
@@ -16,6 +15,12 @@ classdef KnnDist < CondScalarDist
 
 		function model = KnnDist(varargin)
 		%
+		end
+
+
+		function dof(model,varargin)
+		%
+			notYetImplemented('KnnDist.dof()');
 		end
 
 
@@ -46,6 +51,12 @@ classdef KnnDist < CondScalarDist
 		function mode(model,varargin)
 		%
 			notYetImplemented('KnnDist.mode()');
+		end
+
+
+		function ndimensions(model,varargin)
+		%
+			notYetImplemented('KnnDist.ndimensions()');
 		end
 
 

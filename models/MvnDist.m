@@ -5,9 +5,8 @@ classdef MvnDist < MultivarDist
 	properties
 
 		fitEng;
+		modelSelEng;
 		params;
-		stateEstEng;
-        modelSelEng;
 
 	end
 
@@ -22,6 +21,12 @@ classdef MvnDist < MultivarDist
 		function cov(model,varargin)
 		%
 			notYetImplemented('MvnDist.cov()');
+		end
+
+
+		function dof(model,varargin)
+		%
+			notYetImplemented('MvnDist.dof()');
 		end
 
 
@@ -52,6 +57,12 @@ classdef MvnDist < MultivarDist
 		function mode(model,varargin)
 		%
 			notYetImplemented('MvnDist.mode()');
+		end
+
+
+		function ndimensions(model,varargin)
+		%
+			notYetImplemented('MvnDist.ndimensions()');
 		end
 
 

@@ -74,13 +74,13 @@ function [tests,npassed,ntotal,html] = runUnitTests(varargin)
     rowColors = repmat({'white'},numel(names),1);
     rowColors(classIDX) = {'yellow'};
     dataColors = repmat({'white'},numel(results),4);
-    dataColors(cellfun(@(c)strcmpi(c,'passed'),results),1)    = {'green' };
+    dataColors(cellfun(@(c)strcmpi(c,'passed'),results),1)    = {'lightgreen' };
     dataColors(cellfun(@(c)strcmpi(c,'failed'),results),1)    = {'red'   };
     
     dataColors(cellfun(@(c)~isempty(c),missingTests),3)  = {'red'   };
     dataColors(runTimes > 10, 4) = {'orange'};
     
-    if ntotal == npassed, titleBarColor = 'green';
+    if ntotal == npassed, titleBarColor = 'lightgreen';
     else                  titleBarColor = 'red';
     end
     %%

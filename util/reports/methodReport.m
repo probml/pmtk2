@@ -1,12 +1,12 @@
-function [table,methodNames,classes] = methodReport(source,exclude)
+function [table,methodNames,classes] = methodReport(varargin)
 % Generate a report showing which classes implement and inherit which
 % methods. 
 % 0 = 'does not implement, does not inherit'
 % 1 = 'inherits method'
 % 2 = 'implements method'
 
-    if nargin < 1, source = pwd(); end
-    if nargin < 2, exclude = {}; end
+    [source,exclude,dosave,filename] = processArgs(varargin,'-source',pwd(),'-exclude',{},'-dosave',false,'-filename','');
+   
     
     classes = setdiff(getClasses(source),exclude);
     classMethods = cellfuncell(@(c)methodsNoCons(c),classes);
@@ -40,5 +40,8 @@ function [table,methodNames,classes] = methodReport(source,exclude)
               '-captionFontSize'    , 5                                ,...
               '-titleFontSize'      , 4                                ,...
               '-dataFontSize'       , 4                                ,...
-              '-colNameFontSize'    , 4                                );
+              '-colNameFontSize'    , 4                                ,...
+              '-dosave'             , dosave                           ,...
+              '-filename'           , filename                         );
+          
 end

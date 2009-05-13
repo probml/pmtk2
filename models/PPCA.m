@@ -5,9 +5,8 @@ classdef PPCA < LatentVarModel
 	properties
 
 		fitEng;
+		modelSelEng;
 		params;
-		stateEstEng;
-        modelSelEng;
 
 	end
 
@@ -16,6 +15,12 @@ classdef PPCA < LatentVarModel
 
 		function model = PPCA(varargin)
 		%
+		end
+
+
+		function dof(model,varargin)
+		%
+			notYetImplemented('PPCA.dof()');
 		end
 
 
@@ -46,6 +51,12 @@ classdef PPCA < LatentVarModel
 		function mode(model,varargin)
 		%
 			notYetImplemented('PPCA.mode()');
+		end
+
+
+		function ndimensions(model,varargin)
+		%
+			notYetImplemented('PPCA.ndimensions()');
 		end
 
 

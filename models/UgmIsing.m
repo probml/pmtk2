@@ -5,9 +5,8 @@ classdef UgmIsing < LaticeDist
 	properties
 
 		fitEng;
+		modelSelEng;
 		params;
-		stateEstEng;
-        modelSelEng;
 
 	end
 
@@ -16,6 +15,12 @@ classdef UgmIsing < LaticeDist
 
 		function model = UgmIsing(varargin)
 		%
+		end
+
+
+		function dof(model,varargin)
+		%
+			notYetImplemented('UgmIsing.dof()');
 		end
 
 
@@ -46,6 +51,12 @@ classdef UgmIsing < LaticeDist
 		function mode(model,varargin)
 		%
 			notYetImplemented('UgmIsing.mode()');
+		end
+
+
+		function ndimensions(model,varargin)
+		%
+			notYetImplemented('UgmIsing.ndimensions()');
 		end
 
 

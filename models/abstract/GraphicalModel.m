@@ -4,6 +4,7 @@ classdef GraphicalModel < ProbModel
     properties(Abstract = true)
         domain;
         graph;
+        stateEstEng;
     end
     
     methods
