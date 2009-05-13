@@ -1,5 +1,10 @@
 function [table,methodNames,classes] = methodReport(source,exclude)
-    
+% Generate a report showing which classes implement and inherit which
+% methods. 
+% 0 = 'does not implement, does not inherit'
+% 1 = 'inherits method'
+% 2 = 'implements method'
+
     if nargin < 1, source = pwd(); end
     if nargin < 2, exclude = {}; end
     
@@ -10,14 +15,8 @@ function [table,methodNames,classes] = methodReport(source,exclude)
     methodNames = methodNames(perm);
     perm = sortidx(lower(classes));
     classes = classes(perm);
-    
     methodLookup = enumerate(methodNames);
     classLookup  = enumerate(classes);
-    
-    % 0 = 'does not implement, does not inherit'
-    % 1 = 'inherits method'
-    % 2 = 'implements method'
-    
     table = zeros(numel(methodNames),numel(classes));
     
     for c=1:numel(classes)
@@ -31,5 +30,15 @@ function [table,methodNames,classes] = methodReport(source,exclude)
           table(methodLookup.(extern{i}),classLookup.(classes{c})) = 1; 
        end
     end
-    htmlTable('-data',table,'-rowNames',methodNames,'-colNames',classes,'-title','Methods Report','-colormap',jet(10)/2+0.5,'-vertCols',true,'-caption','inherits = 1, implements = 2','-captionSize',5);
+    htmlTable('-data'               , table                            ,...
+              '-rowNames'           , methodNames                      ,...
+              '-colNames'           , classes                          ,...
+              '-title'              , 'Methods Report'                 ,...
+              '-colormap'           , jet(10)/2+0.5                    ,...
+              '-vertCols'           , true                             ,...
+              '-caption'            , 'inherits = 1, implements = 2'   ,...
+              '-captionFontSize'    , 5                                ,...
+              '-titleFontSize'      , 4                                ,...
+              '-dataFontSize'       , 4                                ,...
+              '-colNameFontSize'    , 4                                );
 end

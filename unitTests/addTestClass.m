@@ -32,9 +32,10 @@ function addTestClass(baseClass)
                      };
                  if ~isabstract(baseClass)
                     classText = [classText;
-                                 sprintf('\t\tfunction %s%sConstructor(obj)',UnitTest.testPrefix,baseClass);
-                                 sprintf('\t\t\t%% add assert statements here...');
+                                 sprintf('\t\tfunction %sCnstr(obj)',UnitTest.testPrefix);
+                                 sprintf('\t\t\t%% test object construction here...');
                                  sprintf('\t\tend');
+                                  '';
                                   '';
                                  ];
                  end
@@ -48,4 +49,5 @@ function addTestClass(baseClass)
         end
         classText = [classText;'';'';sprintf('\tend');'';'end'];
         writeText(classText,[testClass,'.m']);
+        fprintf('Test class %s created\n',testClass);
 end

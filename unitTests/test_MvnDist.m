@@ -19,10 +19,9 @@ classdef test_MvnDist < UnitTest
 		end
 
 
-		function test_MvnDistConstructor(obj)
-			% add assert statements here...
-        end
-        
+		function test_Cnstr(obj)
+			% test object construction here...
+		end
 		function test_cov(obj)
 			% add assert statements here...
 		end

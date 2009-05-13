@@ -1,20 +1,22 @@
 classdef ProbDist
 %PROBDIST Abstract Probability Distribution
-    
-    properties(Abstract = true)
-        params;   % struct storing the models parameters
-    end
-    
+
+ 
     methods(Abstract = true)
-        logprob;  % p(i) = log(p(D(i)|params)) - semantics altered by ProductDist
-        sample;
+    % ProbDists are stateless w.r.t. evidence, all methods optionally take
+    % evidence and queries. 
+        entropy;           
+        mean;        
+        mode;
+        var;
+        marginal;
     end
     
     methods
-        function cellArray = copy(model,n)
+        function cellArray = copy(dist,n)
         % Copy the model n times and return copies in a cell array    
-           cellArray = num2cell(repmat(model,n,1)); 
-        end
+           cellArray = num2cell(repmat(dist,n,1)); 
+        end 
     end
     
 end

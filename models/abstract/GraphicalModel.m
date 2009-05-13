@@ -1,16 +1,19 @@
-classdef GraphicalModel < JointDist
+classdef GraphicalModel < ProbModel
 %GRAPHICALMODEL 
     
     properties(Abstract = true)
         domain;
-        infEng;
         graph;
     end
     
     methods
         function h = drawGraph(model)
-            h = draw(model.graph);
+           notYetImplemented('GraphicalModel.drawGraph()');
         end
+    end
+    
+    methods(Abstract = true)
+       fitStructure; 
     end
     
 end

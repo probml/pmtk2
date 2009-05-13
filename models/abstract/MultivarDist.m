@@ -1,11 +1,8 @@
-classdef MultivarDist < JointDist
-%MULTIVARDIST  A joint distribution that implements mean, mode, cov, var
-    
+classdef MultivarDist < ProbModel
+%MULTIVARDIST - text book models like MvnDist
+
     methods(Abstract = true)
-        mean;
-        mode;
         cov;
-        fit;
     end
     
 end

@@ -6,7 +6,7 @@ classdef Springlayout < Gvizlayout
 % University of British Columbia 
 % http://www.cs.ubc.ca/~mdunham/  
     methods
-       function obj = springlayout(name)
+       function obj = Springlayout(name)
             if(nargin < 1)
                 obj.name = 'springlayout';
             else

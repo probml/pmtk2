@@ -1,13 +1,10 @@
-classdef LatentVarModel < ProbDist
+classdef LatentVarModel < ProbModel
 %LATENTVARMODEL 
-    
-    properties(Abstract = true)
-        latentNames;
+   
+    methods
+        function  R = inferLatent(model,varargin)
+            R = marginal(model,varargin{:});
+        end
     end
-    
-    methods(Abstract = true)
-        inferLatents;
-    end
-    
 end
 
