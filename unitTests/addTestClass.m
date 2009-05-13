@@ -1,6 +1,7 @@
 function addTestClass(baseClass)
 % Generate a test_class template for the specified class. 
         
+        savedDir = pwd;
         cd(fullfile(PMTKroot(),'unitTests'));
         if ~exist(baseClass,'file'), error('Could not find class %s',baseClass);end
         testClass = [UnitTest.testPrefix,baseClass];
@@ -34,6 +35,7 @@ function addTestClass(baseClass)
                     classText = [classText;
                                  sprintf('\t\tfunction %sCnstr(obj)',UnitTest.testPrefix);
                                  sprintf('\t\t\t%% test object construction here...');
+                                 sprintf('\t\t\terror(''empty test method''); %% remove this error');
                                  sprintf('\t\tend');
                                   '';
                                   '';
@@ -42,6 +44,7 @@ function addTestClass(baseClass)
         for j=1:numel(methodNames)
            mtext  = {sprintf('\t\tfunction %s%s(obj)',UnitTest.testPrefix,methodNames{j})
                      sprintf('\t\t\t%% add assert statements here...')
+                     sprintf('\t\t\terror(''empty test method''); %% remove this error'); 
                      sprintf('\t\tend')
                      ''
                     };
@@ -50,4 +53,5 @@ function addTestClass(baseClass)
         classText = [classText;'';'';sprintf('\tend');'';'end'];
         writeText(classText,[testClass,'.m']);
         fprintf('Test class %s created\n',testClass);
+        cd(savedDir);
 end

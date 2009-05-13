@@ -12,6 +12,7 @@ classdef UnitTest
        errors;                % a struct, storing any errors generated. 
        verbose;
        missingTests;          % a list of any missing test methods
+       runTimes;              % stores how long each test method takes to run
    end
    
    methods
@@ -53,13 +54,15 @@ classdef UnitTest
             obj.results = createStruct(testMethods);
             ndots = 40; nleft = floor((ndots -length(className))/2); nright = ceil((ndots -length(className))/2); 
             if obj.verbose, 
-                if ~isempty(obj.missingTests)
+                if isempty(obj.missingTests)
                     fprintf('%s%s%s\n',dots(nleft),className,dots(nright));
                 else
                     fprintf('%s%s%s%s\n',dots(nleft),className,dots(nright),' (missing test methods)');
                 end
             end
+            obj.runTimes = zeros(numel(testMethods),1);
             for i=1:numel(testMethods)
+               tic
                try
                    obj.(testMethods{i});                    %#ok
                    obj.results.(testMethods{i}) = 'passed';
@@ -70,6 +73,8 @@ classdef UnitTest
                    obj.errors.(testMethods{i}) = ME;
                    if obj.verbose, fprintf('F'); end
                end
+               t = toc;
+               obj.runTimes(i) = t;
             end
             if obj.verbose,fprintf('\n'); end
             obj = teardown(obj);

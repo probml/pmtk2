@@ -1,5 +1,5 @@
-classdef test_MvnDist < UnitTest
-% Test MvnDist
+classdef test_CRF < UnitTest
+% Test CRF
 
 	methods
 
@@ -23,17 +23,17 @@ classdef test_MvnDist < UnitTest
 			% test object construction here...
 			error('empty test method'); % remove this error
 		end
-		function test_cov(obj)
-			% add assert statements here...
-			error('empty test method'); % remove this error
-		end
-
 		function test_entropy(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end
 
 		function test_fit(obj)
+			% add assert statements here...
+			error('empty test method'); % remove this error
+		end
+
+		function test_fitStructure(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end

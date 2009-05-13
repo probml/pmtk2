@@ -29,7 +29,7 @@ function [tests,npassed,ntotal,html] = runUnitTests(varargin)
         testObjs{i} = feval(testClasses{i}(1:end-2));
     end
 %% GENERATE REPORT    
-    names = {};  results = {};  classIDX = [];  missingTests = {}; errors = {};
+    names = {};  results = {};  classIDX = [];  missingTests = {}; errors = {}; runTimes = [];
     counter = 1;
     tally = zeros(numel(testObjs),2);
     for i=1:numel(testObjs)
@@ -37,7 +37,7 @@ function [tests,npassed,ntotal,html] = runUnitTests(varargin)
        names = [names; obj.targetClass];  %#ok
        classIDX = [classIDX,counter];     %#ok
        if ~isempty(obj.missingTests)
-          missingTests{counter} = cellString(obj.missingTests,','); 
+          missingTests{counter} = cellString(obj.missingTests,',');  %#ok
        end
        objresults = struct2cell(obj.results);
        nresults = numel(objresults);
@@ -54,29 +54,46 @@ function [tests,npassed,ntotal,html] = runUnitTests(varargin)
           end
        end
        results(counter:counter+nresults-1,1) = colvec(objresults);
+       runTimes(counter:counter+nresults-1,1) = colvec(obj.runTimes);
        testNames = fieldnames(obj.results);
        names = [names;colvec(testNames)];   %#ok
        counter = counter + numel(testNames);
     end
-    missingTests = [colvec(missingTests);cell(counter-numel(missingTests)-1,1)]; %#ok
+    missingTests = [colvec(missingTests);cell(counter-numel(missingTests)-1,1)]; 
     errors = [colvec(errors);cell(counter-numel(errors)-1,1)];
     ntotal = sum(tally(:,2));
     npassed = sum(tally(:,1));
+    runTimesCell = repmat({''},size(runTimes));
+    for i=1:numel(runTimes)
+       if runTimes(i) > 0
+          runTimesCell{i} = sprintf('%1.3f',runTimes(i)); 
+       end
+    end
+  
     %% COLOR INFO
     rowColors = repmat({'white'},numel(names),1);
     rowColors(classIDX) = {'yellow'};
-    dataColors = repmat({'white'},numel(results),3);
+    dataColors = repmat({'white'},numel(results),4);
     dataColors(cellfun(@(c)strcmpi(c,'passed'),results),1)    = {'green' };
     dataColors(cellfun(@(c)strcmpi(c,'failed'),results),1)    = {'red'   };
     
     dataColors(cellfun(@(c)~isempty(c),missingTests),3)  = {'red'   };
+    dataColors(runTimes > 10, 4) = {'orange'};
+    
     if ntotal == npassed, titleBarColor = 'green';
     else                  titleBarColor = 'red';
     end
     %%
     title = {sprintf('PMTK Test Results: (%d / %d)',npassed,ntotal);datestr(now)};
+    %% Check for missing test classes
+    missing = missingTestClasses(PMTKroot());
+    if ~isempty(missing)
+       caption = sprintf('Missing Test Classes:<br>%s',cellString(missing,' , ')); 
+    else
+       caption = ''; 
+    end
     %% DISPLAY REPORT
-    html = htmlTable('-data',[results,errors,missingTests,],'-rowNames',names,'-colNames',{'Results','Error Message','Missing'},'-rowNameColors',rowColors,'-dataColors',dataColors,'-title',title,'-titleBarColor',titleBarColor,'-dosave',saveReport,'-filename',filename);
+    html = htmlTable('-data',[results,errors,missingTests,runTimesCell],'-rowNames',names,'-colNames',{'Results','Error Message','Missing Tests','Run Time (s)'},'-rowNameColors',rowColors,'-dataColors',dataColors,'-title',title,'-titleBarColor',titleBarColor,'-dosave',saveReport,'-filename',filename,'-caption',caption);
     if nargout ~=0
        tests = testObjs';
     end
