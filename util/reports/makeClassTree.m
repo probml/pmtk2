@@ -8,13 +8,6 @@ function makeClassTree(location)
     
     cd(PMTKroot());
     h = viewClassTree();
-    maximizeFigure();
-    pause(1);
-    tightenAxes(h);
-    shrinkNodes(h);
-    for i=1:3
-        increaseFontSize(h);
-    end
     %print('-dpng',fullfile(location,filename));
     print_pdf(fullfile(location,filename));
     close all;
