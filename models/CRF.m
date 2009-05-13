@@ -4,12 +4,6 @@ classdef CRF < UgmDist
 
 	properties
 
-		domain;
-		fitEng;
-		graph;
-		params;
-		stateEstEngine;
-
 	end
 
 

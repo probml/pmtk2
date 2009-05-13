@@ -6,7 +6,8 @@ classdef UgmIsing < LaticeDist
 
 		fitEng;
 		params;
-		stateEstEngine;
+		stateEstEng;
+        modelSelEng;
 
 	end
 

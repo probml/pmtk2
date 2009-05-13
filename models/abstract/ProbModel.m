@@ -4,7 +4,8 @@ classdef ProbModel < ProbDist
     
     properties(Abstract = true)
         fitEng;
-        stateEstEngine;
+        stateEstEng;
+        modelSelEng;
         params;
     end
     
@@ -22,7 +23,7 @@ classdef ProbModel < ProbDist
         end
         
         function M = marginal(model,D,Q)
-           M = computeMarginal(model.stateEstEngine,D,Q); 
+           M = computeMarginal(model.stateEstEng,D,Q); 
         end
         
     end

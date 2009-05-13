@@ -43,15 +43,8 @@ classdef GaussProdDist < ProductDist & MvnDist
 		function mode(model,varargin)
 		%
 			notYetImplemented('GaussProdDist.mode()');
-		end
-
-
-		function ndists(model,varargin)
-		%
-			notYetImplemented('GaussProdDist.ndists()');
-		end
-
-
+        end
+        
 		function sample(model,varargin)
 		%
 			notYetImplemented('GaussProdDist.sample()');

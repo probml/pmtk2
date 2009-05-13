@@ -8,7 +8,9 @@ classdef DgmDist < GraphicalModel
 		fitEng;
 		graph;
 		params;
-		stateEstEngine;
+		stateEstEng;
+        modelSelEng;
+        
 
 	end
 

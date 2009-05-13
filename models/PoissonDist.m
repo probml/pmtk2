@@ -6,7 +6,8 @@ classdef PoissonDist < ScalarDist
 
 		fitEng;
 		params;
-		stateEstEngine;
+		stateEstEng;
+        modelSelEng;
 
 	end
 

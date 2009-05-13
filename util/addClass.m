@@ -1,4 +1,4 @@
-function createClass(varargin)
+function addClass(varargin)
 % Creates a class template, adding required methods and properties given its 
 % possibly abstract super classes. 
 %
@@ -15,7 +15,7 @@ function createClass(varargin)
 
     [className,saveDir,superClasses,objName] = processArgs(varargin,'*+-className','','*+-saveDir','','-superClasses',{},'+-objName','obj');
     if exist(fullfile(saveDir,className),'file')
-        %error('%s already exists',className);
+        error('%s already exists',className);
     end
     
     

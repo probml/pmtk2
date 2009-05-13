@@ -6,7 +6,8 @@ classdef KnnDist < CondScalarDist
 
 		fitEng;
 		params;
-		stateEstEngine;
+		stateEstEng;
+        modelSelEng;
 
 	end
 

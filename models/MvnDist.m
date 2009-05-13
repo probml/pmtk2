@@ -6,7 +6,8 @@ classdef MvnDist < MultivarDist
 
 		fitEng;
 		params;
-		stateEstEngine;
+		stateEstEng;
+        modelSelEng;
 
 	end
 

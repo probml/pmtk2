@@ -6,7 +6,8 @@ classdef MarkovDist < ChainModel
 
 		fitEng;
 		params;
-		stateEstEngine;
+		stateEstEng;
+        modelSelEng;
 
 	end
 

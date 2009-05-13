@@ -6,7 +6,8 @@ classdef MixPPCA < MixtureDist
 
 		fitEng;
 		params;
-		stateEstEngine;
+		stateEstEng;
+        modelSelEng;
 
 	end
 

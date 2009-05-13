@@ -6,7 +6,8 @@ classdef CRFgrid < LaticeDist
 
 		fitEng;
 		params;
-		stateEstEngine;
+		stateEstEng;
+        modelSelEng;
 
 	end
 

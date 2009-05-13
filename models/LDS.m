@@ -6,7 +6,8 @@ classdef LDS < ChainModel
 
 		fitEng;
 		params;
-		stateEstEngine;
+		stateEstEng;
+        modelSelEng;
 
 	end
 

@@ -6,7 +6,8 @@ classdef Logreg < CondScalarDist
 
 		fitEng;
 		params;
-		stateEstEngine;
+		stateEstEng;
+        modelSelEng;
 
 	end
 

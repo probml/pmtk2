@@ -6,7 +6,8 @@ classdef PPCA < LatentVarModel
 
 		fitEng;
 		params;
-		stateEstEngine;
+		stateEstEng;
+        modelSelEng;
 
 	end
 
