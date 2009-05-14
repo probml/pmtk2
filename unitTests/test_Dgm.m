@@ -47,7 +47,7 @@ classdef test_Dgm < UnitTest
 			error('empty test method'); % remove this error
 		end
 
-		function test_logprob(obj)
+		function test_logpdf(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end
