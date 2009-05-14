@@ -1,5 +1,5 @@
-classdef test_KnnModel < UnitTest
-% Test KnnModel
+classdef test_UndirectedGraph < UnitTest
+% Test UndirectedGraph
 
 	methods
 
@@ -22,52 +22,32 @@ classdef test_KnnModel < UnitTest
 		function test_Cnstr(obj)
 			target = feval(obj.targetClass);
 		end
-		function test_cov(obj)
+		function test_dfs(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end
 
-		function test_entropy(obj)
+		function test_isAcyclic(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end
 
-		function test_fit(obj)
+		function test_makeAll(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end
 
-		function test_logpdf(obj)
+		function test_maximalCliques(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end
 
-		function test_marginal(obj)
+		function test_minSpanTree(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end
 
-		function test_mean(obj)
-			% add assert statements here...
-			error('empty test method'); % remove this error
-		end
-
-		function test_mode(obj)
-			% add assert statements here...
-			error('empty test method'); % remove this error
-		end
-
-		function test_ndimensions(obj)
-			% add assert statements here...
-			error('empty test method'); % remove this error
-		end
-
-		function test_sample(obj)
-			% add assert statements here...
-			error('empty test method'); % remove this error
-		end
-
-		function test_var(obj)
+		function test_reachabilityGraph(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end

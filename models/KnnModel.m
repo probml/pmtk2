@@ -1,10 +1,9 @@
-classdef KnnModel < ScalarCondDist
+classdef KnnModel < NonParamModel
 %KNNMODEL
 
 
 	properties
 
-		params;
 
 	end
 
@@ -19,12 +18,6 @@ classdef KnnModel < ScalarCondDist
 		function cov(model,varargin)
 		%
 			notYetImplemented('KnnModel.cov()');
-		end
-
-
-		function dof(model,varargin)
-		%
-			notYetImplemented('KnnModel.dof()');
 		end
 
 

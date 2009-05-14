@@ -1,5 +1,5 @@
-classdef test_KnnModel < UnitTest
-% Test KnnModel
+classdef test_DirectedGraph < UnitTest
+% Test DirectedGraph
 
 	methods
 
@@ -22,52 +22,62 @@ classdef test_KnnModel < UnitTest
 		function test_Cnstr(obj)
 			target = feval(obj.targetClass);
 		end
-		function test_cov(obj)
+		function test_ancestors(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end
 
-		function test_entropy(obj)
+		function test_children(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end
 
-		function test_fit(obj)
+		function test_descendents(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end
 
-		function test_logpdf(obj)
+		function test_dfs(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end
 
-		function test_marginal(obj)
+		function test_family(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end
 
-		function test_mean(obj)
+		function test_isAcyclic(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end
 
-		function test_mode(obj)
+		function test_isleaf(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end
 
-		function test_ndimensions(obj)
+		function test_isroot(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end
 
-		function test_sample(obj)
+		function test_makeAll(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end
 
-		function test_var(obj)
+		function test_moralize(obj)
+			% add assert statements here...
+			error('empty test method'); % remove this error
+		end
+
+		function test_parents(obj)
+			% add assert statements here...
+			error('empty test method'); % remove this error
+		end
+
+		function test_reachabilityGraph(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end
