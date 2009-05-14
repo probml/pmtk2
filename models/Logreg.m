@@ -40,9 +40,9 @@ classdef Logreg < CondScalarModel
 		end
 
 
-		function logprob(model,varargin)
+		function logpdf(model,varargin)
 		%
-			notYetImplemented('Logreg.logprob()');
+			notYetImplemented('Logreg.logpdf()');
 		end
 
 

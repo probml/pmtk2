@@ -39,9 +39,9 @@ classdef Samples < NonParamModel
 		end
 
 
-		function logprob(model,varargin)
+		function logpdf(model,varargin)
 		%
-			notYetImplemented('Samples.logprob()');
+			notYetImplemented('Samples.logpdf()');
 		end
 
 

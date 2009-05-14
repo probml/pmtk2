@@ -1,5 +1,5 @@
-classdef test_SampleDist < UnitTest
-% Test SampleDist
+classdef test_KnnModel < UnitTest
+% Test KnnModel
 
 	methods
 
@@ -22,7 +22,27 @@ classdef test_SampleDist < UnitTest
 		function test_Cnstr(obj)
 			target = feval(obj.targetClass);
 		end
+		function test_cov(obj)
+			% add assert statements here...
+			error('empty test method'); % remove this error
+		end
+
+		function test_dof(obj)
+			% add assert statements here...
+			error('empty test method'); % remove this error
+		end
+
 		function test_entropy(obj)
+			% add assert statements here...
+			error('empty test method'); % remove this error
+		end
+
+		function test_fit(obj)
+			% add assert statements here...
+			error('empty test method'); % remove this error
+		end
+
+		function test_logprob(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end
@@ -43,6 +63,11 @@ classdef test_SampleDist < UnitTest
 		end
 
 		function test_ndimensions(obj)
+			% add assert statements here...
+			error('empty test method'); % remove this error
+		end
+
+		function test_sample(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end

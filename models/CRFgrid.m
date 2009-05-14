@@ -40,9 +40,9 @@ classdef CRFgrid < LaticeModel
 		end
 
 
-		function logprob(model,varargin)
+		function logpdf(model,varargin)
 		%
-			notYetImplemented('CRFgrid.logprob()');
+			notYetImplemented('CRFgrid.logpdf()');
 		end
 
 

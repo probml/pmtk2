@@ -1,5 +1,5 @@
-classdef test_MvnDist < UnitTest
-% Test MvnDist
+classdef test_Ugm < UnitTest
+% Test Ugm
 
 	methods
 
@@ -42,7 +42,17 @@ classdef test_MvnDist < UnitTest
 			error('empty test method'); % remove this error
 		end
 
+		function test_fitStructure(obj)
+			% add assert statements here...
+			error('empty test method'); % remove this error
+		end
+
 		function test_logprob(obj)
+			% add assert statements here...
+			error('empty test method'); % remove this error
+		end
+
+		function test_marginal(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end

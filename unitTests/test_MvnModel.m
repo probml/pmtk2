@@ -1,5 +1,5 @@
-classdef test_DgmDist < UnitTest
-% Test DgmDist
+classdef test_MvnModel < UnitTest
+% Test MvnModel
 
 	methods
 
@@ -22,6 +22,11 @@ classdef test_DgmDist < UnitTest
 		function test_Cnstr(obj)
 			target = feval(obj.targetClass);
 		end
+		function test_cov(obj)
+			% add assert statements here...
+			error('empty test method'); % remove this error
+		end
+
 		function test_dof(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
@@ -37,12 +42,12 @@ classdef test_DgmDist < UnitTest
 			error('empty test method'); % remove this error
 		end
 
-		function test_fitStructure(obj)
+		function test_logprob(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end
 
-		function test_logprob(obj)
+		function test_marginal(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end

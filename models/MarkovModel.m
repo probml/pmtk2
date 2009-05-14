@@ -40,9 +40,9 @@ classdef MarkovModel < ChainModel
 		end
 
 
-		function logprob(model,varargin)
+		function logpdf(model,varargin)
 		%
-			notYetImplemented('MarkovModel.logprob()');
+			notYetImplemented('MarkovModel.logpdf()');
 		end
 
 

@@ -1,4 +1,4 @@
-classdef HmmModel < ChainModel
+classdef Hmm < ChainModel
 %HMMMODEL
 
 
@@ -11,7 +11,7 @@ classdef HmmModel < ChainModel
 
 	methods
 
-		function model = HmmModel(varargin)
+		function model = Hmm(varargin)
 		%
 		end
 
@@ -40,9 +40,9 @@ classdef HmmModel < ChainModel
 		end
 
 
-		function logprob(model,varargin)
+		function logpdf(model,varargin)
 		%
-			notYetImplemented('HmmModel.logprob()');
+			notYetImplemented('HmmModel.logpdf()');
 		end
 
 

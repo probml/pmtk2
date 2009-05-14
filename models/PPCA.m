@@ -40,9 +40,9 @@ classdef PPCA < LatentVarModel
 		end
 
 
-		function logprob(model,varargin)
+		function logpdf(model,varargin)
 		%
-			notYetImplemented('PPCA.logprob()');
+			notYetImplemented('PPCA.logpdf()');
 		end
 
 

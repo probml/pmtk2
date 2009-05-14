@@ -5,7 +5,7 @@ function [table,methodNames,classes] = methodReport(varargin)
 % 1 = 'inherits method'
 % 2 = 'implements method'
 
-    [source,exclude,dosave,filename,abstractOnly] = processArgs(varargin,'-source',pwd(),'-exclude',{},'-dosave',false,'-filename','','-abstractOnly',true);
+    [source,exclude,dosave,filename,abstractOnly] = processArgs(varargin,'-source',PMTKroot(),'-exclude',{},'-dosave',false,'-filename','','-abstractOnly',true);
    
     
     classes = setdiff(getClasses(source),exclude);

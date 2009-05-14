@@ -40,9 +40,9 @@ classdef KnnModel < CondScalarModel
 		end
 
 
-		function logprob(model,varargin)
+		function logpdf(model,varargin)
 		%
-			notYetImplemented('KnnModel.logprob()');
+			notYetImplemented('KnnModel.logpdf()');
 		end
 
 

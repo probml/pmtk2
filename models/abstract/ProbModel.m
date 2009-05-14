@@ -3,7 +3,7 @@ classdef ProbModel
     
     methods(Abstract = true)
         sample;
-        logprob;
+        logpdf;
         fit;
         dof;
         entropy;           
@@ -27,7 +27,7 @@ classdef ProbModel
         end
         
         function J = penNLL(model,D)
-            J = -sum(logprob(model,D)) - logprior(model);
+            J = -sum(logpdf(model,D)) - logprior(model);
         end
         
         function display(model,varargin)

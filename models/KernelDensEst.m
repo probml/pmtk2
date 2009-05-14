@@ -39,9 +39,9 @@ classdef KernelDensEst < NonParamModel
 		end
 
 
-		function logprob(model,varargin)
+		function logpdf(model,varargin)
 		%
-			notYetImplemented('KernelDensEst.logprob()');
+			notYetImplemented('KernelDensEst.logpdf()');
 		end
 
 

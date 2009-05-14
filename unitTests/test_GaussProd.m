@@ -1,5 +1,5 @@
-classdef test_GaussProdDist < UnitTest
-% Test GaussProdDist
+classdef test_GaussProd < UnitTest
+% Test GaussProd
 
 	methods
 

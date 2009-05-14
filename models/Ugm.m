@@ -1,4 +1,4 @@
-classdef UgmModel < GraphicalModel
+classdef Ugm < GraphicalModel
 %UGMMODEL
 
 
@@ -14,7 +14,7 @@ classdef UgmModel < GraphicalModel
 
 	methods
 
-		function model = UgmModel(varargin)
+		function model = Ugm(varargin)
 		%
 		end
 
@@ -49,9 +49,9 @@ classdef UgmModel < GraphicalModel
 		end
 
 
-		function logprob(model,varargin)
+		function logpdf(model,varargin)
 		%
-			notYetImplemented('UgmModel.logprob()');
+			notYetImplemented('UgmModel.logpdf()');
 		end
 
 

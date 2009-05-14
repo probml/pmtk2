@@ -40,9 +40,9 @@ classdef LDS < ChainModel
 		end
 
 
-		function logprob(model,varargin)
+		function logpdf(model,varargin)
 		%
-			notYetImplemented('LDS.logprob()');
+			notYetImplemented('LDS.logpdf()');
 		end
 
 

@@ -1,5 +1,5 @@
-classdef test_PoissonDist < UnitTest
-% Test PoissonDist
+classdef test_Dgm < UnitTest
+% Test Dgm
 
 	methods
 
@@ -22,6 +22,11 @@ classdef test_PoissonDist < UnitTest
 		function test_Cnstr(obj)
 			target = feval(obj.targetClass);
 		end
+		function test_cov(obj)
+			% add assert statements here...
+			error('empty test method'); % remove this error
+		end
+
 		function test_dof(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
@@ -37,7 +42,17 @@ classdef test_PoissonDist < UnitTest
 			error('empty test method'); % remove this error
 		end
 
+		function test_fitStructure(obj)
+			% add assert statements here...
+			error('empty test method'); % remove this error
+		end
+
 		function test_logprob(obj)
+			% add assert statements here...
+			error('empty test method'); % remove this error
+		end
+
+		function test_marginal(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end

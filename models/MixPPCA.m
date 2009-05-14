@@ -40,9 +40,9 @@ classdef MixPPCA < MixtureModel
 		end
 
 
-		function logprob(model,varargin)
+		function logpdf(model,varargin)
 		%
-			notYetImplemented('MixPPCA.logprob()');
+			notYetImplemented('MixPPCA.logpdf()');
 		end
 
 

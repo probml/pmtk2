@@ -40,9 +40,9 @@ classdef PoissonModel < ScalarModel
 		end
 
 
-		function logprob(model,varargin)
+		function logpdf(model,varargin)
 		%
-			notYetImplemented('PoissonModel.logprob()');
+			notYetImplemented('PoissonModel.logpdf()');
 		end
 
 

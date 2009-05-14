@@ -40,9 +40,9 @@ classdef UgmIsing < LaticeModel
 		end
 
 
-		function logprob(model,varargin)
+		function logpdf(model,varargin)
 		%
-			notYetImplemented('UgmIsing.logprob()');
+			notYetImplemented('UgmIsing.logpdf()');
 		end
 
 

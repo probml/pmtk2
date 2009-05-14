@@ -1,5 +1,5 @@
-classdef test_CRFgrid < UnitTest
-% Test CRFgrid
+classdef test_Hmm < UnitTest
+% Test Hmm
 
 	methods
 

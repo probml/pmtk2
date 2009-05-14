@@ -1,4 +1,4 @@
-classdef CRF < UgmModel
+classdef CRF < Ugm
 %CRF
 
 

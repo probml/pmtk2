@@ -40,9 +40,9 @@ classdef MvnModel < MultivarModel
 		end
 
 
-		function logprob(model,varargin)
+		function logpdf(model,varargin)
 		%
-			notYetImplemented('MvnModel.logprob()');
+			notYetImplemented('MvnModel.logpdf()');
 		end
 
 
