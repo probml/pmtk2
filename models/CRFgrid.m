@@ -1,11 +1,9 @@
-classdef CRFgrid < LaticeDist
+classdef CRFgrid < LaticeModel
 %CRFGRID
 
 
 	properties
 
-		fitEng;
-		modelSelEng;
 		params;
 
 	end
@@ -15,6 +13,12 @@ classdef CRFgrid < LaticeDist
 
 		function model = CRFgrid(varargin)
 		%
+		end
+
+
+		function cov(model,varargin)
+		%
+			notYetImplemented('CRFgrid.cov()');
 		end
 
 
@@ -39,6 +43,12 @@ classdef CRFgrid < LaticeDist
 		function logprob(model,varargin)
 		%
 			notYetImplemented('CRFgrid.logprob()');
+		end
+
+
+		function marginal(model,varargin)
+		%
+			notYetImplemented('CRFgrid.marginal()');
 		end
 
 

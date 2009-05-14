@@ -1,0 +1,2 @@
+classdef LaticeModel < ParamModel
+end

@@ -1,5 +1,5 @@
-classdef UgmIsing < LaticeModel
-%UGMISING
+classdef KnnModel < CondScalarModel
+%KNNMODEL
 
 
 	properties
@@ -11,74 +11,74 @@ classdef UgmIsing < LaticeModel
 
 	methods
 
-		function model = UgmIsing(varargin)
+		function model = KnnModel(varargin)
 		%
 		end
 
 
 		function cov(model,varargin)
 		%
-			notYetImplemented('UgmIsing.cov()');
+			notYetImplemented('KnnModel.cov()');
 		end
 
 
 		function dof(model,varargin)
 		%
-			notYetImplemented('UgmIsing.dof()');
+			notYetImplemented('KnnModel.dof()');
 		end
 
 
 		function entropy(model,varargin)
 		%
-			notYetImplemented('UgmIsing.entropy()');
+			notYetImplemented('KnnModel.entropy()');
 		end
 
 
 		function fit(model,varargin)
 		%
-			notYetImplemented('UgmIsing.fit()');
+			notYetImplemented('KnnModel.fit()');
 		end
 
 
 		function logprob(model,varargin)
 		%
-			notYetImplemented('UgmIsing.logprob()');
+			notYetImplemented('KnnModel.logprob()');
 		end
 
 
 		function marginal(model,varargin)
 		%
-			notYetImplemented('UgmIsing.marginal()');
+			notYetImplemented('KnnModel.marginal()');
 		end
 
 
 		function mean(model,varargin)
 		%
-			notYetImplemented('UgmIsing.mean()');
+			notYetImplemented('KnnModel.mean()');
 		end
 
 
 		function mode(model,varargin)
 		%
-			notYetImplemented('UgmIsing.mode()');
+			notYetImplemented('KnnModel.mode()');
 		end
 
 
 		function ndimensions(model,varargin)
 		%
-			notYetImplemented('UgmIsing.ndimensions()');
+			notYetImplemented('KnnModel.ndimensions()');
 		end
 
 
 		function sample(model,varargin)
 		%
-			notYetImplemented('UgmIsing.sample()');
+			notYetImplemented('KnnModel.sample()');
 		end
 
 
 		function var(model,varargin)
 		%
-			notYetImplemented('UgmIsing.var()');
+			notYetImplemented('KnnModel.var()');
 		end
 
 

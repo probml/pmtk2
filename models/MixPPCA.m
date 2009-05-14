@@ -1,11 +1,9 @@
-classdef MixPPCA < MixtureDist
+classdef MixPPCA < MixtureModel
 %MIXPPCA
 
 
 	properties
 
-		fitEng;
-		modelSelEng;
 		params;
 
 	end
@@ -15,6 +13,12 @@ classdef MixPPCA < MixtureDist
 
 		function model = MixPPCA(varargin)
 		%
+		end
+
+
+		function cov(model,varargin)
+		%
+			notYetImplemented('MixPPCA.cov()');
 		end
 
 
@@ -39,6 +43,12 @@ classdef MixPPCA < MixtureDist
 		function logprob(model,varargin)
 		%
 			notYetImplemented('MixPPCA.logprob()');
+		end
+
+
+		function marginal(model,varargin)
+		%
+			notYetImplemented('MixPPCA.marginal()');
 		end
 
 

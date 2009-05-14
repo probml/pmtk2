@@ -1,4 +1,4 @@
-classdef LatentVarModel < ProbModel
+classdef LatentVarModel < ParamModel
 %LATENTVARMODEL 
    
     methods

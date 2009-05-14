@@ -1,84 +1,83 @@
-classdef UgmIsing < LaticeModel
-%UGMISING
+classdef Samples < NonParamModel
+%SAMPLES
 
 
 	properties
 
-		params;
 
 	end
 
 
 	methods
 
-		function model = UgmIsing(varargin)
+		function model = Samples(varargin)
 		%
 		end
 
 
 		function cov(model,varargin)
 		%
-			notYetImplemented('UgmIsing.cov()');
+			notYetImplemented('Samples.cov()');
 		end
 
 
 		function dof(model,varargin)
 		%
-			notYetImplemented('UgmIsing.dof()');
+			notYetImplemented('Samples.dof()');
 		end
 
 
 		function entropy(model,varargin)
 		%
-			notYetImplemented('UgmIsing.entropy()');
+			notYetImplemented('Samples.entropy()');
 		end
 
 
 		function fit(model,varargin)
 		%
-			notYetImplemented('UgmIsing.fit()');
+			notYetImplemented('Samples.fit()');
 		end
 
 
 		function logprob(model,varargin)
 		%
-			notYetImplemented('UgmIsing.logprob()');
+			notYetImplemented('Samples.logprob()');
 		end
 
 
 		function marginal(model,varargin)
 		%
-			notYetImplemented('UgmIsing.marginal()');
+			notYetImplemented('Samples.marginal()');
 		end
 
 
 		function mean(model,varargin)
 		%
-			notYetImplemented('UgmIsing.mean()');
+			notYetImplemented('Samples.mean()');
 		end
 
 
 		function mode(model,varargin)
 		%
-			notYetImplemented('UgmIsing.mode()');
+			notYetImplemented('Samples.mode()');
 		end
 
 
 		function ndimensions(model,varargin)
 		%
-			notYetImplemented('UgmIsing.ndimensions()');
+			notYetImplemented('Samples.ndimensions()');
 		end
 
 
 		function sample(model,varargin)
 		%
-			notYetImplemented('UgmIsing.sample()');
+			notYetImplemented('Samples.sample()');
 		end
 
 
 		function var(model,varargin)
 		%
-			notYetImplemented('UgmIsing.var()');
+			notYetImplemented('Samples.var()');
 		end
 
 

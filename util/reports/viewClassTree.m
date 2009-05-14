@@ -25,7 +25,7 @@ for c=1:numel(classes)
    if isabstract(classes{c}),  nodeColors(c,:) = [0.8,0.3,0.2];  end
 end
 
-if numel(classes) < 30, layout = Treelayout(); else layout = Radiallayout(); end
+if numel(classes) < 40, layout = Treelayout(); else layout = Radiallayout(); end
 
 h = Graphlayout('adjMatrix',matrix,'nodeLabels',shortClassNames,'splitLabels',true,'currentLayout',layout,'nodeColors',nodeColors);
 maximizeFigure();

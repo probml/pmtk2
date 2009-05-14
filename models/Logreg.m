@@ -1,11 +1,9 @@
-classdef Logreg < CondScalarDist
+classdef Logreg < CondScalarModel
 %LOGREG
 
 
 	properties
 
-		fitEng;
-		modelSelEng;
 		params;
 
 	end
@@ -15,6 +13,12 @@ classdef Logreg < CondScalarDist
 
 		function model = Logreg(varargin)
 		%
+		end
+
+
+		function cov(model,varargin)
+		%
+			notYetImplemented('Logreg.cov()');
 		end
 
 
@@ -39,6 +43,12 @@ classdef Logreg < CondScalarDist
 		function logprob(model,varargin)
 		%
 			notYetImplemented('Logreg.logprob()');
+		end
+
+
+		function marginal(model,varargin)
+		%
+			notYetImplemented('Logreg.marginal()');
 		end
 
 

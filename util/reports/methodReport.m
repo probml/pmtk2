@@ -23,24 +23,29 @@ function [table,methodNames,classes] = methodReport(varargin)
     table = zeros(numel(methodNames),numel(classes));
     
     for c=1:numel(classes)
-       local = localMethods(classes{c});
+       local = localMethods(classes{c},true);
        allm = methodsNoCons(classes{c});
        extern = setdiff(allm,local);
-       if abstractOnly, localval = 1; else localval = 2; end
+      
        for i=1:numel(local) 
-          table(methodLookup.(local{i}),classLookup.(classes{c})) = localval; 
+          table(methodLookup.(local{i}),classLookup.(classes{c})) = 2; 
        end
        for i=1:numel(extern)
           table(methodLookup.(extern{i}),classLookup.(classes{c})) = 1; 
        end
     end
-    if abstractOnly, caption = ''; else caption = 'inherits = 1, implements = 2'; end
+    if abstractOnly, caption = 'inherits = 1, locally defined = 2'; else caption = 'inherits = 1, implements = 2'; end
     
     dataColors = repmat({'red'},size(table));
     dataColors(table(:) == 1) = {'blue'};
-    dataColors(table(:) == 2) = {'green'};
+    dataColors(table(:) == 2) = {'lightgreen'};
     classNames = shortenNames(classes);
    
+    perm = sortidx(sum(table,1),'descend');
+    table = table(:,perm);
+    classNames = classNames(perm);
+    dataColors = dataColors(:,perm);
+    
     htmlTable('-data'               , table                            ,...
               '-rowNames'           , methodNames                      ,...
               '-colNames'           , classNames                       ,...

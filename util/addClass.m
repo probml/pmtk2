@@ -14,7 +14,7 @@ function addClass(varargin)
 %
 % createClass('MvnDist',fullfile(PMTKroot(),'models'),'MultivarDist','model')
 
-    [className,saveDir,superClasses,objName,allowOverwrite] = processArgs(varargin,'*+-className','','*+-saveDir','','-superClasses',{},'+-objName','obj','-allowOverwrite',false);
+    [className,superClasses,objName,allowOverwrite,saveDir] = processArgs(varargin,'*+-className','','-superClasses',{},'+-objName','model','-allowOverwrite',false,'+-saveDir',fullfile(PMTKroot(),'models'));
     if exist(fullfile(saveDir,className),'file') && ~allowOverwrite
         error('%s already exists',className);
     end

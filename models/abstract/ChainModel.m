@@ -1,3 +1,3 @@
-classdef ChainModel < ProbModel 
+classdef ChainModel < ParamModel 
 end
 

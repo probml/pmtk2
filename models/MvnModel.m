@@ -1,5 +1,5 @@
-classdef UgmIsing < LaticeModel
-%UGMISING
+classdef MvnModel < MultivarModel
+%MVNMODEL
 
 
 	properties
@@ -11,74 +11,74 @@ classdef UgmIsing < LaticeModel
 
 	methods
 
-		function model = UgmIsing(varargin)
+		function model = MvnModel(varargin)
 		%
 		end
 
 
 		function cov(model,varargin)
 		%
-			notYetImplemented('UgmIsing.cov()');
+			notYetImplemented('MvnModel.cov()');
 		end
 
 
 		function dof(model,varargin)
 		%
-			notYetImplemented('UgmIsing.dof()');
+			notYetImplemented('MvnModel.dof()');
 		end
 
 
 		function entropy(model,varargin)
 		%
-			notYetImplemented('UgmIsing.entropy()');
+			notYetImplemented('MvnModel.entropy()');
 		end
 
 
 		function fit(model,varargin)
 		%
-			notYetImplemented('UgmIsing.fit()');
+			notYetImplemented('MvnModel.fit()');
 		end
 
 
 		function logprob(model,varargin)
 		%
-			notYetImplemented('UgmIsing.logprob()');
+			notYetImplemented('MvnModel.logprob()');
 		end
 
 
 		function marginal(model,varargin)
 		%
-			notYetImplemented('UgmIsing.marginal()');
+			notYetImplemented('MvnModel.marginal()');
 		end
 
 
 		function mean(model,varargin)
 		%
-			notYetImplemented('UgmIsing.mean()');
+			notYetImplemented('MvnModel.mean()');
 		end
 
 
 		function mode(model,varargin)
 		%
-			notYetImplemented('UgmIsing.mode()');
+			notYetImplemented('MvnModel.mode()');
 		end
 
 
 		function ndimensions(model,varargin)
 		%
-			notYetImplemented('UgmIsing.ndimensions()');
+			notYetImplemented('MvnModel.ndimensions()');
 		end
 
 
 		function sample(model,varargin)
 		%
-			notYetImplemented('UgmIsing.sample()');
+			notYetImplemented('MvnModel.sample()');
 		end
 
 
 		function var(model,varargin)
 		%
-			notYetImplemented('UgmIsing.var()');
+			notYetImplemented('MvnModel.var()');
 		end
 
 

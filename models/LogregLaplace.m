@@ -1,11 +1,9 @@
-classdef LogregLaplace < CondScalarDist
+classdef LogregLaplace < CondScalarModel
 %LOGREGLAPLACE
 
 
 	properties
 
-		fitEng;
-		modelSelEng;
 		params;
 
 	end
@@ -15,6 +13,12 @@ classdef LogregLaplace < CondScalarDist
 
 		function model = LogregLaplace(varargin)
 		%
+		end
+
+
+		function cov(model,varargin)
+		%
+			notYetImplemented('LogregLaplace.cov()');
 		end
 
 
@@ -39,6 +43,12 @@ classdef LogregLaplace < CondScalarDist
 		function logprob(model,varargin)
 		%
 			notYetImplemented('LogregLaplace.logprob()');
+		end
+
+
+		function marginal(model,varargin)
+		%
+			notYetImplemented('LogregLaplace.marginal()');
 		end
 
 

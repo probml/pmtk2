@@ -4,8 +4,6 @@ classdef LDS < ChainModel
 
 	properties
 
-		fitEng;
-		modelSelEng;
 		params;
 
 	end
@@ -15,6 +13,12 @@ classdef LDS < ChainModel
 
 		function model = LDS(varargin)
 		%
+		end
+
+
+		function cov(model,varargin)
+		%
+			notYetImplemented('LDS.cov()');
 		end
 
 
@@ -39,6 +43,12 @@ classdef LDS < ChainModel
 		function logprob(model,varargin)
 		%
 			notYetImplemented('LDS.logprob()');
+		end
+
+
+		function marginal(model,varargin)
+		%
+			notYetImplemented('LDS.marginal()');
 		end
 
 

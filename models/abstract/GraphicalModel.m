@@ -1,4 +1,4 @@
-classdef GraphicalModel < ProbModel
+classdef GraphicalModel < ParamModel
 %GRAPHICALMODEL 
     
     properties(Abstract = true)
@@ -6,13 +6,7 @@ classdef GraphicalModel < ProbModel
         graph;
         stateEstEng;
     end
-    
-    methods
-        function h = drawGraph(model)
-           notYetImplemented('GraphicalModel.drawGraph()');
-        end
-    end
-    
+   
     methods(Abstract = true)
        fitStructure; 
     end

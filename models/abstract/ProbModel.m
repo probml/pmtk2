@@ -1,18 +1,18 @@
-classdef ProbModel < ProbDist
-% ProbModels all have parameters, which is not true of all ProbDists, (e.g.
-% SampleDist).
-    
-    properties(Abstract = true)
-        fitEng;
-        modelSelEng;
-        params;
-    end
+classdef ProbModel
+% An abstract probability model
     
     methods(Abstract = true)
         sample;
         logprob;
         fit;
         dof;
+        entropy;           
+        mean;        
+        mode;
+        var;
+        cov;
+        marginal;
+        ndimensions;
     end
     
     
@@ -20,10 +20,6 @@ classdef ProbModel < ProbDist
         
         function D = impute(model,D,Q)
           notYetImplemented('ProbModel.impute()');
-        end
-        
-        function M = marginal(model,D,Q)
-           M = computeMarginal(model.stateEstEng,D,Q); 
         end
         
         function lp = logprior(model)
@@ -34,6 +30,16 @@ classdef ProbModel < ProbDist
             J = -sum(logprob(model,D)) - logprior(model);
         end
         
+        function display(model,varargin)
+           if nargin < 2
+              disp(model); 
+           end
+        end
+        
+        function cellArray = copy(dist,n)
+            % Copy the model n times and return copies in a cell array
+            cellArray = num2cell(repmat(dist,n,1));
+        end
         
     end
     

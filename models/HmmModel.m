@@ -1,5 +1,5 @@
-classdef UgmIsing < LaticeModel
-%UGMISING
+classdef HmmModel < ChainModel
+%HMMMODEL
 
 
 	properties
@@ -11,74 +11,74 @@ classdef UgmIsing < LaticeModel
 
 	methods
 
-		function model = UgmIsing(varargin)
+		function model = HmmModel(varargin)
 		%
 		end
 
 
 		function cov(model,varargin)
 		%
-			notYetImplemented('UgmIsing.cov()');
+			notYetImplemented('HmmModel.cov()');
 		end
 
 
 		function dof(model,varargin)
 		%
-			notYetImplemented('UgmIsing.dof()');
+			notYetImplemented('HmmModel.dof()');
 		end
 
 
 		function entropy(model,varargin)
 		%
-			notYetImplemented('UgmIsing.entropy()');
+			notYetImplemented('HmmModel.entropy()');
 		end
 
 
 		function fit(model,varargin)
 		%
-			notYetImplemented('UgmIsing.fit()');
+			notYetImplemented('HmmModel.fit()');
 		end
 
 
 		function logprob(model,varargin)
 		%
-			notYetImplemented('UgmIsing.logprob()');
+			notYetImplemented('HmmModel.logprob()');
 		end
 
 
 		function marginal(model,varargin)
 		%
-			notYetImplemented('UgmIsing.marginal()');
+			notYetImplemented('HmmModel.marginal()');
 		end
 
 
 		function mean(model,varargin)
 		%
-			notYetImplemented('UgmIsing.mean()');
+			notYetImplemented('HmmModel.mean()');
 		end
 
 
 		function mode(model,varargin)
 		%
-			notYetImplemented('UgmIsing.mode()');
+			notYetImplemented('HmmModel.mode()');
 		end
 
 
 		function ndimensions(model,varargin)
 		%
-			notYetImplemented('UgmIsing.ndimensions()');
+			notYetImplemented('HmmModel.ndimensions()');
 		end
 
 
 		function sample(model,varargin)
 		%
-			notYetImplemented('UgmIsing.sample()');
+			notYetImplemented('HmmModel.sample()');
 		end
 
 
 		function var(model,varargin)
 		%
-			notYetImplemented('UgmIsing.var()');
+			notYetImplemented('HmmModel.var()');
 		end
 
 

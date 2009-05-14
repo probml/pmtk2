@@ -4,8 +4,6 @@ classdef PPCA < LatentVarModel
 
 	properties
 
-		fitEng;
-		modelSelEng;
 		params;
 
 	end
@@ -15,6 +13,12 @@ classdef PPCA < LatentVarModel
 
 		function model = PPCA(varargin)
 		%
+		end
+
+
+		function cov(model,varargin)
+		%
+			notYetImplemented('PPCA.cov()');
 		end
 
 
@@ -39,6 +43,12 @@ classdef PPCA < LatentVarModel
 		function logprob(model,varargin)
 		%
 			notYetImplemented('PPCA.logprob()');
+		end
+
+
+		function marginal(model,varargin)
+		%
+			notYetImplemented('PPCA.marginal()');
 		end
 
 

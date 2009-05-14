@@ -1,2 +1,0 @@
-classdef LaticeDist < ProbModel
-end

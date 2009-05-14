@@ -1,4 +1,4 @@
-classdef CRF < UgmDist
+classdef CRF < UgmModel
 %CRF
 
 
@@ -12,6 +12,18 @@ classdef CRF < UgmDist
 
 		function model = CRF(varargin)
 		%
+		end
+
+
+		function cov(model,varargin)
+		%
+			notYetImplemented('CRF.cov()');
+		end
+
+
+		function marginal(model,varargin)
+		%
+			notYetImplemented('CRF.marginal()');
 		end
 
 
