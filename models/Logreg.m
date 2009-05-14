@@ -1,4 +1,4 @@
-classdef Logreg < CondScalarModel
+classdef Logreg < ScalarCondDist
 %LOGREG
 
 

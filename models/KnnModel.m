@@ -1,4 +1,4 @@
-classdef KnnModel < CondScalarModel
+classdef KnnModel < ScalarCondDist
 %KNNMODEL
 
 

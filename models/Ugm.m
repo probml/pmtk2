@@ -4,10 +4,8 @@ classdef Ugm < GraphicalModel
 
 	properties
 
-		domain;
-		graph;
 		params;
-		stateEstEng;
+		stateInfEng;
 
 	end
 

@@ -1,4 +1,4 @@
-classdef LogregLaplace < CondScalarModel
+classdef LogregLaplace < ScalarCondDist
 %LOGREGLAPLACE
 
 

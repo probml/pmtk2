@@ -1,4 +1,4 @@
-classdef PoissonModel < ScalarModel
+classdef PoissonModel < ScalarCondDist
 %POISSONMODEL
 
 

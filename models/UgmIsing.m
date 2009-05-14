@@ -1,4 +1,4 @@
-classdef UgmIsing < LaticeModel
+classdef UgmIsing < Grid2Dmodel
 %UGMISING
 
 

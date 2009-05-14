@@ -1,4 +1,4 @@
-classdef CRFgrid < LaticeModel
+classdef CRFgrid < Grid2Dmodel
 %CRFGRID
 
 

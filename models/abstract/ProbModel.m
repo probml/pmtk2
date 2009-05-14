@@ -5,7 +5,6 @@ classdef ProbModel
         sample;
         logpdf;
         fit;
-        dof;
         entropy;           
         mean;        
         mode;
@@ -21,15 +20,7 @@ classdef ProbModel
         function D = impute(model,D,Q)
           notYetImplemented('ProbModel.impute()');
         end
-        
-        function lp = logprior(model)
-           lp = 0; 
-        end
-        
-        function J = penNLL(model,D)
-            J = -sum(logpdf(model,D)) - logprior(model);
-        end
-        
+         
         function display(model,varargin)
            if nargin < 2
               disp(model); 

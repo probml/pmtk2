@@ -1,17 +1,18 @@
-classdef MvnModel < MultivarModel
+classdef Mvn < MultivarModel
 %MVNMODEL
 
 
 	properties
 
 		params;
+        infEng;
 
 	end
 
 
 	methods
 
-		function model = MvnModel(varargin)
+		function model = Mvn(varargin)
 		%
 		end
 

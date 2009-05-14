@@ -21,10 +21,6 @@ classdef KernelDensEst < NonParamModel
 		end
 
 
-		function dof(model,varargin)
-		%
-			notYetImplemented('KernelDensEst.dof()');
-		end
 
 
 		function entropy(model,varargin)

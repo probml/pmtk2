@@ -21,10 +21,7 @@ classdef Samples < NonParamModel
 		end
 
 
-		function dof(model,varargin)
-		%
-			notYetImplemented('Samples.dof()');
-		end
+		
 
 
 		function entropy(model,varargin)

@@ -1,13 +1,14 @@
 classdef LatentVarModel < ParamModel
-%LATENTVARMODEL 
-   
+%LATENTVARMODEL
+    
     methods
-        function  R = inferLatent(model,varargin)
-            R = marginal(model,varargin{:});
-        end
         
-        function Z = decodeLatent(model,D)
-           Z =  mode(model, Query('latent'), D);
+        
+        function [zhat, pz] = inferLatent(m, D)
+            zhat = mode(m, 'latent', D); % for HMM, this is Viterbi; for MixModel, it is hard assignment
+            if nargout >=2
+                pz = marginal(m, 'latent', D); % may be eg one-slice marginals
+            end
         end
         
     end

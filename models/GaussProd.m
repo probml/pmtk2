@@ -1,4 +1,4 @@
-classdef GaussProd < MvnModel & ProductModel
+classdef GaussProd < Mvn & ProductModel
 
 
 

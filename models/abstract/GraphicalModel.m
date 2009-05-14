@@ -2,9 +2,7 @@ classdef GraphicalModel < ParamModel
 %GRAPHICALMODEL 
     
     properties(Abstract = true)
-        domain;
-        graph;
-        stateEstEng;
+        stateInfEng;
     end
    
     methods(Abstract = true)
