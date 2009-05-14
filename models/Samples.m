@@ -21,9 +21,6 @@ classdef Samples < NonParamModel
 		end
 
 
-		
-
-
 		function entropy(model,varargin)
 		%
 			notYetImplemented('Samples.entropy()');

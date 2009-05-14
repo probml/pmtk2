@@ -5,10 +5,13 @@ function addClass(varargin)
 % INPUTS: 
 %
 % '-className'
-% '-saveDir'
 % '-superClasses'
 % '-objName'
 % '-allowOverwrite
+% '-saveDir'
+
+
+
 %
 % EXAMPLE:
 %
@@ -32,6 +35,15 @@ function addClass(varargin)
             abstractMethods = unique([abstractMethods;colvec(cellfuncell(@(i)i.Name,filterCell(m.Methods,(@(c)c.Abstract))))]);
             abstractProperties = unique([abstractProperties;colvec(cellfuncell(@(i)i.Name,filterCell(m.Properties,@(c)c.Abstract)))]);
         end
+        
+        for i=1:numel(superClasses)
+           m = meta.class.fromName(superClasses{i});
+           abstractMethods = setdiff(abstractMethods,cellfuncell(@(i)i.Name,filterCell(m.Methods,(@(c)~c.Abstract))));
+           abstractProperties = setdiff(abstractProperties,cellfuncell(@(i)i.Name,filterCell(m.Properties,(@(c)~c.Abstract)))); 
+            
+        end
+        
+        
     else
         classHeader = ['classdef ',className];
     end

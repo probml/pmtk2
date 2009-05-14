@@ -1,10 +1,9 @@
 classdef Dgm < GraphicalModel
-%DGMMODEL
+%DGM
 
 
 	properties
 
-		
 		params;
 		stateInfEng;
 
@@ -20,73 +19,73 @@ classdef Dgm < GraphicalModel
 
 		function cov(model,varargin)
 		%
-			notYetImplemented('DgmModel.cov()');
+			notYetImplemented('Dgm.cov()');
 		end
 
 
 		function dof(model,varargin)
 		%
-			notYetImplemented('DgmModel.dof()');
+			notYetImplemented('Dgm.dof()');
 		end
 
 
 		function entropy(model,varargin)
 		%
-			notYetImplemented('DgmModel.entropy()');
+			notYetImplemented('Dgm.entropy()');
 		end
 
 
 		function fit(model,varargin)
 		%
-			notYetImplemented('DgmModel.fit()');
+			notYetImplemented('Dgm.fit()');
 		end
 
 
 		function fitStructure(model,varargin)
 		%
-			notYetImplemented('DgmModel.fitStructure()');
+			notYetImplemented('Dgm.fitStructure()');
 		end
 
 
 		function logpdf(model,varargin)
 		%
-			notYetImplemented('DgmModel.logpdf()');
+			notYetImplemented('Dgm.logpdf()');
 		end
 
 
 		function marginal(model,varargin)
 		%
-			notYetImplemented('DgmModel.marginal()');
+			notYetImplemented('Dgm.marginal()');
 		end
 
 
 		function mean(model,varargin)
 		%
-			notYetImplemented('DgmModel.mean()');
+			notYetImplemented('Dgm.mean()');
 		end
 
 
 		function mode(model,varargin)
 		%
-			notYetImplemented('DgmModel.mode()');
+			notYetImplemented('Dgm.mode()');
 		end
 
 
 		function ndimensions(model,varargin)
 		%
-			notYetImplemented('DgmModel.ndimensions()');
+			notYetImplemented('Dgm.ndimensions()');
 		end
 
 
 		function sample(model,varargin)
 		%
-			notYetImplemented('DgmModel.sample()');
+			notYetImplemented('Dgm.sample()');
 		end
 
 
 		function var(model,varargin)
 		%
-			notYetImplemented('DgmModel.var()');
+			notYetImplemented('Dgm.var()');
 		end
 
 

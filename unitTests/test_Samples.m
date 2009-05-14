@@ -27,11 +27,6 @@ classdef test_Samples < UnitTest
 			error('empty test method'); % remove this error
 		end
 
-		function test_dof(obj)
-			% add assert statements here...
-			error('empty test method'); % remove this error
-		end
-
 		function test_entropy(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error

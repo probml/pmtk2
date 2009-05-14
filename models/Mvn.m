@@ -1,5 +1,5 @@
 classdef Mvn < MultivarModel
-%MVNMODEL
+%MVN
 
 
 	properties
@@ -19,67 +19,67 @@ classdef Mvn < MultivarModel
 
 		function cov(model,varargin)
 		%
-			notYetImplemented('MvnModel.cov()');
+			notYetImplemented('Mvn.cov()');
 		end
 
 
 		function dof(model,varargin)
 		%
-			notYetImplemented('MvnModel.dof()');
+			notYetImplemented('Mvn.dof()');
 		end
 
 
 		function entropy(model,varargin)
 		%
-			notYetImplemented('MvnModel.entropy()');
+			notYetImplemented('Mvn.entropy()');
 		end
 
 
 		function fit(model,varargin)
 		%
-			notYetImplemented('MvnModel.fit()');
+			notYetImplemented('Mvn.fit()');
 		end
 
 
 		function logpdf(model,varargin)
 		%
-			notYetImplemented('MvnModel.logpdf()');
+			notYetImplemented('Mvn.logpdf()');
 		end
 
 
 		function marginal(model,varargin)
 		%
-			notYetImplemented('MvnModel.marginal()');
+			notYetImplemented('Mvn.marginal()');
 		end
 
 
 		function mean(model,varargin)
 		%
-			notYetImplemented('MvnModel.mean()');
+			notYetImplemented('Mvn.mean()');
 		end
 
 
 		function mode(model,varargin)
 		%
-			notYetImplemented('MvnModel.mode()');
+			notYetImplemented('Mvn.mode()');
 		end
 
 
 		function ndimensions(model,varargin)
 		%
-			notYetImplemented('MvnModel.ndimensions()');
+			notYetImplemented('Mvn.ndimensions()');
 		end
 
 
 		function sample(model,varargin)
 		%
-			notYetImplemented('MvnModel.sample()');
+			notYetImplemented('Mvn.sample()');
 		end
 
 
 		function var(model,varargin)
 		%
-			notYetImplemented('MvnModel.var()');
+			notYetImplemented('Mvn.var()');
 		end
 
 

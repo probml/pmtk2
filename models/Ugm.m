@@ -1,5 +1,5 @@
 classdef Ugm < GraphicalModel
-%UGMMODEL
+%UGM
 
 
 	properties
@@ -19,73 +19,73 @@ classdef Ugm < GraphicalModel
 
 		function cov(model,varargin)
 		%
-			notYetImplemented('UgmModel.cov()');
+			notYetImplemented('Ugm.cov()');
 		end
 
 
 		function dof(model,varargin)
 		%
-			notYetImplemented('UgmModel.dof()');
+			notYetImplemented('Ugm.dof()');
 		end
 
 
 		function entropy(model,varargin)
 		%
-			notYetImplemented('UgmModel.entropy()');
+			notYetImplemented('Ugm.entropy()');
 		end
 
 
 		function fit(model,varargin)
 		%
-			notYetImplemented('UgmModel.fit()');
+			notYetImplemented('Ugm.fit()');
 		end
 
 
 		function fitStructure(model,varargin)
 		%
-			notYetImplemented('UgmModel.fitStructure()');
+			notYetImplemented('Ugm.fitStructure()');
 		end
 
 
 		function logpdf(model,varargin)
 		%
-			notYetImplemented('UgmModel.logpdf()');
+			notYetImplemented('Ugm.logpdf()');
 		end
 
 
 		function marginal(model,varargin)
 		%
-			notYetImplemented('UgmModel.marginal()');
+			notYetImplemented('Ugm.marginal()');
 		end
 
 
 		function mean(model,varargin)
 		%
-			notYetImplemented('UgmModel.mean()');
+			notYetImplemented('Ugm.mean()');
 		end
 
 
 		function mode(model,varargin)
 		%
-			notYetImplemented('UgmModel.mode()');
+			notYetImplemented('Ugm.mode()');
 		end
 
 
 		function ndimensions(model,varargin)
 		%
-			notYetImplemented('UgmModel.ndimensions()');
+			notYetImplemented('Ugm.ndimensions()');
 		end
 
 
 		function sample(model,varargin)
 		%
-			notYetImplemented('UgmModel.sample()');
+			notYetImplemented('Ugm.sample()');
 		end
 
 
 		function var(model,varargin)
 		%
-			notYetImplemented('UgmModel.var()');
+			notYetImplemented('Ugm.var()');
 		end
 
 

@@ -22,15 +22,5 @@ classdef test_CRF < UnitTest
 		function test_Cnstr(obj)
 			target = feval(obj.targetClass);
 		end
-		function test_cov(obj)
-			% add assert statements here...
-			error('empty test method'); % remove this error
-		end
-
-		function test_marginal(obj)
-			% add assert statements here...
-			error('empty test method'); % remove this error
-		end
-
 	end
 end

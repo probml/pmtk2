@@ -1,5 +1,5 @@
-classdef test_PoissonModel < UnitTest
-% Test PoissonModel
+classdef test_Hiw < UnitTest
+% Test Hiw
 
 	methods
 

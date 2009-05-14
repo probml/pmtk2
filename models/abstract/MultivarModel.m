@@ -1,4 +1,4 @@
 classdef MultivarModel < ParamModel
-%MULTIVARMODEL - text book models like MvnModel
+%MULTIVARMODEL - text book models like Mvn
 end
 

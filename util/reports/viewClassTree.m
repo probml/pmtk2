@@ -25,14 +25,14 @@ for c=1:numel(classes)
    if isabstract(classes{c}),  nodeColors(c,:) = [0.8,0.3,0.2];  end
 end
 
-if numel(classes) < 40, layout = Treelayout(); else layout = Radiallayout(); end
+if numel(classes) < 65, layout = Treelayout(); else layout = Radiallayout(); end
 
 h = Graphlayout('adjMatrix',matrix,'nodeLabels',shortClassNames,'splitLabels',true,'currentLayout',layout,'nodeColors',nodeColors);
 maximizeFigure();
 pause(1);
 tightenAxes(h);
-shrinkNodes(h);
-for i=1:3, increaseFontSize(h); end
+growNodes(h);
+for i=1:4, increaseFontSize(h); end
 
 
 function classNames = shortenClassNames(classNames)

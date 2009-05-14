@@ -1,5 +1,5 @@
 classdef Hmm < ChainModel
-%HMMMODEL
+%HMM
 
 
 	properties
@@ -18,67 +18,67 @@ classdef Hmm < ChainModel
 
 		function cov(model,varargin)
 		%
-			notYetImplemented('HmmModel.cov()');
+			notYetImplemented('Hmm.cov()');
 		end
 
 
 		function dof(model,varargin)
 		%
-			notYetImplemented('HmmModel.dof()');
+			notYetImplemented('Hmm.dof()');
 		end
 
 
 		function entropy(model,varargin)
 		%
-			notYetImplemented('HmmModel.entropy()');
+			notYetImplemented('Hmm.entropy()');
 		end
 
 
 		function fit(model,varargin)
 		%
-			notYetImplemented('HmmModel.fit()');
+			notYetImplemented('Hmm.fit()');
 		end
 
 
 		function logpdf(model,varargin)
 		%
-			notYetImplemented('HmmModel.logpdf()');
+			notYetImplemented('Hmm.logpdf()');
 		end
 
 
 		function marginal(model,varargin)
 		%
-			notYetImplemented('HmmModel.marginal()');
+			notYetImplemented('Hmm.marginal()');
 		end
 
 
 		function mean(model,varargin)
 		%
-			notYetImplemented('HmmModel.mean()');
+			notYetImplemented('Hmm.mean()');
 		end
 
 
 		function mode(model,varargin)
 		%
-			notYetImplemented('HmmModel.mode()');
+			notYetImplemented('Hmm.mode()');
 		end
 
 
 		function ndimensions(model,varargin)
 		%
-			notYetImplemented('HmmModel.ndimensions()');
+			notYetImplemented('Hmm.ndimensions()');
 		end
 
 
 		function sample(model,varargin)
 		%
-			notYetImplemented('HmmModel.sample()');
+			notYetImplemented('Hmm.sample()');
 		end
 
 
 		function var(model,varargin)
 		%
-			notYetImplemented('HmmModel.var()');
+			notYetImplemented('Hmm.var()');
 		end
 
 

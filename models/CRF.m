@@ -15,18 +15,6 @@ classdef CRF < Ugm
 		end
 
 
-		function cov(model,varargin)
-		%
-			notYetImplemented('CRF.cov()');
-		end
-
-
-		function marginal(model,varargin)
-		%
-			notYetImplemented('CRF.marginal()');
-		end
-
-
 	end
 
 

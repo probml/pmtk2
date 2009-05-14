@@ -8,6 +8,7 @@ function [tests,npassed,ntotal,html] = runUnitTests(varargin)
 % '-maxErrorLength'    [DEFAULT = 40] if an error message is longer than
 %                                     this, the error id is displayed
 %                                     instead.
+% '-checkMissing'      [DEFAULT = false] Check for missing test classes if true
 %
 % OUTPUTS:
 %
@@ -16,7 +17,7 @@ function [tests,npassed,ntotal,html] = runUnitTests(varargin)
 % ntotal               the total number of tests run
 % html                 the html text from the report. 
 %%  SETUP
-    [saveReport,filename,maxErrorLength] = processArgs(varargin,'-saveReport',false,'-filename','unitTestReport','-maxErrorLength',40);
+    [saveReport,filename,maxErrorLength,checkMissing] = processArgs(varargin,'-saveReport',false,'-filename','unitTestReport','-maxErrorLength',50,'-CheckMissing',false);
     dbclear if error
     dbclear if warning
 %%  FIND ALL TEST CLASSES
@@ -86,7 +87,9 @@ function [tests,npassed,ntotal,html] = runUnitTests(varargin)
     %%
     title = {sprintf('PMTK Test Results: (%d / %d)',npassed,ntotal);datestr(now)};
     %% Check for missing test classes
-    missing = missingTestClasses(PMTKroot());
+    if checkMissing,   missing = missingTestClasses(PMTKroot());
+    else               missing = {};
+    end
     if ~isempty(missing)
        caption = sprintf('Missing Test Classes:<br>%s',cellString(missing,' , ')); 
     else

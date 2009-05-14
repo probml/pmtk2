@@ -1,5 +1,5 @@
-classdef test_MvnModel < UnitTest
-% Test MvnModel
+classdef test_GenClassifier < UnitTest
+% Test GenClassifier
 
 	methods
 

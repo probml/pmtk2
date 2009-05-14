@@ -1,10 +1,9 @@
 classdef GaussProd < Mvn & ProductModel
-
+%GAUSSPROD
 
 
 	properties
 
-	
 
 	end
 
@@ -14,7 +13,6 @@ classdef GaussProd < Mvn & ProductModel
 		function model = GaussProd(varargin)
 		%
 		end
-
 
 
 	end
