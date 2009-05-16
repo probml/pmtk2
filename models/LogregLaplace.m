@@ -1,84 +1,30 @@
-classdef LogregLaplace < ScalarCondDist
+classdef LogRegLaplace < LogReg & BayesModel
 %LOGREGLAPLACE
 
 
 	properties
 
-		params;
+		paramDist;
 
 	end
 
 
 	methods
 
-		function model = LogregLaplace(varargin)
+		function model = LogRegLaplace(varargin)
 		%
 		end
 
 
-		function cov(model,varargin)
+		function inferParams(model,varargin)
 		%
-			notYetImplemented('LogregLaplace.cov()');
+			notYetImplemented('LogRegLaplace.inferParams()');
 		end
 
 
-		function dof(model,varargin)
+		function logmarglik(model,varargin)
 		%
-			notYetImplemented('LogregLaplace.dof()');
-		end
-
-
-		function entropy(model,varargin)
-		%
-			notYetImplemented('LogregLaplace.entropy()');
-		end
-
-
-		function fit(model,varargin)
-		%
-			notYetImplemented('LogregLaplace.fit()');
-		end
-
-
-		function logpdf(model,varargin)
-		%
-			notYetImplemented('LogregLaplace.logpdf()');
-		end
-
-
-		function marginal(model,varargin)
-		%
-			notYetImplemented('LogregLaplace.marginal()');
-		end
-
-
-		function mean(model,varargin)
-		%
-			notYetImplemented('LogregLaplace.mean()');
-		end
-
-
-		function mode(model,varargin)
-		%
-			notYetImplemented('LogregLaplace.mode()');
-		end
-
-
-		function ndimensions(model,varargin)
-		%
-			notYetImplemented('LogregLaplace.ndimensions()');
-		end
-
-
-		function sample(model,varargin)
-		%
-			notYetImplemented('LogregLaplace.sample()');
-		end
-
-
-		function var(model,varargin)
-		%
-			notYetImplemented('LogregLaplace.var()');
+			notYetImplemented('LogRegLaplace.logmarglik()');
 		end
 
 

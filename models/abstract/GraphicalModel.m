@@ -6,7 +6,10 @@ classdef GraphicalModel < ParamModel
     end
    
     methods(Abstract = true)
-       fitStructure; 
+       plotTopology;
+       inferMissing;
+       infer;
+       computeMap;
     end
     
 end

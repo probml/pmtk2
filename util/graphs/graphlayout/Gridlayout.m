@@ -2,7 +2,7 @@ classdef Gridlayout < Abstractlayout
 % Provides a simple, (naive) grid layout for Graphlayout.   
 % An uninitialized instance can be created to pass to the GraphLayout
 % constructor by just calling Gridlayout without any parameters, e.g.
-% Graphlayout('adjMatrix',[0 1; 0 0], 'layout',Gridlayout);
+% Graphlayout('-adjMat',[0 1; 0 0], '-layout',Gridlayout);
 %
 % Matthew Dunham
 % University of British Columbia 

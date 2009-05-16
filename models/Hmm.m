@@ -1,10 +1,14 @@
-classdef Hmm < ChainModel
+classdef Hmm < ChainModel & LatentVarModel
 %HMM
 
 
 	properties
 
+		dof;
+		ndimensions;
+		ndimsLatent;
 		params;
+		prior;
 
 	end
 
@@ -16,21 +20,9 @@ classdef Hmm < ChainModel
 		end
 
 
-		function cov(model,varargin)
+		function computeMapLatent(model,varargin)
 		%
-			notYetImplemented('Hmm.cov()');
-		end
-
-
-		function dof(model,varargin)
-		%
-			notYetImplemented('Hmm.dof()');
-		end
-
-
-		function entropy(model,varargin)
-		%
-			notYetImplemented('Hmm.entropy()');
+			notYetImplemented('Hmm.computeMapLatent()');
 		end
 
 
@@ -40,45 +32,21 @@ classdef Hmm < ChainModel
 		end
 
 
+		function inferLatent(model,varargin)
+		%
+			notYetImplemented('Hmm.inferLatent()');
+		end
+
+
 		function logpdf(model,varargin)
 		%
 			notYetImplemented('Hmm.logpdf()');
 		end
 
 
-		function marginal(model,varargin)
-		%
-			notYetImplemented('Hmm.marginal()');
-		end
-
-
-		function mean(model,varargin)
-		%
-			notYetImplemented('Hmm.mean()');
-		end
-
-
-		function mode(model,varargin)
-		%
-			notYetImplemented('Hmm.mode()');
-		end
-
-
-		function ndimensions(model,varargin)
-		%
-			notYetImplemented('Hmm.ndimensions()');
-		end
-
-
 		function sample(model,varargin)
 		%
 			notYetImplemented('Hmm.sample()');
-		end
-
-
-		function var(model,varargin)
-		%
-			notYetImplemented('Hmm.var()');
 		end
 
 

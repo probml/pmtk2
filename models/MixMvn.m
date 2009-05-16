@@ -4,7 +4,11 @@ classdef MixMvn < MixtureModel
 
 	properties
 
+		dof;
+		ndimensions;
+		ndimsLatent;
 		params;
+		prior;
 
 	end
 
@@ -16,21 +20,9 @@ classdef MixMvn < MixtureModel
 		end
 
 
-		function cov(model,varargin)
+		function computeMapLatent(model,varargin)
 		%
-			notYetImplemented('MixMvn.cov()');
-		end
-
-
-		function dof(model,varargin)
-		%
-			notYetImplemented('MixMvn.dof()');
-		end
-
-
-		function entropy(model,varargin)
-		%
-			notYetImplemented('MixMvn.entropy()');
+			notYetImplemented('MixMvn.computeMapLatent()');
 		end
 
 
@@ -40,45 +32,21 @@ classdef MixMvn < MixtureModel
 		end
 
 
+		function inferLatent(model,varargin)
+		%
+			notYetImplemented('MixMvn.inferLatent()');
+		end
+
+
 		function logpdf(model,varargin)
 		%
 			notYetImplemented('MixMvn.logpdf()');
 		end
 
 
-		function marginal(model,varargin)
-		%
-			notYetImplemented('MixMvn.marginal()');
-		end
-
-
-		function mean(model,varargin)
-		%
-			notYetImplemented('MixMvn.mean()');
-		end
-
-
-		function mode(model,varargin)
-		%
-			notYetImplemented('MixMvn.mode()');
-		end
-
-
-		function ndimensions(model,varargin)
-		%
-			notYetImplemented('MixMvn.ndimensions()');
-		end
-
-
 		function sample(model,varargin)
 		%
 			notYetImplemented('MixMvn.sample()');
-		end
-
-
-		function var(model,varargin)
-		%
-			notYetImplemented('MixMvn.var()');
 		end
 
 

@@ -4,7 +4,10 @@ classdef InvGammaDist < ScalarDist
 
 	properties
 
+		dof;
+		ndimensions;
 		params;
+		prior;
 
 	end
 
@@ -13,18 +16,6 @@ classdef InvGammaDist < ScalarDist
 
 		function model = InvGammaDist(varargin)
 		%
-		end
-
-
-		function cov(model,varargin)
-		%
-			notYetImplemented('InvGammaDist.cov()');
-		end
-
-
-		function dof(model,varargin)
-		%
-			notYetImplemented('InvGammaDist.dof()');
 		end
 
 
@@ -46,12 +37,6 @@ classdef InvGammaDist < ScalarDist
 		end
 
 
-		function marginal(model,varargin)
-		%
-			notYetImplemented('InvGammaDist.marginal()');
-		end
-
-
 		function mean(model,varargin)
 		%
 			notYetImplemented('InvGammaDist.mean()');
@@ -64,9 +49,9 @@ classdef InvGammaDist < ScalarDist
 		end
 
 
-		function ndimensions(model,varargin)
+		function plotPdf(model,varargin)
 		%
-			notYetImplemented('InvGammaDist.ndimensions()');
+			notYetImplemented('InvGammaDist.plotPdf()');
 		end
 
 

@@ -4,7 +4,11 @@ classdef MixDiscrete < MixtureModel
 
 	properties
 
+		dof;
+		ndimensions;
+		ndimsLatent;
 		params;
+		prior;
 
 	end
 
@@ -16,21 +20,9 @@ classdef MixDiscrete < MixtureModel
 		end
 
 
-		function cov(model,varargin)
+		function computeMapLatent(model,varargin)
 		%
-			notYetImplemented('MixDiscrete.cov()');
-		end
-
-
-		function dof(model,varargin)
-		%
-			notYetImplemented('MixDiscrete.dof()');
-		end
-
-
-		function entropy(model,varargin)
-		%
-			notYetImplemented('MixDiscrete.entropy()');
+			notYetImplemented('MixDiscrete.computeMapLatent()');
 		end
 
 
@@ -40,45 +32,21 @@ classdef MixDiscrete < MixtureModel
 		end
 
 
+		function inferLatent(model,varargin)
+		%
+			notYetImplemented('MixDiscrete.inferLatent()');
+		end
+
+
 		function logpdf(model,varargin)
 		%
 			notYetImplemented('MixDiscrete.logpdf()');
 		end
 
 
-		function marginal(model,varargin)
-		%
-			notYetImplemented('MixDiscrete.marginal()');
-		end
-
-
-		function mean(model,varargin)
-		%
-			notYetImplemented('MixDiscrete.mean()');
-		end
-
-
-		function mode(model,varargin)
-		%
-			notYetImplemented('MixDiscrete.mode()');
-		end
-
-
-		function ndimensions(model,varargin)
-		%
-			notYetImplemented('MixDiscrete.ndimensions()');
-		end
-
-
 		function sample(model,varargin)
 		%
 			notYetImplemented('MixDiscrete.sample()');
-		end
-
-
-		function var(model,varargin)
-		%
-			notYetImplemented('MixDiscrete.var()');
 		end
 
 

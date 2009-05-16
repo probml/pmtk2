@@ -1,0 +1,5 @@
+classdef NonFiniteParamModel
+%#abstract
+   
+
+end

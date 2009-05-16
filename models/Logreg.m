@@ -1,84 +1,51 @@
-classdef Logreg < ScalarCondDist
+classdef LogReg < CondModel
 %LOGREG
 
 
 	properties
 
+		dof;
+		ndimensions;
 		params;
+		prior;
 
 	end
 
 
 	methods
 
-		function model = Logreg(varargin)
+		function model = LogReg(varargin)
 		%
 		end
 
 
-		function cov(model,varargin)
+		function computeMapOutput(model,varargin)
 		%
-			notYetImplemented('Logreg.cov()');
-		end
-
-
-		function dof(model,varargin)
-		%
-			notYetImplemented('Logreg.dof()');
-		end
-
-
-		function entropy(model,varargin)
-		%
-			notYetImplemented('Logreg.entropy()');
+			notYetImplemented('LogReg.computeMapOutput()');
 		end
 
 
 		function fit(model,varargin)
 		%
-			notYetImplemented('Logreg.fit()');
+			notYetImplemented('LogReg.fit()');
+		end
+
+
+		function inferOutput(model,varargin)
+		%
+			notYetImplemented('LogReg.inferOutput()');
 		end
 
 
 		function logpdf(model,varargin)
 		%
-			notYetImplemented('Logreg.logpdf()');
-		end
-
-
-		function marginal(model,varargin)
-		%
-			notYetImplemented('Logreg.marginal()');
-		end
-
-
-		function mean(model,varargin)
-		%
-			notYetImplemented('Logreg.mean()');
-		end
-
-
-		function mode(model,varargin)
-		%
-			notYetImplemented('Logreg.mode()');
-		end
-
-
-		function ndimensions(model,varargin)
-		%
-			notYetImplemented('Logreg.ndimensions()');
+			notYetImplemented('LogReg.logpdf()');
 		end
 
 
 		function sample(model,varargin)
 		%
-			notYetImplemented('Logreg.sample()');
-		end
-
-
-		function var(model,varargin)
-		%
-			notYetImplemented('Logreg.var()');
+			notYetImplemented('LogReg.sample()');
 		end
 
 

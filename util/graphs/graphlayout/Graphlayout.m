@@ -35,25 +35,34 @@ classdef Graphlayout < handle
 % Options are specified via name value pairs in any order. 
 % [] denote defaults. 
 %
-% 'adjMatrix'         [example matrix] The adjacency matrix
+% '-adjMat'           [example matrix] The adjacency matrix
 %
-% 'currentLayout'     [Gvizlayout if graphViz installed, else Gridlayout] 
-%                     A layout object, i.e. Gvizlayout | Gridlayout | Circlelayout
+% '-layout'            [Gvizlayout if graphViz installed, else Gridlayout] 
+%                      A layout object, i.e. Gvizlayout | Gridlayout | Circlelayout
 %                     (See knownLayouts Property)
 %
-% 'nodeLabels'        ['1':'n'] A cell array of labels for the nodes
+% '-nodeLabels'        ['1':'n'] A cell array of labels for the nodes
 %
-% 'nodeDescriptions'  [{}] Longer descriptions for the nodes, displayed when
-%                     double clicking on a node.
+% '-nodeDescriptions'  [{}] Longer descriptions for the nodes, displayed when
+%                      double clicking on a node.
 % 
-% 'nodeColors'        ['c'] A cell array or n-by-3 matrix specifying colors
-%                     for the nodes. If fewer colors than nodes are specified, 
-%                     the specified colors are reused and cycled through.
+% '-nodeColors'        ['c'] A cell array or n-by-3 matrix specifying colors
+%                      for the nodes. If fewer colors than nodes are specified, 
+%                      the specified colors are reused and cycled through.
 %
-% 'undirected'        [false] If true, no arrows are displayed. 
-%
-% 'splitLabels'       [true] If true, long node labels are split into
-%                     several rows
+% '-undirected'        [false] If true, no arrows are displayed. 
+% 
+% '-edgeColors'        [] An n-by-3 cell array listing
+%                         {fromName,toName,color} for each row. You can
+%                         list only the n < numel(edges) edges you want to 
+%                         color. If you do not label the nodes, Graphlayout
+%                         uses '1','2','3', etc, in which case use these.
+%                         You can specify the text 'all' in place of toName,
+%                         to mean all nodes, i.e. {fromName,'all',color}
+%                        
+% 
+% '-splitLabels'       [true] If true, long node labels are split into
+%                       several rows
 %
 % Examples:
 % 
@@ -70,7 +79,7 @@ classdef Graphlayout < handle
 % Matthew Dunham
 % University of British Columbia 
 % http://www.cs.ubc.ca/~mdunham/
-% version 1.0 September 30, 2008
+% Version for PMTK 2
 
     properties(GetAccess = 'public', SetAccess = 'private')
     % read only
@@ -98,7 +107,8 @@ classdef Graphlayout < handle
                        Circlelayout,...
                        Gridlayout  ,...
                        Randlayout  };
-        edgeColor  = [20,43,140]/255;   
+        defaultEdgeColor  = [0,0,0];%[20,43,140]/255;   
+        edgeColors;
         square      = true;  % amounts to a the call "axis square"
         splitLabels = true;
     end
@@ -127,9 +137,7 @@ classdef Graphlayout < handle
         
         function obj = Graphlayout(varargin)
         % Graphlayout constructor
-            if(~exist('process_options','file'))
-               error('Requires process_options()_ available at http://www.cs.ubc.ca/~murphyk/Software/matlab/process_options.m');
-            end
+            if(~exist('processArgs','file')), error('Requires processArgs(), available as part of PMTK 2');            end
             obj.addKnownLayouts();
             obj.processInputs(varargin{:})
             obj.addNodes();
@@ -297,13 +305,22 @@ classdef Graphlayout < handle
         
         function processInputs(obj,varargin)
         % Process the inputs and perform error checking    
-            inputs = varargin;
-            if(numel(varargin)==1), inputs = ['adjMatrix',varargin];end
-            [adjMatrix, currentLayout, nodeLabels, nodeDescriptions, nodeColors,obj.undirected,obj.splitLabels] =    ...
-                process_options(inputs,  'adjMatrix', [],'currentLayout',[]          ,...
-                                         'nodeLabels',{},'nodeDescriptions',{},...
-                                         'nodeColors',{},'undirected',false,...
-                                         'splitLabels',true);       
+            %inputs = varargin;
+            %if(numel(varargin)==1), inputs = ['adjMatrix',varargin];end
+           
+            
+            
+            [adjMatrix, currentLayout, nodeLabels, nodeDescriptions, nodeColors,obj.undirected,obj.edgeColors,obj.splitLabels] = processArgs(varargin,...
+                '-adjMat'               , []     ,...
+                '-layout'               , []     ,...
+                '-nodeLabels'           , {}     ,...
+                '-nodeDescriptions'     , {}     ,...
+                '-nodeColors'           , {}     ,...    
+                '-undirected'           , false  ,...
+                '-edgeColors'           , []     ,...
+                '-splitLabels'          , true   );
+            
+            
             if(~isempty(currentLayout) && ~isavailable(currentLayout))
               currentLayout = [];
             end
@@ -511,9 +528,19 @@ classdef Graphlayout < handle
                    delete(edge.arrow)
                end
                hold on;
-               edge.arrow = plot(X,Y,'LineWidth',2,'HitTest','off','Color',obj.edgeColor);
+               edgeColor = obj.defaultEdgeColor;
+               if ~isempty(obj.edgeColors)
+                  candidates = obj.edgeColors(findString(edge.from.label,obj.edgeColors(:,1)),:);
+                  if size(candidates,1)==1 && strcmpi(candidates(1,2),'all')
+                      edgeColor = candidates{1,3};
+                  else
+                    edgeCol = candidates(findString(edge.to.label,candidates(:,2)),3);
+                    if ~isempty(edgeCol); edgeColor = edgeCol{1}; end
+                  end
+               end
+               edge.arrow = plot(X,Y,'LineWidth',2,'HitTest','off','Color',edgeColor);
                if(~obj.undirected)
-                  arrowHead = obj.displayArrowHead(X,Y,Xarrow,Yarrow); 
+                  arrowHead = obj.displayArrowHead(X,Y,Xarrow,Yarrow,edgeColor); 
                   edge.arrow = [edge.arrow arrowHead];
                end
                hold off;
@@ -521,12 +548,13 @@ classdef Graphlayout < handle
             end
         end
         
-        function arrowHead = displayArrowHead(obj,X,Y,Xarrow,Yarrow)   %#ok
+        function arrowHead = displayArrowHead(obj,X,Y,Xarrow,Yarrow,arrowColor)   %#ok
         % Displays the arrow head given the appropriate coordinates
         % calculated via the calcPositions() function. 
+            
             arrowHead = patch('Faces'      ,[1,2,3]                                             ,...
                               'Vertices'  ,[Xarrow(1) Yarrow(1); Xarrow(2) Yarrow(2) ;X(2) Y(2)],...
-                              'FaceColor' ,obj.edgeColor);
+                              'FaceColor' ,arrowColor);
         end
         
         function [X,Y,Xarrow,Yarrow] = calcPositions(obj,edge)

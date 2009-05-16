@@ -4,7 +4,10 @@ classdef MarkovModel < ChainModel
 
 	properties
 
+		dof;
+		ndimensions;
 		params;
+		prior;
 
 	end
 
@@ -13,24 +16,6 @@ classdef MarkovModel < ChainModel
 
 		function model = MarkovModel(varargin)
 		%
-		end
-
-
-		function cov(model,varargin)
-		%
-			notYetImplemented('MarkovModel.cov()');
-		end
-
-
-		function dof(model,varargin)
-		%
-			notYetImplemented('MarkovModel.dof()');
-		end
-
-
-		function entropy(model,varargin)
-		%
-			notYetImplemented('MarkovModel.entropy()');
 		end
 
 
@@ -46,39 +31,9 @@ classdef MarkovModel < ChainModel
 		end
 
 
-		function marginal(model,varargin)
-		%
-			notYetImplemented('MarkovModel.marginal()');
-		end
-
-
-		function mean(model,varargin)
-		%
-			notYetImplemented('MarkovModel.mean()');
-		end
-
-
-		function mode(model,varargin)
-		%
-			notYetImplemented('MarkovModel.mode()');
-		end
-
-
-		function ndimensions(model,varargin)
-		%
-			notYetImplemented('MarkovModel.ndimensions()');
-		end
-
-
 		function sample(model,varargin)
 		%
 			notYetImplemented('MarkovModel.sample()');
-		end
-
-
-		function var(model,varargin)
-		%
-			notYetImplemented('MarkovModel.var()');
 		end
 
 

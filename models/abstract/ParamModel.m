@@ -2,26 +2,22 @@ classdef ParamModel < ProbModel
     
     properties(Abstract = true)
         params;
-    end
-    
-    
-    methods(Abstract = true)
-        
+        prior;
         dof;
     end
     
     
     methods
         
-        function lp = logprior(model)
-            lp = 0;
-        end
-        
-        function J = penNLL(model,D)
-            J = -sum(logpdf(model,D)) - logprior(model);
+        function S = mkSuffStat(model,D,weights)
+           
         end
         
         
+    end
+    
+    methods(Abstract = true)
+         fit;     
         
     end
 end

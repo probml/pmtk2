@@ -22,7 +22,7 @@ classdef AbstractGraph
     methods
         
         function h = draw(G,varargin)
-            h = Graphlayout('adjMatrix',G.adjmat,varargin{:});
+            h = Graphlayout('-adjMat',G.adjmat,varargin{:});
         end
         
         function d = nnodes(obj)

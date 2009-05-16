@@ -1,9 +1,11 @@
 function [table,methodNames,classes] = methodReport(varargin)
 % Generate a report showing which classes implement and inherit which
 % methods. 
-% 0 = 'does not implement, does not inherit'
-% 1 = 'inherits method'
-% 2 = 'implements method'
+% -1 = 'implements method but not finished yet
+% 0  = 'does not have the method at all'
+% 1  = 'implementes the method
+% 2  = 'inherits method'
+% 3  = 'introduces method'
 
     [source,exclude,dosave,filename,abstractOnly] = processArgs(varargin,'-source',PMTKroot(),'-exclude',{},'-dosave',false,'-filename','','-abstractOnly',true);
    
@@ -34,14 +36,19 @@ function [table,methodNames,classes] = methodReport(varargin)
           table(methodLookup.(extern{i}),classLookup.(classes{c})) = 1; 
        end
     end
-    if abstractOnly, caption = 'inherits = 1, locally defined = 2'; else caption = 'inherits = 1, implements = 2'; end
+    if abstractOnly, caption = 'inherits = 1, introduced = 2'; else caption = 'inherits = 1, implements = 2'; end
     
     dataColors = repmat({'red'},size(table));
     dataColors(table(:) == 1) = {'blue'};
     dataColors(table(:) == 2) = {'lightgreen'};
     classNames = shortenNames(classes);
    
-    perm = sortidx(sum(table,1),'descend');
+    twosCount = sum(table == 2,1);
+    onesCount = sum(table == 1,1);
+    perm = sortidx(1000*twosCount + onesCount,'descend');
+    
+    
+    
     table = table(:,perm);
     classNames = classNames(perm);
     dataColors = dataColors(:,perm);
@@ -76,7 +83,6 @@ function [table,methodNames,classes] = methodReport(varargin)
                    newname = [newname,name(j)]; 
                 end
             end
-            
             names{n} = newname;
         end
         

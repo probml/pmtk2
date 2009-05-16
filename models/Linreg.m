@@ -1,84 +1,51 @@
-classdef Linreg < ScalarCondDist
+classdef LinReg < CondModel
 %LINREG
 
 
 	properties
 
+		dof;
+		ndimensions;
 		params;
+		prior;
 
 	end
 
 
 	methods
 
-		function model = Linreg(varargin)
+		function model = LinReg(varargin)
 		%
 		end
 
 
-		function cov(model,varargin)
+		function computeMapOutput(model,varargin)
 		%
-			notYetImplemented('Linreg.cov()');
-		end
-
-
-		function dof(model,varargin)
-		%
-			notYetImplemented('Linreg.dof()');
-		end
-
-
-		function entropy(model,varargin)
-		%
-			notYetImplemented('Linreg.entropy()');
+			notYetImplemented('LinReg.computeMapOutput()');
 		end
 
 
 		function fit(model,varargin)
 		%
-			notYetImplemented('Linreg.fit()');
+			notYetImplemented('LinReg.fit()');
+		end
+
+
+		function inferOutput(model,varargin)
+		%
+			notYetImplemented('LinReg.inferOutput()');
 		end
 
 
 		function logpdf(model,varargin)
 		%
-			notYetImplemented('Linreg.logpdf()');
-		end
-
-
-		function marginal(model,varargin)
-		%
-			notYetImplemented('Linreg.marginal()');
-		end
-
-
-		function mean(model,varargin)
-		%
-			notYetImplemented('Linreg.mean()');
-		end
-
-
-		function mode(model,varargin)
-		%
-			notYetImplemented('Linreg.mode()');
-		end
-
-
-		function ndimensions(model,varargin)
-		%
-			notYetImplemented('Linreg.ndimensions()');
+			notYetImplemented('LinReg.logpdf()');
 		end
 
 
 		function sample(model,varargin)
 		%
-			notYetImplemented('Linreg.sample()');
-		end
-
-
-		function var(model,varargin)
-		%
-			notYetImplemented('Linreg.var()');
+			notYetImplemented('LinReg.sample()');
 		end
 
 

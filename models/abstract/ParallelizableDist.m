@@ -1,0 +1,4 @@
+classdef ParallelizableDist
+%#abstract
+end
+

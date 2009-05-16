@@ -254,12 +254,14 @@ classdef GraphlayoutNode < dynamicprops & hgsetget
                  top = str(1:first);
                  bottom = str(first+1:end);
                  str = strvcat(splitInTwo(top),splitInTwo(bottom)); %#ok
-               end
-                  
-                  %top = [str(1:floor(length(str)/2)),'-'];                    
-                  %bottom = str(floor(length(str)/2)+1:end);  
-                  
+               elseif(size(str,2) >=SPLITSIZE+2)
+                   
                
+                  
+                  top = [str(1:floor(length(str)/2)),'-'];                    
+                  bottom = str(floor(length(str)/2)+1:end);  
+                  str = strvcat(splitInTwo(top),splitInTwo(bottom));
+               end
             end
             
              
