@@ -30,7 +30,8 @@ classdef MvnDist < MultivarDist
         end
         
         function computeMap(model,D)
-        % point estimate version of infer    
+        % point estimate version of infer 
+            notYetImplemented('MvnDist.computeMap');
         end
         
 

@@ -1,4 +1,4 @@
-function [table,methodNames,classes] = methodReport(varargin)
+function  methodReport(varargin)
 % Generate a report showing which classes implement and inherit which
 % methods. Does not inlcude class constructors. By default, it only shows
 % classes that are either abstract or contribute a new method. 
@@ -14,98 +14,133 @@ function [table,methodNames,classes] = methodReport(varargin)
 % '--'  does not have access to the method at all
 
 
-    ABSTRACT = 'A';
-    CONCRETE = 'C';
-    LOCAL    = 'L';
-    EXTERNAL = 'E';
-    NEW      = 'N';
-    NYF      = '*';
-    NUL     = '--';
+    ABSTRACT     = 'A';
+    CONCRETE     = 'C';
+    OVERRIDES    = 'O';
+    EXTERNAL     = 'E';
+    NEW          = 'N';
+    NYF          = '*';
+    NUL          = '';
 
-    [source,excludeClasses,dosave,filename,diffOnly]= processArgs(varargin,'-source',PMTKroot(),'-excludeClasses',{},'-dosave',false,'-filename','','-diffOnly',true);
-    [classes,adjmat] = setdiff(classesBFS(),exclude);
+    [source,excludeClasses,dosave,filename,diffOnly,includeLegend]= processArgs(varargin,'-source',PMTKroot(),'-excludeClasses',{},'-dosave',false,'-filename','','-diffOnly',true,'-includeLegend',true);
+    if dosave, includeLegend = false; end
+    classes = setdiff(classesBFS(),excludeClasses);
     classMethods = cellfuncell(@(c)methodsNoCons(c),classes);
     methodNames = unique(vertcat(classMethods{:}));
     methodLookup = enumerate(methodNames);
     classLookup  = enumerate(classes);
     
-    
-    
-    
-    
-    
     table = repmat({NUL},numel(methodNames),numel(classes)); 
-    
-    
-    
-    
-   
-    
-    
-    
     for c=1:numel(classes)
-       local = localMethods(classes{c},true);
-       allm = methodsNoCons(classes{c});
-       extern = setdiff(allm,local);
-      
-       for i=1:numel(local) 
-          table(methodLookup.(local{i}),classLookup.(classes{c})) = 2; 
-       end
-       for i=1:numel(extern)
-          table(methodLookup.(extern{i}),classLookup.(classes{c})) = 1; 
-       end
+        meths = methodsNoCons(classes{c});
+        for m=1:numel(meths)
+            minfo = methodInfo(classes{c},meths{m});
+            if minfo.isAbstract, first = ABSTRACT; else first = CONCRETE;end
+            if minfo.isNewToBranch
+                second = NEW;
+            elseif minfo.isLocal
+                second = OVERRIDES;
+            else
+                second = EXTERNAL;
+            end
+            if minfo.isUnfinished
+                third = NYF;
+            else
+                third = '&nbsp;';
+            end
+            table(methodLookup.(meths{m}),classLookup.(classes{c})) = {[first,second,third]};
+        end
     end
-    if abstractOnly, caption = 'inherits = 1, introduced = 2'; else caption = 'inherits = 1, implements = 2'; end
+    
+    newTable = cellfun(@(c)ismember(NEW,c),table);
+    
+    
+    if diffOnly
+        remove = ~any(newTable,1);
+        classes(remove)  = [];
+        table(:,remove) = [];
+        newTable = cellfun(@(c)ismember(NEW,c),table);
+    end
+    notNewTable = ~newTable &  ~findString(NUL,table);
     
     dataColors = repmat({'red'},size(table));
-    dataColors(table(:) == 1) = {'blue'};
-    dataColors(table(:) == 2) = {'lightgreen'};
+    dataColors(newTable) = {'lightgreen'};
+    dataColors(cellfun(@(c)ismember(OVERRIDES,c),table)) = {'blue'};
+    dataColors(cellfun(@(c)ismember(EXTERNAL,c),table)) = {'yellow'};
+    perm = sortidx(1000*sum(newTable,1) + sum(notNewTable),'descend');
+    classes = classes(perm);
+    table = table(:,perm);
+    dataColors = dataColors(:,perm);
+    
+    mperm = sortidx(sum(findString(NUL,table),2));
+    methodNames = methodNames(mperm);
+    table = table(mperm,:);
+    dataColors = dataColors(mperm,:);
+    
     classNames = shortenNames(classes);
    
-    twosCount = sum(table == 2,1);
-    onesCount = sum(table == 1,1);
-    perm = sortidx(1000*twosCount + onesCount,'descend');
     
     
-    
-    table = table(:,perm);
-    classNames = classNames(perm);
-    dataColors = dataColors(:,perm);
+    legend =  {'A' , 'Abstract' ;
+               'C' , 'Concrete';
+               'N' , 'Introduces';
+               'O' , 'Overrides';
+               'E' , 'Inherits';
+               '*' , 'Unfinished';
+               };
+          
+           
+     legColors = repmat({'white'},size(legend));
+     legColors(3,:) = {'lightgreen'}; 
+     legColors(4,:) = {'blue'}; 
+     legColors(5,:) = {'yellow'}; 
+          
+     if includeLegend
+        legendTable = htmlTable('-data',legend,'-title','Legend','-colNames',{'Code','Description'},'-doshow',false,'-dataAlign','left','-dataColors',legColors,'-borderColor','black');
+        caption = [repmat('<br>',1,8),legendTable];
+     else
+         caption = '';
+     end
+               
+           
     
     htmlTable('-data'               , table                            ,...
               '-rowNames'           , methodNames                      ,...
               '-colNames'           , classNames                       ,...
               '-title'              , 'Methods Report'                 ,...
               '-vertCols'           , false                            ,...
-              '-caption'            , caption                          ,...
-              '-captionFontSize'    , 5                                ,...
               '-titleFontSize'      , 4                                ,...
               '-dataFontSize'       , 4                                ,...
               '-rowNameFontSize'    , 3                                ,...
-              '-cellPad'            , 5                                ,...
+              '-cellPad'            , 1                                ,...
               '-colNameFontSize'    , 3                                ,...
               '-dosave'             , dosave                           ,...
               '-dataColors'         , dataColors                       ,...
+              '-caption'            , caption                          ,...
+              '-captionLoc'         ,'right'                           ,...
               '-filename'           , filename                         );
           
           
           
+          
+          
+          
     function names = shortenNames(names)
-       
-        for n=1:numel(names)
-            name = names{n};
-            newname = name(1);
-            for j=2:numel(name)
-                if isstrprop(name(j),'upper')
-                    newname = [newname,'<br>',name(j)];
-                else
-                   newname = [newname,name(j)]; 
-                end
-            end
-            names{n} = newname;
-        end
         
-        
-        
+         maxlen = 0;
+         splitNames = cell(numel(names),1);
+         for n=1:numel(names)
+                
+             splitNames{n} = splitString(names{n},8,10,true,true);
+             maxlen = max(maxlen,max(cellfun(@(c)length(c),splitNames{n})));
+             
+         end
+         
+         for i=1:numel(splitNames)
+            [len,idx] =  max(cellfun(@(c)length(c),splitNames{i}));
+            nrep = ceil((maxlen - len + 3)/2);
+            splitNames{i}{idx} = [repmat('&nbsp;',1,nrep),splitNames{i}{idx},repmat('&nbsp;',1,nrep)];
+         end
+         names = cellfuncell(@(c)cellString(c,' <br> '),splitNames);
     end
 end

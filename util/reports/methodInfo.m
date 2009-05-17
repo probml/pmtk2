@@ -1,7 +1,12 @@
-function m = methodInfo(className,methodName)
+function m = methodInfo(className,methodName,full)
 % Return a struct storing detailed info about the method. If the method
 % does not exist, [] is returned.
 %
+% Example:
+%
+% m = methodInfo('MvnDist','infer')
+%
+%%
 % m.Name                    - name of the method
 % m.isPublic                - true iff the method is public
 % m.isAbstract              - true iff the method is abstract
@@ -13,6 +18,9 @@ function m = methodInfo(className,methodName)
 % m.isNewToBranch           - true iff this is the first occurrence of this method in any branch of the inheritence tree to which this class belongs.
 % m.isUnfinished            - true iff calling the method throws a PMTK:notYetFinishedError
 % m.methodObject            - a Matlab method object for this method storing additional info 
+
+% only calculated if full=true
+
 % m.methodHeader            - the first line of the method if implemented, i.e. 'function outputs = methodName(inputs)
 % m.methodComment           - a method comment, if any
 % m.methodBody              - the code body of the method
@@ -20,6 +28,9 @@ function m = methodInfo(className,methodName)
 % m.tags                    - any tags found in the method text
 % m.tagVals                 - the 'values' of any tags found - i.e. the text following them. 
   
+
+    if nargin < 3, full = false; end
+
     m = [];
     if ~isclassdef(className),error('Could not find class %s\n',className);end
     classMethods = meta.class.fromName(className).Methods;
@@ -40,11 +51,11 @@ function m = methodInfo(className,methodName)
     
     try
         feval(methodName,feval(className));
-        m.notYetImplemented = false;
+        m.isUnfinished = false;
     catch ME
         m.isUnfinished = strcmpi(ME.identifier,'PMTK:notYetImplemented');
     end
-           
+    if ~full, return; end       
     m.methodObject = mobj; 
     m.methodHeader = '';
     m.methodComment = ''; 

@@ -25,6 +25,10 @@ classdef FactoredDist < MultivarDist
         function D = inferMissing(model,D)
            notYetImplemented('FactoredDist.inferMissing'); 
         end
+        
+        function m = computeMap(model,D)
+            notYetImplemented('FactoredDist.computeMap'); 
+        end
 
 		function cov(model,varargin)
 		%

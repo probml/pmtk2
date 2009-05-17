@@ -93,7 +93,7 @@ function varargout = processArgs(args,varargin)
     end
     if 1 % slow, but helpful in transition from process_options to processArgs
      if ~isempty(PREFIX)
-         userstrings = lower(args(cellfun(@ischar,args)));
+         userstrings = lower(args(cellfun(@(c)ischar(c) && size(c,1)==1,args)));
          problem = ismember(userstrings,cellfuncell(@(c)c(2:end),argnames));
          if any(problem)
              if sum(problem) == 1

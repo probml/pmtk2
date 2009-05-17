@@ -1,47 +1,38 @@
-function [local,implemented] = islocal(methodname,classname,allowAbstract)
-% ISLOCAL Test if a method is defined locally in a class. 
-% Return false if methodname is not a method of the class, or if it is 
-% inherited, (but not overridden), abstract, hidden, private,
-% protected, or the class constructor. You can remove the restriction that
-% the method be abstract by specifying allowAbstract as true. 
+function local = islocal(varargin)
+% Return true iff the method is locally defined in the class which means
 %
-% The second output is true, iff the method is publically implemented 
-% somewhere, (could be static or a class constructor, but not hidden or 
-% abstract, - allowAbstract ignored here)
+% (1) the method is implemented in the class, (or at least abstractly defined so long as allowAbstract = true)
+% (2) the method is not the class constructor
+% (3) the method is public
+% (4) the method is not hidden
 %
-% Vectorized w.r.t methodname, (i.e. methodname can be a cell array of strings)
+% Note, the class might be overridding the method of a super class. To
+% check that this is not the case, check 
+% m = methodInfo(className,methodName)
+% m.isNewToBranch
+%
+%
+%
+% Inputs:
+%
+% '-methodName'          vectorized w.r.t methodname, (i.e. methodname can be a cell array of strings)
+% '-className'
+% '-allowAbstract'  
+%
+% 
 %
 % See also, localMethods
-        
-        if nargin < 3, allowAbstract = false; end
-        
-        if strcmp(classname(end-1:end),'.m')
-            classname = classname(1:end-2);
-        end
-        implemented = {}; local = {};
-        
-        if iscellstr(methodname)
-           local = false(numel(methodname),1);  implemented = false(numel(methodname),1); 
-           for i=1:numel(methodname)
-              [local(i),implemented(i)] = islocal(methodname{i},classname); 
-           end
+ 
+        [methodName,className,allowAbstract] = processArgs(varargin,'*-methodName','','*-className','','-allowAbstract',false);
+        if iscell(methodName)
+           local = cellfun(@(mn)islocal(mn,className,allowAbstract),methodName);
            return;
         end
-        
-        metaClass = meta.class.fromName(classname);
-        if isempty(metaClass), error('Could not find the class %s',classname); end
-        meths = metaClass.Methods;
-        
-        found = false;
-        for i=1:numel(meths)
-            m = meths{i};
-            if strcmpi(methodname,m.Name), found = true; break; end
-        end
-        if ~found, local = false; return; end
-        implemented = strcmp(m.Access,'public') && ~m.Abstract && ~m.Hidden;
-        if allowAbstract,
-            local = implemented && strcmp(m.DefiningClass.Name,classname) && ~strcmp(m.Name,classname);   
+        minfo = methodInfo(className,methodName);
+        if isempty(minfo)
+            local = false; 
         else
-            local = strcmp(m.Access,'public') && ~m.Hidden && strcmp(m.DefiningClass.Name,classname) && ~strcmp(m.Name,classname);   
+            local = minfo.isPublic && minfo.isLocal && ~minfo.isHidden && ~minfo.isConstructor && (~minfo.isAbstract || allowAbstract);
         end
+       
 end

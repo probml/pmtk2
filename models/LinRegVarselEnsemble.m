@@ -11,7 +11,7 @@ classdef LinRegVarselEnsemble < ModelEnsemble
 
 	methods
 
-		function model = LinregVarselEnsemble(varargin)
+		function model = LinRegVarselEnsemble(varargin)
 		%
 		end
 
