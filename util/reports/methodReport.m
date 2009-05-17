@@ -141,6 +141,6 @@ function  methodReport(varargin)
             nrep = ceil((maxlen - len + 3)/2);
             splitNames{i}{idx} = [repmat('&nbsp;',1,nrep),splitNames{i}{idx},repmat('&nbsp;',1,nrep)];
          end
-         names = cellfuncell(@(c)cellString(c,' <br> '),splitNames);
+         names = cellfuncell(@(c)catString(c,' <br> '),splitNames);
     end
 end

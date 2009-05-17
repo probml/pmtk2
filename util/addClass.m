@@ -28,7 +28,7 @@ function addClass(varargin)
     if ~isempty(superClasses)
         if ischar(superClasses), superClasses = {superClasses}; end
         
-        classHeader = ['classdef ',className,' < ',cellString(superClasses,' & ')];
+        classHeader = ['classdef ',className,' < ',catString(superClasses,' & ')];
         for i=1:numel(superClasses)
             m = meta.class.fromName(superClasses{i});
             if isempty(m), error('no superclass %s exists',superClasses{i}); end

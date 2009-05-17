@@ -119,7 +119,7 @@ function out = htmlTable(varargin)
     end
     
     if ~isempty(title) && iscell(title)
-       title = cellString(title,' <br> '); 
+       title = catString(title,' <br> '); 
     end
     
     if ischar(dataColors), dataColors = {dataColors}; end

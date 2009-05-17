@@ -38,7 +38,7 @@ function [tests,npassed,ntotal,html] = runUnitTests(varargin)
        names = [names; obj.targetClass];  %#ok
        classIDX = [classIDX,counter];     %#ok
        if ~isempty(obj.missingTests)
-          missingTests{counter} = cellString(obj.missingTests,',');  %#ok
+          missingTests{counter} = catString(obj.missingTests,',');  %#ok
        end
        objresults = struct2cell(obj.results);
        nresults = numel(objresults);
@@ -91,7 +91,7 @@ function [tests,npassed,ntotal,html] = runUnitTests(varargin)
     else               missing = {};
     end
     if ~isempty(missing)
-       caption = sprintf('Missing Test Classes:<br>%s',cellString(missing,' , ')); 
+       caption = sprintf('Missing Test Classes:<br>%s',catString(missing,' , ')); 
     else
        caption = ''; 
     end

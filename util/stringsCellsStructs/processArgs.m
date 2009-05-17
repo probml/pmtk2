@@ -87,7 +87,7 @@ function varargout = processArgs(args,varargin)
     %if numel(unique(argnames)) ~= numel(argnames)                                  ,throwAsCaller(MException('PROCESSARGS:duplicateName',sprintf('PROGRAMMER ERROR - you can not use the same argument name twice')));end
 %% PROCESS ARGS - PASSED BY USER    
     if numel(args) == 0 
-        if any(required)                                                           ,throwAsCaller(MException('PROCESSARGS:missingReqArgs',sprintf('The following required arguments were not specified:\n%s',cellString(argnames(required))))); 
+        if any(required)                                                           ,throwAsCaller(MException('PROCESSARGS:missingReqArgs',sprintf('The following required arguments were not specified:\n%s',catString(argnames(required))))); 
         else  return;
         end
     end
@@ -99,7 +99,7 @@ function varargout = processArgs(args,varargin)
              if sum(problem) == 1
                  warning('processArgs:missingPrefix','The specified value ''%s'', matches an argument name, except for a missing prefix %s. It will be interpreted as a value, not a name.',userstrings{problem},PREFIX)
              else
-                 warning('processArgs:missingPrefix','The following values match an argument name, except for missing prefixes %s:\n\n%s\n\nThey will be interpreted as values, not names.',PREFIX,cellString(userstrings(problem)));
+                 warning('processArgs:missingPrefix','The following values match an argument name, except for missing prefixes %s:\n\n%s\n\nThey will be interpreted as values, not names.',PREFIX,catString(userstrings(problem)));
              end
          end
      end
@@ -148,7 +148,7 @@ function varargout = processArgs(args,varargin)
     end
     
     if any(~positions)
-       throwAsCaller(MException('PROCESSARGS:invalidArgNames',sprintf('The following argument names are invalid: %s',cellString(userArgNames(positions == 0),' , '))));
+       throwAsCaller(MException('PROCESSARGS:invalidArgNames',sprintf('The following argument names are invalid: %s',catString(userArgNames(positions == 0),' , '))));
     end
     if any(positions  <= numel(positionalArgs))                                                 , throwAsCaller(MException('PROCESSARGS:bothPosAndName',sprintf('You cannot specify an argument positionally, and by name in the same function call.')));end
     values = args(userArgNamesNDX + 1);
@@ -159,4 +159,4 @@ function varargout = processArgs(args,varargin)
     end    
     varargout(positions) = values;
     argsProvided(positions) = true;
-    if any(~argsProvided & required)                                                           , throwAsCaller(MException('PROCESSARGS:emptyVals',sprintf('The following required arguments were either not specified, or were given empty values:\n%s',cellString(argnames(~argsProvided & required))))); end
+    if any(~argsProvided & required)                                                           , throwAsCaller(MException('PROCESSARGS:emptyVals',sprintf('The following required arguments were either not specified, or were given empty values:\n%s',catString(argnames(~argsProvided & required))))); end
