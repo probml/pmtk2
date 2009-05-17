@@ -113,6 +113,8 @@ properties:
     end
     
     function C = vertcat(A,B)
+    
+    
       if ~isequal(A.Xnames, B.Xnames) || ~isequal(A.Ynames, B.Ynames)
         warning('columns have different names');
       end

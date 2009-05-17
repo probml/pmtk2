@@ -1,4 +1,4 @@
-classdef LinregVarselEnsemble < ModelEnsemble
+classdef LinRegVarselEnsemble < ModelEnsemble
 %LINREGVARSELENSEMBLE
 
 

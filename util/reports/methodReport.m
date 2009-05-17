@@ -1,28 +1,47 @@
 function [table,methodNames,classes] = methodReport(varargin)
 % Generate a report showing which classes implement and inherit which
-% methods. 
-% -1 = 'implements method but not finished yet
-% 0  = 'does not have the method at all'
-% 1  = 'implementes the method
-% 2  = 'inherits method'
-% 3  = 'introduces method'
+% methods. Does not inlcude class constructors. By default, it only shows
+% classes that are either abstract or contribute a new method. 
 
-    [source,exclude,dosave,filename,abstractOnly] = processArgs(varargin,'-source',PMTKroot(),'-exclude',{},'-dosave',false,'-filename','','-abstractOnly',true);
-   
-    
-    classes = setdiff(getClasses(source),exclude);
-    if abstractOnly
-       classes = filterCell(classes,@(c)isabstract(c)); 
-    end
+%
+% LEGEND
+% 'A'   for Abstract    (has only the abstract definition, either local or inherited)
+% 'C'   for Concrete    (has access to a concrete implementation)
+% 'L'   for Local       (local, possibly abstract definition)
+% 'E'   for external    (no local definition, inherited from a super class)
+% 'N'   for new         (local definition new to this branch of the tree
+% '*'   not finished    (implemented, but not yet finished)
+% '--'  does not have access to the method at all
+
+
+    ABSTRACT = 'A';
+    CONCRETE = 'C';
+    LOCAL    = 'L';
+    EXTERNAL = 'E';
+    NEW      = 'N';
+    NYF      = '*';
+    NUL     = '--';
+
+    [source,excludeClasses,dosave,filename,diffOnly]= processArgs(varargin,'-source',PMTKroot(),'-excludeClasses',{},'-dosave',false,'-filename','','-diffOnly',true);
+    [classes,adjmat] = setdiff(classesBFS(),exclude);
     classMethods = cellfuncell(@(c)methodsNoCons(c),classes);
     methodNames = unique(vertcat(classMethods{:}));
-    perm = sortidx(lower(methodNames));
-    methodNames = methodNames(perm);
-    perm = sortidx(lower(classes));
-    classes = classes(perm);
     methodLookup = enumerate(methodNames);
     classLookup  = enumerate(classes);
-    table = zeros(numel(methodNames),numel(classes));
+    
+    
+    
+    
+    
+    
+    table = repmat({NUL},numel(methodNames),numel(classes)); 
+    
+    
+    
+    
+   
+    
+    
     
     for c=1:numel(classes)
        local = localMethods(classes{c},true);
