@@ -1,4 +1,4 @@
-classdef DataTable
+classdef DataTable < DataStore
   % Wraps up X and Y into a single structure.
   % Can optionally assign names to the columns.
   % Can access subsets of the X and Y data together:
