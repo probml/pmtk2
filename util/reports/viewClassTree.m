@@ -16,7 +16,7 @@ shortClassNames = shortenClassNames(classes);
 nodeDescriptions = cell(numel(classes,1));
 for c=1:numel(classes)
    if isabstract(classes{c}),  nodeColors(c,:) = [0.8,0.3,0.2];  end
-   nodeDescriptions{c} = catString(localMethods(classes{c}),', ');
+   nodeDescriptions{c} = catString(localMethods(classes{c},true),', ');
 end
 
 %%
