@@ -117,7 +117,7 @@ function varargout = processArgs(userArgs,varargin)
              progArgNames(required | typecheck));
     catch ME
        if strcmp(ME.identifier,'MATLAB:UndefinedFunction')
-           err = MException('PROCESSARGS:missingExternalFunctions','ProcessArgs requires the following external functions available in PMTK2: catString, cellfuncell, interweave, isprefix. Please add these to your MATLAB path.'); 
+                                                                           err = MException('PROCESSARGS:missingExternalFunctions','ProcessArgs requires the following external functions available in PMTK2: catString, cellfuncell, interweave, isprefix. Please add these to your MATLAB path.'); 
            throw(addCause(err,ME));
        else
            rethrow(ME);
