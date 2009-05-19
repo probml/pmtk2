@@ -1,4 +1,6 @@
-function Csmall = filterCell(Cbig,fn)
-% Returns in Csmall only those cells c, from Cbig, for which fn(c) is true.    
-    Csmall = Cbig(cellfun(fn,Cbig));
+function [Csmall,idx] = filterCell(Cbig,fn)
+% Returns in Csmall only those cells c, from Cbig, for which fn(c) is true.
+   
+    idx = find(cellfun(fn,Cbig));
+    Csmall = Cbig(idx);
 end

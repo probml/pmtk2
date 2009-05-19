@@ -3,6 +3,8 @@ function p = isprefix(short,long)
 % The second arg may also be a cell array of strings, in which case, each
 % is tested. CASE SENSITIVE!
 %
+% If the second argument is not a string, p = false, it does not error. 
+%
 % EXAMPLES:
 % 
 % isprefix('foo','foobar')
@@ -15,9 +17,9 @@ function p = isprefix(short,long)
     error(nargchk(2,2,nargin));
     if ischar(long)
         p = strncmp(long,short,length(short));
-    elseif iscellstr(long)
-        p = cellfun(@(c)strncmp(c,short,length(short)),long);
+    elseif iscell(long)
+        p = cellfun(@(c)isprefix(short,c),long);
     else
-       error('The second input must be a string, or a cell array of strings'); 
+        p  = false;
     end
 end
