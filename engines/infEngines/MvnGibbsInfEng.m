@@ -16,13 +16,6 @@ classdef MvnGibbsInfEng < GibbsInfEng
 		%
 		end
 
-
-		function computeFullCond(eng,varargin)
-		%
-			notYetImplemented('MvnGibbsInfEng.computeFullCond()');
-		end
-
-
 		function computeLogPdf(eng,varargin)
 		%
 			notYetImplemented('MvnGibbsInfEng.computeLogPdf()');
@@ -44,16 +37,26 @@ classdef MvnGibbsInfEng < GibbsInfEng
 		function enterEvidence(eng,varargin)
 		%
 			notYetImplemented('MvnGibbsInfEng.enterEvidence()');
-		end
+        end
 
-
-		function mcmcInit(eng,varargin)
+    end
+    
+    methods(Access = 'protected')
+        
+        function mcmcInit(eng,varargin)
 		%
 			notYetImplemented('MvnGibbsInfEng.mcmcInit()');
+        end 
+        
+        function computeFullCond(eng,varargin)
+		%
+			notYetImplemented('MvnGibbsInfEng.computeFullCond()');
 		end
 
 
-	end
+        
+        
+    end
 
 
 end

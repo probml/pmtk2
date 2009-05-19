@@ -34,20 +34,22 @@ classdef UgmJointTableInfEng < JointTableInfEng
 			notYetImplemented('UgmJointTableInfEng.computeSamples()');
 		end
 
-
-		function convertToTabularFactors(eng,varargin)
-		%
-			notYetImplemented('UgmJointTableInfEng.convertToTabularFactors()');
-		end
-
-
 		function enterEvidence(eng,varargin)
 		%
 			notYetImplemented('UgmJointTableInfEng.enterEvidence()');
 		end
 
 
-	end
+    end
+    
+    methods(Access = 'protected')
+       
+       function convertToTabularFactors(eng,varargin)
+		%
+			notYetImplemented('UgmJointTableInfEng.convertToTabularFactors()');
+	   end 
+        
+    end
 
 
 end

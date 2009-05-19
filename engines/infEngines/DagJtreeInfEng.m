@@ -34,21 +34,24 @@ classdef DagJtreeInfEng < JtreeInfEng
 			notYetImplemented('DagJtreeInfEng.computeSamples()');
 		end
 
-
-		function convertToTabularFactors(eng,varargin)
-		%
-			notYetImplemented('DagJtreeInfEng.convertToTabularFactors()');
-		end
-
-
 		function enterEvidence(eng,varargin)
 		%
 			notYetImplemented('DagJtreeInfEng.enterEvidence()');
 		end
 
 
-	end
-
+    end
+    
+    methods(Access = 'protected')
+        
+        function convertToTabularFactors(eng,varargin)
+		%
+			notYetImplemented('DagJtreeInfEng.convertToTabularFactors()');
+		end
+ 
+        
+        
+    end
 
 end
 

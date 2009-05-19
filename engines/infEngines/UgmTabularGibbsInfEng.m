@@ -16,13 +16,6 @@ classdef UgmTabularGibbsInfEng < GibbsInfEng
 		%
 		end
 
-
-		function computeFullCond(eng,varargin)
-		%
-			notYetImplemented('UgmTabularGibbsInfEng.computeFullCond()');
-		end
-
-
 		function computeLogPdf(eng,varargin)
 		%
 			notYetImplemented('UgmTabularGibbsInfEng.computeLogPdf()');
@@ -44,16 +37,23 @@ classdef UgmTabularGibbsInfEng < GibbsInfEng
 		function enterEvidence(eng,varargin)
 		%
 			notYetImplemented('UgmTabularGibbsInfEng.enterEvidence()');
-		end
-
-
-		function mcmcInit(eng,varargin)
+        end
+    end
+    
+    methods(Access = 'protected')
+        
+        function computeFullCond(eng,varargin)
+		%
+			notYetImplemented('UgmTabularGibbsInfEng.computeFullCond()');
+        end
+        
+        function mcmcInit(eng,varargin)
 		%
 			notYetImplemented('UgmTabularGibbsInfEng.mcmcInit()');
 		end
-
-
-	end
+        
+        
+    end
 
 
 end

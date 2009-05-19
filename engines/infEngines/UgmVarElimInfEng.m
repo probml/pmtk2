@@ -34,21 +34,22 @@ classdef UgmVarElimInfEng < VarElimInfEng
 			notYetImplemented('UgmVarElimInfEng.computeSamples()');
 		end
 
-
-		function convertToTabularFactors(eng,varargin)
-		%
-			notYetImplemented('UgmVarElimInfEng.convertToTabularFactors()');
-		end
-
-
 		function enterEvidence(eng,varargin)
 		%
 			notYetImplemented('UgmVarElimInfEng.enterEvidence()');
 		end
 
 
-	end
+    end
+    
+    methods(Access = 'protected')
 
+        function convertToTabularFactors(eng,varargin)
+		%
+			notYetImplemented('UgmVarElimInfEng.convertToTabularFactors()');
+		end
+ 
+    end
 
 end
 

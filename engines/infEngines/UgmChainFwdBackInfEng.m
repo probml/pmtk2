@@ -38,10 +38,13 @@ classdef UgmChainFwdBackInfEng < FwdBackInfEng
 		function enterEvidence(eng,varargin)
 		%
 			notYetImplemented('UgmChainFwdBackInfEng.enterEvidence()');
-		end
-
-
-		function setLocalEvidence(eng,varargin)
+        end
+        
+    end
+    
+    methods(Access = 'protected')
+        
+       function setLocalEvidence(eng,varargin)
 		%
 			notYetImplemented('UgmChainFwdBackInfEng.setLocalEvidence()');
 		end
@@ -56,10 +59,13 @@ classdef UgmChainFwdBackInfEng < FwdBackInfEng
 		function setTransMat(eng,varargin)
 		%
 			notYetImplemented('UgmChainFwdBackInfEng.setTransMat()');
-		end
-
-
-	end
+		end 
+        
+        
+        
+        
+        
+    end
 
 
 end

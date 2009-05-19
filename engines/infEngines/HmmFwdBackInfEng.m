@@ -38,11 +38,13 @@ classdef HmmFwdBackInfEng < FwdBackInfEng
 		function enterEvidence(eng,varargin)
 		%
 			notYetImplemented('HmmFwdBackInfEng.enterEvidence()');
-		end
-
-
-		function setLocalEvidence(eng,varargin)
-		%
+        end
+    end
+    
+    methods(Access = 'protected')
+  
+        function setLocalEvidence(eng,varargin)
+ 		%
 			notYetImplemented('HmmFwdBackInfEng.setLocalEvidence()');
 		end
 
@@ -57,9 +59,10 @@ classdef HmmFwdBackInfEng < FwdBackInfEng
 		%
 			notYetImplemented('HmmFwdBackInfEng.setTransMat()');
 		end
-
-
-	end
+ 
+        
+       
+    end
 
 
 end

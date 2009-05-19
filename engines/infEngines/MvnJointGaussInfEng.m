@@ -34,20 +34,26 @@ classdef MvnJointGaussInfEng < JointGaussInfEng
 			notYetImplemented('MvnJointGaussInfEng.computeSamples()');
 		end
 
-
-		function convertToMvn(eng,varargin)
-		%
-			notYetImplemented('MvnJointGaussInfEng.convertToMvn()');
-		end
-
-
 		function enterEvidence(eng,varargin)
 		%
 			notYetImplemented('MvnJointGaussInfEng.enterEvidence()');
 		end
 
 
-	end
+    end
+    
+    methods(Access = 'protected')
+        
+        function convertToMvn(eng,varargin)
+		%
+			notYetImplemented('MvnJointGaussInfEng.convertToMvn()');
+		end
+
+ 
+        
+        
+        
+    end
 
 
 end

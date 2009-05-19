@@ -1,6 +1,6 @@
 classdef McmcInfEng < InfEng
   
-    methods(Abstract = true)
+    methods(Access = 'protected',Abstract = true)
        mcmcInit; 
     end
     

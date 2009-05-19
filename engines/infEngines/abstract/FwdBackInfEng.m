@@ -1,6 +1,6 @@
 classdef FwdBackInfEng < InfEng
   
-    methods(Abstract = true)
+    methods(Access = 'protected',Abstract = true)
         
         setStartDist;
         setTransMat;

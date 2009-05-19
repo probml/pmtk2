@@ -40,8 +40,11 @@ classdef MvnMhInfEng < MhInfEng
 			notYetImplemented('MvnMhInfEng.enterEvidence()');
 		end
 
+    end
 
-		function mcmcInit(eng,varargin)
+    methods(Access = 'protected')
+
+        function mcmcInit(eng,varargin)
 		%
 			notYetImplemented('MvnMhInfEng.mcmcInit()');
 		end
@@ -57,10 +60,12 @@ classdef MvnMhInfEng < MhInfEng
 		%
 			notYetImplemented('MvnMhInfEng.setTargetDist()');
 		end
-
-
-	end
-
+ 
+        
+        
+        
+        
+    end
 
 end
 

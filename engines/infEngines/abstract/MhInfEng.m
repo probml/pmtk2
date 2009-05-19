@@ -1,7 +1,7 @@
 classdef MhInfEng < McmcInfEng
    
     
-    methods(Abstract = true)
+    methods(Access = 'protected',Abstract = true)
         setTargetDist;
         setProposalDist;
     end

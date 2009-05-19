@@ -14,30 +14,22 @@ classdef DagVarElimInfEng < VarElimInfEng
 
 		function eng = DagVarElimInfEng(varargin)
 		%
-		end
+        end
 
+        function computeMarginals(eng,varargin)
+		%
+			notYetImplemented('DagVarElimInfEng.computeMarginals()');
+        end
+        
 
 		function computeLogPdf(eng,varargin)
 		%
 			notYetImplemented('DagVarElimInfEng.computeLogPdf()');
 		end
 
-
-		function computeMarginals(eng,varargin)
-		%
-			notYetImplemented('DagVarElimInfEng.computeMarginals()');
-		end
-
-
 		function computeSamples(eng,varargin)
 		%
 			notYetImplemented('DagVarElimInfEng.computeSamples()');
-		end
-
-
-		function convertToTabularFactors(eng,varargin)
-		%
-			notYetImplemented('DagVarElimInfEng.convertToTabularFactors()');
 		end
 
 
@@ -47,7 +39,20 @@ classdef DagVarElimInfEng < VarElimInfEng
 		end
 
 
-	end
+    end
+    
+    
+    methods(Access = 'protected')
+        
+       
+        function convertToTabularFactors(eng,varargin)
+		%
+			notYetImplemented('DagVarElimInfEng.convertToTabularFactors()');
+		end
+
+ 
+        
+    end
 
 
 end

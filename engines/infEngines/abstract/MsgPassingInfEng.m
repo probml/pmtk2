@@ -1,6 +1,6 @@
 classdef MsgPassingInfEng < InfEng
   
-    methods(Abstract = true)
+    methods(Access = 'protected',Abstract = true)
        convertToTabularFactors; 
     end
    

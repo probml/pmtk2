@@ -1,5 +1,5 @@
 classdef JointTableInfEng < MsgPassingInfEng
-%JOINTTABLEINFENG
+%#abstract
 
 
     

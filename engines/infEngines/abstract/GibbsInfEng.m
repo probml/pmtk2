@@ -1,7 +1,7 @@
 classdef GibbsInfEng < McmcInfEng
   
     
-    methods(Abstract = true)
+    methods(Access = 'protected',Abstract = true)
        computeFullCond; 
     end
     

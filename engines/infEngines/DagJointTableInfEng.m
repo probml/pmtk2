@@ -34,20 +34,23 @@ classdef DagJointTableInfEng < JointTableInfEng
 			notYetImplemented('DagJointTableInfEng.computeSamples()');
 		end
 
-
+		function enterEvidence(eng,varargin)
+		%
+			notYetImplemented('DagJointTableInfEng.enterEvidence()');
+        end
+    end
+    
+    methods(Access = 'protected')
+               
 		function convertToTabularFactors(eng,varargin)
 		%
 			notYetImplemented('DagJointTableInfEng.convertToTabularFactors()');
 		end
-
-
-		function enterEvidence(eng,varargin)
-		%
-			notYetImplemented('DagJointTableInfEng.enterEvidence()');
-		end
-
-
-	end
+ 
+        
+        
+        
+    end
 
 
 end

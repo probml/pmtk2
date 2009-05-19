@@ -1,6 +1,6 @@
 classdef JointGaussInfEng < InfEng
    
-    methods(Abstract = true)
+    methods(Access = 'protected',Abstract = true)
        convertToMvn; 
     end
     

@@ -34,21 +34,23 @@ classdef UgmJtreeInfEng < JtreeInfEng
 			notYetImplemented('UgmJtreeInfEng.computeSamples()');
 		end
 
-
-		function convertToTabularFactors(eng,varargin)
-		%
-			notYetImplemented('UgmJtreeInfEng.convertToTabularFactors()');
-		end
-
-
 		function enterEvidence(eng,varargin)
 		%
 			notYetImplemented('UgmJtreeInfEng.enterEvidence()');
 		end
 
 
-	end
+    end
 
+    methods(Access = 'protected')
+        
+        function convertToTabularFactors(eng,varargin)
+		%
+			notYetImplemented('UgmJtreeInfEng.convertToTabularFactors()');
+        end 
+        
+    end
+    
 
 end
 
