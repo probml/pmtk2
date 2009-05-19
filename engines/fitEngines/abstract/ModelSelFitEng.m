@@ -5,7 +5,7 @@ classdef ModelSelFitEng
     properties
     end
     
-    methods(Abstract = true)
+    methods(Access = 'protected',Abstract = true)
         
         fitManyModels;
         

@@ -1,9 +1,8 @@
 classdef FitEng
   
-    properties
+    properties(Abstract = true)
         model;
         diagnostics;
-        fitOptions;
         verbose;
     end
     

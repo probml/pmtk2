@@ -4,7 +4,7 @@ classdef HmmEmFitEng < EmFitEng
 
 	
 
-	methods
+	methods(Access = 'protected')
 
 		
         function eng = eStep(eng)

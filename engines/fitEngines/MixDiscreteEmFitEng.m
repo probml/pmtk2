@@ -3,17 +3,29 @@ classdef MixDiscreteEmFitEng < MixModelEmFitEng
 
 
 	properties
+
         model;
         diagnostics;
-	end
+        verbose;
+    end
+    
+    properties(Access = 'protected')
+       nrestarts;
+       convTol;
+       maxIter; 
+        
+        
+    end
 
 
 	methods
 
 		function eng = MixDiscreteEmFitEng(varargin)
 		%
-		end
-
+        end
+        
+        
+        
 
     end
     

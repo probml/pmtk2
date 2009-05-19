@@ -5,9 +5,17 @@ classdef MixMvnEmFitEng < MixModelEmFitEng
 	properties
         model;
         diagnostics;
+        verbose;
 
-	end
+    end
 
+    properties(Access = 'protected')
+        
+       nrestarts;
+       convTol;
+       maxIter; 
+        
+    end
 
 	methods
 
