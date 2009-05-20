@@ -31,7 +31,7 @@ classdef DiscreteDist < ScalarDist & ParallelizableDist
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('DiscreteDist.logpdf()');
 		end

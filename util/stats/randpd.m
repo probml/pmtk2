@@ -3,4 +3,7 @@ function M = randpd(d)
 
 A = randn(d);
 M = A*A';
-assert(isposdef(M))
+while ~isposdef(M)
+   M = M + diag(0.001*ones(1,d)); 
+end
+

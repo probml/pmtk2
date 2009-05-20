@@ -16,13 +16,13 @@ classdef GaussConjDist < GaussDist & BayesModel
 		end
 
 
-		function inferParams(model,varargin)
+		function getParamPost(model,varargin)
 		%
 			notYetImplemented('GaussConjDist.inferParams()');
 		end
 
 
-		function logmarglik(model,varargin)
+		function logMargLik(model,varargin)
 		%
 			notYetImplemented('GaussConjDist.logmarglik()');
 		end

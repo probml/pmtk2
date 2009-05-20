@@ -1,5 +1,5 @@
 classdef MvnDist < MultivarDist
-
+% Multivariate Normal Distribution
 
 
 	properties
@@ -39,15 +39,36 @@ classdef MvnDist < MultivarDist
         end
 
         
-        function M = infer(model,varargin)    
-            [Q,D] = processArgs('-query',[],'-data',[]);
-            M = computeMarginals(enterEvidence(model.infEng,D),model,Q);
+        function [M,eng] = infer(model,varargin)    
+            [Q,D] = processArgs(varargin,'+-query',Query(),'+-data',DataTable());
+            assertTrue(ncases(D) < 2,'infer does not support multiple data cases'); 
+            eng = enterEvidence(model.infEng,model,D);
+            M = computeMarginals(eng,Q);
         end
         
-        function D = inferMissing(model,D)
-         % imputation   
+        function M = computeMap(model,varargin)    
+            [Q,D] = processArgs(varargin,'+-query',Query(),'+-data',DataTable());
+            M = rowvec(mode(infer(model,Q,D(1))));
+            nc = ncases(D);
+            if nc > 1
+               M = [M,zeros(nc-1,size(M,2))];
+               for i=2:nc
+                   M(i,:) = rowvec(mode(infer(model,Q,D(i))));
+               end
+            end
+        end
+        
+        function pDh = inferMissing(model,D)
+        % imputation, but returns a distribtuion not a point estimate
+            assertTrue(ncases(D)==1,'inferMissing is not vectorized w.r.t. D');
+            pDh = infer(model,Query(hidden(D)),D(:,visible(D))); 
+        end
+        
+        function D = computeMapMissing(model,D)
+        % imputation
             for i=1:ncases(D)
-                D(i) = mean(infer(model,Query('fullJoint'),D(i)));
+                hid = hidden(D(i));
+                D(i,hid) = mode(infer(model,Query(hid),D(i,visible(D(i)))));    
             end   
         end
         
@@ -55,7 +76,7 @@ classdef MvnDist < MultivarDist
             if nargin == 1
                 S = model.params.Sigma;
             else
-                [Q,D] = processArgs('-query',[],'-data',[]);
+                [Q,D] = processArgs(varargin,'+-query',Query(),'+-data',DataTable());
                 S = cov(infer(model,Q,D));
             end
 		end
@@ -64,7 +85,7 @@ classdef MvnDist < MultivarDist
             if nargin == 1
                 H = 0.5*logdet(model.params.Sigma) + (model.ndimensions/2)*(1+log(2*pi));
             else
-                [Q,D] = processArgs('-query',[],'-data',[]);
+                [Q,D] = processArgs(varargin,'+-query',Query(),'+-data',DataTable());
                 H = entropy(infer(model,Q,D));
             end
         end
@@ -83,18 +104,23 @@ classdef MvnDist < MultivarDist
             SS.XX = bsxfun(@times,X,weights)'*X/SS.n;
         end
 
-
 		function [model,success,diag] = fit(model,varargin)
 		
             if isempty(model.fitEng)
-                [D,SS] = processArgs(varargin,'-data',[],'-suffStat',[]);
-                if isempty(SS), SS = mkSuffStat(model,D); end
+                [D,SS] = processArgs(varargin,'+-data',DataTable(),'-suffStat',[]);
+                
                 switch class(model.prior)
                     case 'NoPrior'
-                        mu    = SS.xbar;
-                        Sigma = SS.XX;
+                        if isempty(SS)
+                            X = D.X;
+                            mu = mean(X,1);
+                            Sigma = cov(X);
+                        else
+                            mu    = SS.xbar;
+                            Sigma = SS.XX;
+                        end
                     otherwise
-                        [mu,Sigma] = fitMap(model,SS);
+                        [mu,Sigma] = fitMap(model,varargin);
                 end
                 success = isposdef(model.params.Sigma) && ~any(isnan(model.params.mu));
                 model.params.mu    = mu;
@@ -103,19 +129,20 @@ classdef MvnDist < MultivarDist
             else
                [model,success,diag] = fit(model.fitEng,model,varargin{:}); 
             end
-            model = initialize(model);
+            model = initialize(model);  % sets dof, ndimensions, etc
 		end
 
-
-		function logp = logpdf(model,varargin)
-            logp = computeLogPdf(model.infEng,varargin{:});
+		function logp = logPdf(model,D,varargin)
+            [Q,Dvis] = processArgs(varargin,'+-query',Query(),'+-visData',DataTable()); 
+            M = infer(model,Q,Dvis);
+            logp = computeLogPdf(model.infEng,M,D);
 		end
 
 		function mu = mean(model,varargin)
             if nargin == 1
                 mu = model.params.mu;
             else
-                [Q,D] = processArgs('-query',[],'-data',[]);
+                [Q,D] = processArgs(varargin,'+-query',Query(),'+-data',DataTable);
                 mu = mean(infer(model,Q,D));
             end
 		end
@@ -124,27 +151,33 @@ classdef MvnDist < MultivarDist
             mu = mean(model,varargin{:});
 		end
 
-		function plotPdf(model,varargin)
-		%
-			notYetImplemented('MvnDist.plotPdf()');
+		function h = plotPdf(model,varargin)
+            if model.ndimensions == 2
+                h = gaussPlot2d(model.params.mu,model.params.Sigma);
+            else
+               notYetImplemented('Only 2D plotting currently supported'); 
+            end
 		end
 
-
 		function S = sample(model,varargin)
-            S = computeSamples(model.infEng,varargin{:});
+            [n,Q,D] = processArgs(varargin,'-n',1,'+-query',Query(),'+-data',DataTable());
+            M = infer(model,Q,D);
+            S = computeSamples(model.infEng,M,n);
         end
         
 		function v = var(model,varargin)
              if nargin == 1
                 v = diag(model.params.Sigma);
             else
-                [Q,D] = processArgs('-query',[],'-data',[]);
+                [Q,D] = processArgs(varargin,'+-query',Query(),'+-data',DataTable);
                 v = var(infer(model,Q,D));
             end
-		end
-
-
+        end
     end
+    
+    
+    
+    
     
     
     methods(Access = 'protected')

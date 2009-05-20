@@ -37,7 +37,7 @@ classdef NoisyOrCpd < CondProbDist
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('NoisyOrCpd.logpdf()');
 		end

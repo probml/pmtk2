@@ -22,7 +22,7 @@ classdef SampleDist < ParamFreeDist
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('SampleDist.logpdf()');
 		end

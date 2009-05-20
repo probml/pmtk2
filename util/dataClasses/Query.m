@@ -19,7 +19,7 @@ classdef Query
           % that {[1,2,3],[1],[2,3]} is requsting three distributions, the
           % joint on [1,2,3], the marginal on 1, and the joint on [2,3].
           
-          [Q.name,Q.subdomain] = processArgs(varargin,'-name','visible','-subdomain',{});
+          [Q.subdomain,Q.name] = processArgs(varargin,'-subdomain',{},'-name','visible');
         end
         
         function n = nqueries(Q)
@@ -27,6 +27,10 @@ classdef Query
            if iscell(Q.subdomain)
               n = numel(Q.subdomain); 
            end
+        end
+        
+        function e = isempty(Q)
+           e = nqueries(Q) == 0; 
         end
        
         

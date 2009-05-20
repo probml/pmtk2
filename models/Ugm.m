@@ -44,7 +44,7 @@ classdef Ugm < GraphicalModel
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('Ugm.logpdf()');
 		end

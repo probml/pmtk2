@@ -16,13 +16,13 @@ classdef DgmTabularConj < DgmTabular & BayesModel
 		end
 
 
-		function inferParams(model,varargin)
+		function getParamPost(model,varargin)
 		%
 			notYetImplemented('DgmTabularConj.inferParams()');
 		end
 
 
-		function logmarglik(model,varargin)
+		function logMargLik(model,varargin)
 		%
 			notYetImplemented('DgmTabularConj.logmarglik()');
 		end

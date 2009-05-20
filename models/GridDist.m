@@ -22,7 +22,7 @@ classdef GridDist < ParamFreeDist
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('GridDist.logpdf()');
 		end

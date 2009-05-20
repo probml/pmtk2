@@ -16,13 +16,13 @@ classdef MvnMcDist < MvnDist & BayesModel
 		end
 
 
-		function inferParams(model,varargin)
+		function getParamPost(model,varargin)
 		%
 			notYetImplemented('MvnMcDist.inferParams()');
 		end
 
 
-		function logmarglik(model,varargin)
+		function logMargLik(model,varargin)
 		%
 			notYetImplemented('MvnMcDist.logmarglik()');
 		end

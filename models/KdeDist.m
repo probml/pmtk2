@@ -37,7 +37,7 @@ classdef KdeDist < MultivarDist & NonFiniteParamModel
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('KdeDist.logpdf()');
 		end

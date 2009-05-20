@@ -37,7 +37,7 @@ classdef LinGaussCpd < CondProbDist
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('LinGaussCpd.logpdf()');
 		end

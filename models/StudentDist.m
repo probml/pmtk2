@@ -31,7 +31,7 @@ classdef StudentDist < ScalarDist
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('StudentDist.logpdf()');
 		end

@@ -4,7 +4,7 @@ classdef DagGaussJointGaussInfEng < JointGaussInfEng
 
 	properties
 
-		diagnostics;
+		
 		model;
 
 	end

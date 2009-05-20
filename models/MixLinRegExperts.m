@@ -50,7 +50,7 @@ classdef MixLinRegExperts < MixtureModel & CondModel
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('MixLinRegExperts.logpdf()');
 		end

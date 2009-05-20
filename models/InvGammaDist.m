@@ -31,7 +31,7 @@ classdef InvGammaDist < ScalarDist
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('InvGammaDist.logpdf()');
 		end

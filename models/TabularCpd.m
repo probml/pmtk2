@@ -37,7 +37,7 @@ classdef TabularCpd < CondProbDist
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('TabularCpd.logpdf()');
 		end

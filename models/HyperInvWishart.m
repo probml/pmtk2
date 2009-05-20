@@ -44,7 +44,7 @@ classdef HyperInvWishart < GraphicalModel
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('HyperInvWishart.logpdf()');
 		end

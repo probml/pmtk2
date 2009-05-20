@@ -37,7 +37,7 @@ classdef DirichletDist < MultivarDist
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('DirichletDist.logpdf()');
 		end

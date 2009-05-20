@@ -37,7 +37,7 @@ classdef GenClassifier < CondModel
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('GenClassifier.logpdf()');
 		end

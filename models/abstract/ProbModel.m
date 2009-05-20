@@ -7,7 +7,7 @@ classdef ProbModel
 
     methods(Abstract = true)
         sample;
-        logpdf;
+        logPdf;
    
     end
     

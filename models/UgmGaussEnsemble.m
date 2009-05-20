@@ -22,7 +22,7 @@ classdef UgmGaussEnsemble < ModelEnsemble
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('UgmGaussEnsemble.logpdf()');
 		end

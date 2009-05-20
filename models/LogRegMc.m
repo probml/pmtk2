@@ -16,13 +16,13 @@ classdef LogRegMc < LogReg & BayesModel
 		end
 
 
-		function inferParams(model,varargin)
+		function getParamPost(model,varargin)
 		%
 			notYetImplemented('LogRegMc.inferParams()');
 		end
 
 
-		function logmarglik(model,varargin)
+		function logMargLik(model,varargin)
 		%
 			notYetImplemented('LogRegMc.logmarglik()');
 		end

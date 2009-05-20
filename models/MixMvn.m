@@ -38,7 +38,7 @@ classdef MixMvn < MixtureModel
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('MixMvn.logpdf()');
 		end

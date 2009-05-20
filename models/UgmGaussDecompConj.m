@@ -16,13 +16,13 @@ classdef UgmGaussDecompConj < UgmGaussDecomp & BayesModel
 		end
 
 
-		function inferParams(model,varargin)
+		function getParamPost(model,varargin)
 		%
 			notYetImplemented('UgmGaussDecompConj.inferParams()');
 		end
 
 
-		function logmarglik(model,varargin)
+		function logMargLik(model,varargin)
 		%
 			notYetImplemented('UgmGaussDecompConj.logmarglik()');
 		end

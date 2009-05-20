@@ -137,6 +137,16 @@ classdef UnitTest
            end
        end
        
+       function assertSize(data,sz,message)
+       % Assert that the data is of the specified size
+            if ~isequal(size(data),sz)
+                id = 'UnitTest:assertWrongSize';
+                if nargin < 3, message = sprintf('Data is of size %s, but should be of size %s',mat2str(size(data)),mat2str(sz)); end
+                throwAsCaller(MException(id,message));
+            end
+           
+       end
+       
        function assertEval(code,message)
        % Assert the that code does not throw an error when evaluated.     
            try
@@ -148,6 +158,20 @@ classdef UnitTest
                 err = addCause(err,ME);
                 throwAsCaller(err);
            end
+       end
+       
+       function assertNoNaNs(mat,message)
+           
+           if any(isnan(mat(:)))
+              if nargin < 2
+                  message = 'Data Contains NaNs';
+              end
+              id = 'UnitTest:assertNaNsInData';
+              throwAsCaller(MException(id,message));
+               
+               
+           end
+           
        end
        
               

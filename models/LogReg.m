@@ -37,7 +37,7 @@ classdef LogReg < CondModel
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('LogReg.logpdf()');
 		end

@@ -37,7 +37,7 @@ classdef InvWishartDist < MultivarDist
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('InvWishartDist.logpdf()');
 		end

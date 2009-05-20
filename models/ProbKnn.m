@@ -37,7 +37,7 @@ classdef ProbKnn < CondModel & NonFiniteParamModel
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('ProbKnn.logpdf()');
 		end

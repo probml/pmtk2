@@ -37,7 +37,7 @@ classdef MultiStudentDist < MultivarDist
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('MultiStudentDist.logpdf()');
 		end

@@ -22,7 +22,7 @@ classdef LinRegVarselEnsemble < ModelEnsemble
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('LinregVarselEnsemble.logpdf()');
 		end

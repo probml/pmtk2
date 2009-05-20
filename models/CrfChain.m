@@ -37,7 +37,7 @@ classdef CrfChain < CondModel & ChainModel
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('CrfChain.logpdf()');
 		end

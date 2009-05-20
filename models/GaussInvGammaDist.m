@@ -37,7 +37,7 @@ classdef GaussInvGammaDist < MultivarDist
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('GaussInvGammaDist.logpdf()');
 		end

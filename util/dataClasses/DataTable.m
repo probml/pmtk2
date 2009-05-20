@@ -25,16 +25,20 @@ classdef DataTable < DataStore
         
         function [visVars,visVals] = visible(D)
            idx = (all(~isnan(D.X),1));
-           visVars = D.Xnames(idx);
+           visVars = canonizeLabels(D.Xnames(idx),D.Xnames);
            visVals = D.X(:,idx);
         end
         
         function hidVars = hidden(D)
-            hidVars = D.Xnames(any(isnan(D.X),1));
+            hidVars = canonizeLabels(D.Xnames(any(isnan(D.X),1)),D.Xnames);
         end
          
         function n = ncases(D)
             n = size(D.X,1);
+        end
+        
+        function e = isempty(D)
+           e = ncases(D) == 0; 
         end
         
         function C = horzcat(A,B)
@@ -75,7 +79,12 @@ classdef DataTable < DataStore
             else
                 switch S.type
                     case {'()','{}'}
-                        D.X(S.subs{:},:) = value;
+                        if any(cellfun(@isempty,S.subs)), return; end
+                        if numel(S.subs) == 1
+                            D.X(S.subs{:},:) = value;
+                        else
+                            D.X(S.subs{:}) = value;
+                        end
                     case '.' %Still support full overwrite as in d.X = rand(10,10);
                         D = builtin('subsasgn', D, S, value);
                 end
@@ -86,24 +95,17 @@ classdef DataTable < DataStore
             if(numel(S) > 1)  % We have d(1:3,:).X for example or d.X(1:3,:)
                 colNDX = ':';
                 if(strcmp(S(1).type,'.') && strcmp(S(2).type,'()')) %d.X(1:3,:)
-                    property = S(1).subs;
                     rowNDX = S(2).subs{1};
                     if(numel(S(2).subs) == 2)
                         colNDX = S(2).subs{2};
                     end
                 elseif(strcmp(S(1).type,'()')&& strcmp(S(2).type,'.'))  %d(1:3,:).X
-                    property = S(2).subs;
                     rowNDX = S(1).subs{1};
                     if(numel(S(1).subs) == 2)
                         colNDX = S(1).subs{2};
                     end
                 end
-                switch property
-                    case 'X'
-                        B = A.X(rowNDX,colNDX);
-                    otherwise
-                        error([property, ' is not a property of this class']);
-                end
+                B = A.X(rowNDX,colNDX);
                 return;
             end
             % numel(S)=1

@@ -38,7 +38,7 @@ classdef LinDynSys < ChainModel & LatentVarModel
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('LinDynSys.logpdf()');
 		end

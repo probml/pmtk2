@@ -37,7 +37,7 @@ classdef CrfLattice < LatticeModel & CondModel
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('CrfLattice.logpdf()');
 		end

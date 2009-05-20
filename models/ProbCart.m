@@ -37,7 +37,7 @@ classdef ProbCart < CondModel
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('ProbCart.logpdf()');
 		end

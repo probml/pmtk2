@@ -16,13 +16,13 @@ classdef MixMvnMc < MixMvn & BayesModel
 		end
 
 
-		function inferParams(model,varargin)
+		function getParamPost(model,varargin)
 		%
 			notYetImplemented('MixMvnMc.inferParams()');
 		end
 
 
-		function logmarglik(model,varargin)
+		function logMargLik(model,varargin)
 		%
 			notYetImplemented('MixMvnMc.logmarglik()');
 		end

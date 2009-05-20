@@ -48,7 +48,7 @@ classdef FactoredDist < MultivarDist
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('FactoredDist.logpdf()');
 		end

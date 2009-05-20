@@ -37,7 +37,7 @@ classdef GaussProcReg < CondModel & NonFiniteParamModel
 		end
 
 
-		function logpdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('GaussProcReg.logpdf()');
 		end

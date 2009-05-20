@@ -16,13 +16,13 @@ classdef DiscreteConjDist < DiscreteDist & BayesModel
 		end
 
 
-		function inferParams(model,varargin)
+		function getParamPost(model,varargin)
 		%
 			notYetImplemented('DiscreteConjDist.inferParams()');
 		end
 
 
-		function logmarglik(model,varargin)
+		function logMargLik(model,varargin)
 		%
 			notYetImplemented('DiscreteConjDist.logmarglik()');
 		end
