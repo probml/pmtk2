@@ -22,6 +22,10 @@ classdef UnitTest
           obj = runTests(obj);
        end
        
+       function display(obj)
+          disp(obj.results); 
+       end
+       
        function obj = setup(obj)
        % optionally overridden by subclasses to setup fixtures, (data used
        % by all of the test methods).
@@ -33,6 +37,7 @@ classdef UnitTest
        end
        
        function obj = runTests(obj)
+            setSeed(0);
             c = class(obj);
             if strcmp(c,'UnitTest')
                error('You must first subclass UnitTest and call runTests() on an object of this subclass.'); 
@@ -78,6 +83,7 @@ classdef UnitTest
             end
             if obj.verbose,fprintf('\n'); end
             obj = teardown(obj);
+            restoreSeed();
        end   
    end
    

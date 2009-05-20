@@ -1,4 +1,4 @@
-classdef ModelSelFitEng
+classdef ModelSelFitEng < FitEng
     %MODELSELFITENG Summary of this class goes here
     %   Detailed explanation goes here
     

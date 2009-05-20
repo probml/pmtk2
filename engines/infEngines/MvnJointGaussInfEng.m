@@ -1,60 +1,13 @@
 classdef MvnJointGaussInfEng < JointGaussInfEng
-%MVNJOINTGAUSSINFENG
-
-
-	properties
-
-		diagnostics;
-		model;
-
-	end
-
-
-	methods
-
-		function eng = MvnJointGaussInfEng(varargin)
-		%
-		end
-
-
-		function computeLogPdf(eng,varargin)
-		%
-			notYetImplemented('MvnJointGaussInfEng.computeLogPdf()');
-		end
-
-
-		function computeMarginals(eng,varargin)
-		%
-			notYetImplemented('MvnJointGaussInfEng.computeMarginals()');
-		end
-
-
-		function computeSamples(eng,varargin)
-		%
-			notYetImplemented('MvnJointGaussInfEng.computeSamples()');
-		end
-
-		function enterEvidence(eng,varargin)
-		%
-			notYetImplemented('MvnJointGaussInfEng.enterEvidence()');
-		end
-
-
-    end
     
-    methods(Access = 'protected')
+    methods(Access = 'protected')        
         
-        function convertToMvn(eng,varargin)
-		%
-			notYetImplemented('MvnJointGaussInfEng.convertToMvn()');
+        function [mu,Sigma,domain] = convertToMvn(eng,model,varargin)   %#ok
+            mu     = model.params.mu;
+            Sigma  = model.params.Sigma;
+            domain = model.params.domain;
+            
 		end
-
- 
-        
-        
-        
     end
-
-
 end
 

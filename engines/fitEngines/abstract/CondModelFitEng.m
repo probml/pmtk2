@@ -1,4 +1,4 @@
-classdef CondModelFitEng
+classdef CondModelFitEng < FitEng
     %CONDMODELFITENG Summary of this class goes here
     %   Detailed explanation goes here
     

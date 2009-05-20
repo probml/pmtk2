@@ -1,7 +1,6 @@
 classdef InfEng
  
     properties(Abstract = true)
-       model; 
        diagnostics;
     end
     
