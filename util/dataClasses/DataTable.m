@@ -110,7 +110,7 @@ classdef DataTable < DataStore
             end
             % numel(S)=1
             switch S.type    %d(1:3,:)   for example
-                case {'()'}
+                case {'()','{}'}
                     Xnames = {};
                     colNDX = ':';
                     if(numel(S.subs) == 2)

@@ -46,7 +46,7 @@ classdef JointGaussInfEng < InfEng
         function [M,v] = computeMarginals(eng,Q)
             
             assertTrue(~isempty(eng.mu),'You must call enterEvidence before calling computeMarinals');
-            if nargin < 2 || isempty(Q), Q = Query('joint');  end
+            if nargin < 2 || isempty(Q), M = {};v = {}; return;  end
             qry = Q.variables;
             if ischar(qry)     % named queries
                 Q = convertStringQuery(eng,qry);

@@ -58,7 +58,8 @@ function M = unwrapCell(C)
 % ans = 
 %    [5x7 double]    [4x9 double]
 
-if isempty(C) || ~iscell(C), M = C; return; end
+if isempty(C), M = []; return; end
+if ~iscell(C), M = C;  return; end
 if allSameTypes(C) && iscell(C{1}) && numel(C{1}) == 1
     M = unwrapCell(cellfuncell(@(a)a{1},C));
     return;

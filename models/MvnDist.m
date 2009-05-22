@@ -53,7 +53,7 @@ classdef MvnDist < MultivarDist
                 for i=1:nc
                     eng = enterEvidence(model.infEng,model,D(i));
                     [marg,v] = computeMarginals(eng,Q);
-                    M(i,unwrapCell(v)) = marg;
+                    if ~isempty(v), M(i,unwrapCell(v)) = marg; end
                 end
             end
              M = unwrapCell(M); 
@@ -61,16 +61,16 @@ classdef MvnDist < MultivarDist
         
         function varargout = computeFunPost(model,varargin)
         % Compute a function of the posterior    
-            [Q,D,funstr] = processArgs(varargin,'+-query',Query(),'+-data',DataTable(),'-func','mode');
+            [Q,D,funstr,fnArgs] = processArgs(varargin,'+-query',Query(),'+-data',DataTable(),'-func','mode','-fnArgs',{});
             if iscell(funstr)
                varargout = cellfuncell(@(f)computeFunPost(model,Q,D,f),funstr) ; return;
             end
             func = str2func(funstr);
             P = infer(model,Q,D,'-expand',~isRagged(Q)); % if ~ragged, expand P to ncases(D)-by-model.ndimensions with possibly empty cells
             if ~iscell(P)
-                 varargout = {func(P)};
+                 varargout = {func(P,fnArgs{:})};
             else
-                M = unwrapCell(cellfuncell(protect(func,NaN),P));
+                M = unwrapCell(cellfuncell(protect(func,NaN),P,fnArgs{:}));
                 if isnumeric(M) 
                     switch funstr
                         case {'mean','mode'}  % fill in blanks with the data
