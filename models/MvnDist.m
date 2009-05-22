@@ -62,6 +62,7 @@ classdef MvnDist < MultivarDist
         function varargout = computeFunPost(model,varargin)
         % Compute a function of the posterior    
             [Q,D,funstr,fnArgs] = processArgs(varargin,'+-query',Query(),'+-data',DataTable(),'-func','mode','-fnArgs',{});
+            fnArgs = cellwrap(fnArgs);
             if iscell(funstr)
                varargout = cellfuncell(@(f)computeFunPost(model,Q,D,f),funstr) ; return;
             end
