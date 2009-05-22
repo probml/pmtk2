@@ -71,7 +71,7 @@ classdef MvnDist < MultivarDist
             if ~iscell(P)
                  varargout = {func(P,fnArgs{:})};
             else
-                M = unwrapCell(cellfuncell(protect(func,NaN),P,fnArgs{:}));
+                M = unwrapCell(cellfunR(protect(curry(func,fnArgs{:}),NaN),P));
                 if isnumeric(M) 
                     switch funstr
                         case {'mean','mode'}  % fill in blanks with the data
