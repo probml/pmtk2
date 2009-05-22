@@ -13,6 +13,9 @@ classdef DataTable < DataStore
                 Xnames = 1:size(D.X,2);
             end
             D.Xnames = Xnames;
+            if isa(D.X,'DataTable')
+               D.X = D.X.X; 
+            end
         end
         
         function X = unwrap(D)

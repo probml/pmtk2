@@ -13,13 +13,10 @@ classdef MixMvnEmFitEng < MixModelEmFitEng
     
     methods(Access = 'protected')
         
-        function model = initEm(eng,model,data)
-            
-            
-            
-            
-            
-        end
+%         function model = initEm(eng,model,data)
+%             
+%             % should do kmeans here
+%         end
         
     end
 

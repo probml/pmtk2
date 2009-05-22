@@ -63,7 +63,7 @@ classdef EmFitEng < FitEng
         
         function  [converged,diagn] = checkConvergence(eng,model,data,prevLL,diagn)
             % Override for more involved convergence testing, if desired.
-            currentLL = sum(logPdf(model,data));
+            currentLL = sum(logPdf(model,data)) + logPrior(model);
             diagn.LL = [diagn.LL;currentLL];
             converged = convergenceTest(prevLL,currentLL,eng.convTol);
         end

@@ -1,39 +1,27 @@
 classdef MixMvn < MixtureModel
-
-
-	properties
-		dof;
-		ndimensions;
-		ndimsLatent;
-		params;
-		prior;
-	end
-
 	methods
-
 		function model = MixMvn(varargin)
-		%
+		    [nmixtures , template , model.mixingDist , model.fitEng] = processArgs(varargin,...
+                '-nmixtures'  , 2                  ,...
+                '-template'   , MvnDist()          ,...
+                '-mixingDist' , DiscreteDist()     ,...
+                '-fitEng'     , MixMvnEmFitEng()   );
+            model.mixtureComps = copy(template,nmixtures);
+            initialize(model);
         end
- 
-        function inferLatent(model,varargin)
-		%
-			notYetImplemented('MixMvn.inferLatent()');
-		end
-
-		function computeMapLatent(model,varargin)
-		%
-			notYetImplemented('MixMvn.computeMapLatent()');
-		end
-
-		function logPdf(model,varargin)
-		%
-			notYetImplemented('MixMvn.logpdf()');
-		end
-
-		function sample(model,varargin)
-		%
-			notYetImplemented('MixMvn.sample()');
+    end
+    methods(Access = 'protected')
+        function model = initialize(model) % not the same as initEm
+            if ~isempty(model.mixtureComps) && ~ isempty(model.mixingDist); 
+                model.dof = model.mixingDist.dof - 1 + numel(model.mixtureComps)*model.mixtureComps{1}.dof; 
+                model.ndimsLatent = model.mixingDist.ndimensions;
+                model.ndimensions = model.mixtureComps{1}.ndimensions;
+                model.prior.mixingPrior   = model.mixingDist.prior;
+                model.prior.compPrior     = model.mixtureComps{1}.prior;
+                model.params.mixingParams = model.mixingDist.params;
+                model.params.compParams   = model.mixtureComps{1}.params;
+            end
+            model.params = struct;
         end
     end
 end
-
