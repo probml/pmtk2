@@ -1,34 +1,24 @@
 classdef MixMvnEmFitEng < MixModelEmFitEng
-%MIXMVNEMFIT
-
-
-	properties
-        model;
-        diagnostics;
-        verbose;
-
-    end
 
     properties(Access = 'protected')
-        
-       nrestarts;
-       convTol;
-       maxIter; 
-        
+       verbose; 
     end
-
+    
 	methods
 
 		function eng = MixMvnEmFitEng(varargin)
-		%
+            eng.verbose = processArgs(varargin,'-verbose',true);
         end
     end
     
     methods(Access = 'protected')
         
-        
-        function eng = initEm(eng)
-           notYetImplemented('MixMvnEmFitEng.initEm');
+        function model = initEm(eng,model,data)
+            
+            
+            
+            
+            
         end
         
     end

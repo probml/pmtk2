@@ -12,12 +12,10 @@ classdef ParamModel < ProbModel
         function S = mkSuffStat(model,D,weights)
            
         end
-        
-        
     end
     
     methods(Abstract = true)
          fit;     
-        
+         logPrior;
     end
 end

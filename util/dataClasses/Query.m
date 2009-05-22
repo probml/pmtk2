@@ -15,6 +15,7 @@ classdef Query
           % defines the portion of that level you want. 
           
           [Q.variables,Q.layer] = processArgs(varargin,'-variables',{},'-layer','default');
+          if iscell(Q.variables),Q.variables = colvec(Q.variables); end
         end
         
         function n = nqueries(Q)

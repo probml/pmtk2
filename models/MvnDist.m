@@ -61,13 +61,16 @@ classdef MvnDist < MultivarDist
         
         function varargout = computeFunPost(model,varargin)
         % Compute a function of the posterior    
-            [Q,D,funstr,fnArgs] = processArgs(varargin,'+-query',Query(),'+-data',DataTable(),'-func','mode','-fnArgs',{});
+            [Q,D,funstr,fnArgs,expand] = processArgs(varargin,'+-query',Query(),'+-data',DataTable(),'-func','mode','-fnArgs',{},'-expand','auto');
+            if strcmp(expand,'auto'), expand = ~isRagged(Q); end
             fnArgs = cellwrap(fnArgs);
             if iscell(funstr)
+               fnArgs = expandCell(fnArgs,numel(funstr));
+               for i=1:numel(funstr),funstr{i} = curry(str2func(funstr{i}),fnArgs{i}); end
                varargout = cellfuncell(@(f)computeFunPost(model,Q,D,f),funstr) ; return;
             end
-            func = str2func(funstr);
-            P = infer(model,Q,D,'-expand',~isRagged(Q)); % if ~ragged, expand P to ncases(D)-by-model.ndimensions with possibly empty cells
+            if ischar(funstr), func = str2func(funstr); else func = funstr; end
+            P = infer(model,Q,D,'-expand',expand); % if ~ragged, expand P to ncases(D)-by-model.ndimensions with possibly empty cells
             if ~iscell(P)
                  varargout = {func(P,fnArgs{:})};
             else
@@ -78,6 +81,8 @@ classdef MvnDist < MultivarDist
                             X = D.X;
                             ndx = isnan(M);
                             M(isnan(M)) = X(ndx);
+                        case 'logPdf'
+                            M = M';
                         otherwise
                             M(isnan(M)) = 0;
                     end
@@ -119,7 +124,7 @@ classdef MvnDist < MultivarDist
             S = model.params.Sigma;
 		end
 
-		function H = entropy(model)
+		function H = entropy(model,varargin)
            H = 0.5*logdet(model.params.Sigma) + (model.ndimensions/2)*(1+log(2*pi));
         end
         
@@ -168,7 +173,7 @@ classdef MvnDist < MultivarDist
             logp = computeLogPdf(model.infEng,model,D);
 		end
 
-		function mu = mean(model)
+		function mu = mean(model,varargin)
             mu = model.params.mu;
 		end
 

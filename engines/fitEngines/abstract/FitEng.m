@@ -1,9 +1,11 @@
 classdef FitEng
   
     properties(Abstract = true)
-        model;
         diagnostics;
-        verbose;
+    end
+    
+    properties(Access = 'protected',Abstract = true)
+       verbose; 
     end
     
     methods(Abstract = true)

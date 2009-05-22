@@ -45,12 +45,12 @@ classdef test_MvnDist < UnitTest
             %% All unconditional marginals of size 1
             M = infer(model,Query('singles'));
             obj.assertType(M,'cell');
-            obj.assertSize(M,[1,10]);
+            obj.assertSize(M,[10,1]);
             obj.assertTrue(allSameTypes(M));
             obj.assertType(M{1},'MvnDist');
             %% Arbitrary batch query
             M = infer(model,Query({1:3,'singles',5,[7,9]}  ));
-            obj.assertSize(M,[1,4]);
+            obj.assertSize(M,[4,1]);
             %%
             M = infer(model,Query('joint'));
             obj.assertEqual(M.params.domain,1:10);
@@ -70,8 +70,8 @@ classdef test_MvnDist < UnitTest
         
         function test_computeFunPost(obj)
             model = obj.testModel;
-            M = computeFunPost(model,Query('joint'),obj.rndData,'mode')
-            
+            M = computeFunPost(model,Query('joint'),DataTable(obj.rndData),'mode');
+            [P,M,V,C,MN,E] = computeFunPost(model,Query({{1,2,3},{1:2}}),DataTable(randn(5,3),[4:6]),'-func',{'logPdf','mode','var','cov','mean','entropy'},'-fnArgs',DataTable(rand(10,2)));
         end
         
         

@@ -1,24 +1,17 @@
 classdef MixModelEmFitEng < EmFitEng
-  
- 
     
     methods(Access = 'protected')
         
         
-        function eng = eStep(eng)
-           notYetImplemented('MixModelEmFitEng.eStep'); 
+        function ess = eStep(eng,model,data)
+            notYetImplemented('MixModelEmFitEng.eStep');
         end
         
-         function eng = mStep(eng)
-           notYetImplemented('MixModelEmFitEng.mStep'); 
+        function  [model,success] = mStep(eng,model,ess)
+            notYetImplemented('MixModelEmFitEng.mStep');
         end
-        
-         
         
     end
-    
-    
-    
-    
+ 
 end
 
