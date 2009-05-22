@@ -1,4 +1,10 @@
 classdef ScalarDist < SimpleDist
-%SCALARDIST Abstract Scalar Probability Model
+
+    properties
+       ndimensions = 1; 
+    end
+
+    
+
 end
 
