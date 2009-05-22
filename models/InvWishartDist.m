@@ -15,7 +15,8 @@ classdef InvWishartDist < MultivarDist
 	methods
 
 		function model = InvWishartDist(varargin)
-		%
+            [model.params.Sigma,model.params.dofParam] = processArgs('-Sigma',[],'-dofParam',[]);
+            model = initialize(model);
 		end
 
 
@@ -43,9 +44,8 @@ classdef InvWishartDist < MultivarDist
 		end
 
 
-		function mean(model,varargin)
-		%
-			notYetImplemented('InvWishartDist.mean()');
+		function m = mean(model)
+            m = model.params.Sigma / (model.params.dofParam - model.ndimensions(model) - 1);
 		end
 
 
@@ -73,7 +73,9 @@ classdef InvWishartDist < MultivarDist
 		end
 
 
-	end
+    end
+    
+    
 
 
 end

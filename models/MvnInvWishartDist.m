@@ -15,7 +15,9 @@ classdef MvnInvWishartDist < MultivarDist
 	methods
 
 		function model = MvnInvWishartDist(varargin)
-		%
+              [model.params.mu, model.params.Sigma, model.params.dofParam, model.params.k]...
+                  = processArgs(varargin,'-mu',[],'-Sigma',[],'-dofParam',[],'-k',[]);
+              model = initialize(model);
 		end
 
 
@@ -73,8 +75,19 @@ classdef MvnInvWishartDist < MultivarDist
 		end
 
 
-	end
+    end
 
+    methods(Access = 'protected')
+       
+        function model = initialize(model)
+           model.ndimensions = length(model.params.mu);
+           if isempty(model.params.k)
+               model.params.k = model.ndimensions;
+           end
+           model.dof = model.params.dofParam;
+        end
+        
+    end
 
 end
 

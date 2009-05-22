@@ -25,12 +25,12 @@ classdef DataTable < DataStore
         
         function [visVars,visVals] = visible(D)
            idx = (all(~isnan(D.X),1));
-           visVars = canonizeLabels(D.Xnames(idx),D.Xnames);
+           visVars = rowvec(D.Xnames(idx));
            visVals = D.X(:,idx);
         end
         
         function hidVars = hidden(D)
-            hidVars = canonizeLabels(D.Xnames(any(isnan(D.X),1)),D.Xnames);
+            hidVars = rowvec(D.Xnames(any(isnan(D.X),1)));
         end
          
         function n = ncases(D)

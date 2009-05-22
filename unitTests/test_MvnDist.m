@@ -36,13 +36,54 @@ classdef test_MvnDist < UnitTest
             Sigma = model.params.Sigma;
         end
         
-		function test_computeMap(obj)
-			model = obj.testModel;
-            data = randn(1,6);
-            map = computeMap(model,Query(7:10),DataTable(data,1:6));
-            obj.assertEqual(map,mode(infer(model,Query(7:10),DataTable(data,1:6))));
+        function test_infer(obj)
+			%% Single Object
+            model = obj.testModel;
+            M = infer(model,Query(1:3),DataTable(randn(1,4),7:10));
+            obj.assertSize(M.params.mu,[1,3]);
+            obj.assertSize(M.params.Sigma,[3,3]);
+            %% All unconditional marginals of size 1
+            M = infer(model,Query('singles'));
+            obj.assertType(M,'cell');
+            obj.assertSize(M,[1,10]);
+            obj.assertTrue(allSameTypes(M));
+            obj.assertType(M{1},'MvnDist');
+            %% Arbitrary batch query
+            M = infer(model,Query({1:3,'singles',5,[7,9]}  ));
+            obj.assertSize(M,[1,4]);
+            %%
+            M = infer(model,Query('joint'));
+            obj.assertEqual(M.params.domain,1:10);
+            M = infer(model,Query('pairs'));
+            %% Test Imputation
+            data = randn(10,10);
+            data(1:7:end) = NaN;
+            M = infer(model,Query('missingSingles'),DataTable(data)); % M is a ragged cell array
+            Mj =infer(model,Query('missingJoint'),DataTable(data)); % M is a ragged cell array
+            %% Check domain mapping works
+            model = MvnDist(randn(1,10),randpd(10),'-domain',11:20);
+            M = infer(model,Query(17:19),DataTable(randn(1,3),11:13));
+            obj.assertEqual(M.params.domain,17:19);
+            
         end
         
+        
+        function test_computeFunPost(obj)
+            model = obj.testModel;
+            M = computeFunPost(model,Query('joint'),obj.rndData,'mode')
+            
+        end
+        
+        
+        
+        
+% 		function test_computeMap(obj)
+% 			model = obj.testModel;
+%             data = randn(1,6);
+%             map = computeMap(model,Query(7:10),DataTable(data,1:6));
+%             obj.assertEqual(map,mode(infer(model,Query(7:10),DataTable(data,1:6))));
+%         end
+%         
         function test_plotPdf(obj)
            model = MvnDist(randn(1,2),randpd(2));
            h = plotPdf(model);
@@ -60,18 +101,12 @@ classdef test_MvnDist < UnitTest
 		function test_cov(obj)
             model = obj.testModel;
             obj.assertEqual(model.params.Sigma,cov(model));
-            data = rand(1,5);
-            condCov = cov(model,Query(2:3),DataTable(data,4:8));
-            obj.assertEqual(condCov,cov(infer(model,Query(2:3),DataTable(data,4:8))));
 		end
 
 		function test_entropy(obj)
             model = obj.testModel;
             H = entropy(model);
             obj.assertSize(H,[1,1]);
-            data = randn(1,3);
-            Hcond = entropy(model,Query(5:7),DataTable(data,1:3));
-            obj.assertEqual(Hcond,entropy(infer(model,Query(5:7),DataTable(data,1:3))));
 		end
 
 		function test_fit(obj)
@@ -81,50 +116,38 @@ classdef test_MvnDist < UnitTest
             obj.assertApproxEq(cov(obj.rndData),model.params.Sigma);
 		end
 
-		function test_infer(obj)
-			
-            model = obj.testModel;
-            M = infer(model,Query('-subDomain',1:3),DataTable(randn(1,4),7:10));
-            obj.assertSize(M.params.mu,[1,3]);
-            obj.assertSize(M.params.Sigma,[3,3]);
-            
-        end
+		
         
-        function test_computeMapMissing(obj)
-            
-            model = obj.testModel;
-            data = randn(20,10);
-            dataMissing = data;
-            dataMissing(1:7:end) = NaN;
-            dataMissing(1,:) = data(1,:);
-            D = computeMapMissing(model,DataTable(dataMissing));
-            obj.assertNoNaNs(D.X);
-            obj.assertEqual(D(1).X,data(1,:));
-            
-        end
+%         function test_computeMapMissing(obj)
+%             
+%             model = obj.testModel;
+%             data = randn(20,10);
+%             dataMissing = data;
+%             dataMissing(1:7:end) = NaN;
+%             dataMissing(1,:) = data(1,:);
+%             D = computeMapMissing(model,DataTable(dataMissing));
+%             obj.assertNoNaNs(D.X);
+%             obj.assertEqual(D(1).X,data(1,:));
+%             
+%         end
 
-		function test_inferMissing(obj)
-			
-            model = obj.testModel;
-            data = randn(1,10);
-            dataMissing = data;
-            dataMissing([2,5,7]) = NaN;
-            M = inferMissing(model,DataTable(dataMissing));
-            obj.assertTrue(M.ndimensions == 3);
-            obj.assertEqual(M.params.domain,[2,5,7]);
-            
-		end
+% 		function test_inferMissing(obj)
+% 			
+%             model = obj.testModel;
+%             data = randn(1,10);
+%             dataMissing = data;
+%             dataMissing([2,5,7]) = NaN;
+%             M = inferMissing(model,DataTable(dataMissing));
+%             obj.assertTrue(M.ndimensions == 3);
+%             obj.assertEqual(M.params.domain,[2,5,7]);
+%             
+% 		end
 
 		function test_logPdf(obj)
             
 			model = obj.testModel;
             logp = logPdf(model,DataTable(randn(20,10)));
-            condData = rand(1,4);
-            qdata    = randn(20,3);
-            logpCond = logPdf(model,DataTable(qdata),Query(1:3),DataTable(condData,7:10));
-            obj.assertEqual(logpCond,logPdf(infer(model,Query(1:3),DataTable(condData,7:10)),DataTable(qdata)));
-            restoreSeed();
-            
+            obj.assertSize(logp,[20,1]);
 		end
 
 		function test_mean(obj)
@@ -142,8 +165,6 @@ classdef test_MvnDist < UnitTest
 		function test_sample(obj)
 			model = obj.testModel;
             S = sample(model);
-            Sc = sample(model,5,Query(1:4),DataTable(S(6:8),6:8)); 
-            obj.assertSize(Sc,[5,4]);
 		end
 
 		function test_var(obj)
@@ -151,9 +172,7 @@ classdef test_MvnDist < UnitTest
             model = MvnDist(rand(1,10),Sigma);
             v = var(model);
             obj.assertEqual(diag(Sigma),v);
-            vcond = var(model,Query([2,7,9]),DataTable(randn(1,4),[1,3:5]));
-            obj.assertSize(vcond,[3,1]);
-            
+          
 		end
 
 	end

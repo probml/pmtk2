@@ -3,37 +3,40 @@ classdef Query
 
 
     properties
-        
-        name;
-        subdomain;
-        
+        layer;
+        variables; 
     end
     
     
     methods
         
         function Q = Query(varargin)
-          % Name defines the level, i.e. visible/latent and subdomain 
-          % defines the portion of that level you want. If the elements of 
-          % subdomain are numeric, each cell represents a joint query so
-          % that {[1,2,3],[1],[2,3]} is requsting three distributions, the
-          % joint on [1,2,3], the marginal on 1, and the joint on [2,3].
+          % Layer defines the level, i.e. visible/latent and variables 
+          % defines the portion of that level you want. 
           
-          [Q.subdomain,Q.name] = processArgs(varargin,'-subdomain',{},'-name','visible');
+          [Q.variables,Q.layer] = processArgs(varargin,'-variables',{},'-layer','default');
         end
         
         function n = nqueries(Q)
            n = 1;
-           if iscell(Q.subdomain)
-              n = numel(Q.subdomain); 
+           if iscell(Q.variables)
+              n = numel(Q.variables); 
            end
         end
         
         function e = isempty(Q)
            e = nqueries(Q) == 0; 
         end
-       
         
+        function r = isRagged(Q)
+            if isempty(Q.variables), r = false; return; end
+            if ischar(Q.variables)
+                r = ~isSubstring('singles',Q.variables,true);
+            else
+                r = ~(isnumeric(Q.variables) || all(cellfun(@isscalar,Q.variables)));
+            end
+        end
+         
         
     end
    

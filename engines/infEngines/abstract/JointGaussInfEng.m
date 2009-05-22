@@ -5,11 +5,13 @@ classdef JointGaussInfEng < InfEng
     end
     
     properties(Access = 'protected')
-       mu;
-       Sigma;
-       domain;
-       visVars;
+       mu;            % let d = numel(domain) mu,Sigma are always of sizes [1,d] and [d,d] respectively - 
+       Sigma;         % vis values are plugged into mu, and Sigma entries set to 0 after calls to enterEvidence
+       domain;        % not necessarily 1:d
+       visVars;       % always a subset of domain, not necessarily in 1:d
        visVals;
+       hidVars;       % always a subset of domain, and always = setdiff(domain,visVars)
+       missingVars;   % vars corresponding to missing values in the conditioning data, (subset of hidVars)         
        
     end
     
@@ -22,44 +24,44 @@ classdef JointGaussInfEng < InfEng
         function eng = enterEvidence(eng,model,D)
             [eng.mu,eng.Sigma,eng.domain] = convertToMvn(eng,model);
             if nargin > 2 && ~isempty(D)
-                [eng.visVars,eng.visVals] = visible(D);
-                vlabels = canonizeLabels(eng.visVars,eng.domain);
-                [smallMu,smallSigma] = gaussianConditioning(colvec(eng.mu),eng.Sigma,vlabels,colvec(eng.visVals));
-                hlabels = setdiff(eng.domain,vlabels);
-                eng.mu(hlabels) = rowvec(smallMu);
-                eng.Sigma(hlabels,hlabels) = smallSigma;
+                [visVars,visVals] = visible(D);
+                visVarsCanon = canonizeLabels(visVars,eng.domain);
+                [smallMu,smallSigma] = gaussianConditioning(colvec(eng.mu),eng.Sigma,visVarsCanon,colvec(visVals));
+                hidVars = setdiff(eng.domain,visVars);
+                hidVarsCanon = canonizeLabels(hidVars,eng.domain);
+                eng.mu(hidVarsCanon) = rowvec(smallMu);
+                eng.Sigma(hidVarsCanon,hidVarsCanon) = smallSigma;
+                
+                eng.mu(visVarsCanon) = visVals;
+                eng.Sigma(visVarsCanon,visVarsCanon) = 0;
+                eng.visVars = visVars;
+                eng.visVals = visVals;
+                eng.hidVars = hidVars;
+                eng.missingVars = hidden(D);
+            else
+               eng.visVars = eng.domain;
             end
         end
         
-        function [M,eng] = computeMarginals(eng,Q)
-        
+        function [M,v] = computeMarginals(eng,Q)
+            
             assertTrue(~isempty(eng.mu),'You must call enterEvidence before calling computeMarinals');
-            
-            if nargin < 2 || isempty(Q), Q = Query('-subdomain','fullJoint');  end
-            
-            assertTrue(strcmpi(Q.name,'visible'),'JointGaussInfEng only supports queries with name=''visible''');
-            
-            qry = Q.subdomain;
-            if ischar(qry) % named queries
-                switch lower(qry)
-                    case 'fulljoint'
-                        M = MvnDist(eng.mu,eng.Sigma,'-domain',eng.domain);
-                    case 'singletons'
-                        M = computeMarginals(eng,num2cell(eng.domain));
-                    case 'pairs'
-                        M = computeMarginals(eng,zipmats(eng.domain(1:end-1),eng.domain(2:end)));
-                    case 'family'
-                        error('please manually specify the family');
-                    otherwise
-                        error('%s is not a valid query',qry);
-                end
+            if nargin < 2 || isempty(Q), Q = Query('joint');  end
+            qry = Q.variables;
+            if ischar(qry)     % named queries
+                Q = convertStringQuery(eng,qry);
+                [M,v] = computeMarginals(eng,Q);
             elseif iscell(qry) % batch queries
-               M = cellfuncell(@(c)computeMarginals(eng,c),qry);
-            else % numeric / base case
-               M = MvnDist(eng.mu(1,qry),eng.Sigma(qry,qry),'-domain',qry);
+                [M,v] = cellfun(@(c)computeMarginals(eng,Query(c)),qry,'UniformOutput',false); %can't use cellfuncell because of multiple outputs
+            else               % numeric / base case
+               qryCanon = canonizeLabels(qry,eng.domain); 
+               M = MvnDist(eng.mu(qryCanon),eng.Sigma(qryCanon,qryCanon),'-domain',qry);
+               v = qryCanon;
             end 
-		end
+            
+        end
                 
+        %% Always unconditional
         function L = computeLogPdf(eng,model,D)
             [mu,Sigma] = convertToMvn(eng,model);
             X = D.X;
@@ -79,4 +81,32 @@ classdef JointGaussInfEng < InfEng
    
     end
     
+    methods(Access = 'protected')
+        
+        function stdQry = convertStringQuery(eng,qry)
+            
+           switch lower(qry)
+               % joint = 1:d
+               % missingJoint = joint of elements in D = NaN
+               % singles = {1,2,3,...d}
+               % missingSingles =
+               % pairs
+               % families
+               case 'joint'
+                   stdQry = Query(eng.domain);
+               case 'missingjoint'
+                   stdQry = Query(eng.missingVars);
+               case 'singles'
+                   stdQry = Query(num2cell(eng.domain));
+               case 'missingsingles'
+                   stdQry = Query(num2cell(eng.missingVars));
+               case 'pairs'
+                   stdQry = Query(zipmats(eng.domain(1:end-1),eng.domain(2:end)));
+               case 'families'
+                   error('Please specify the families manually');
+               otherwise
+                   error('%s is not a valid string query',qry);
+           end
+        end
+    end
 end
