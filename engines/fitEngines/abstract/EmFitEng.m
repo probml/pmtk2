@@ -9,6 +9,7 @@ classdef EmFitEng < FitEng
         nrestarts;
         convTol;
         maxIter;
+        verbose = true;
     end
     
     methods(Access = 'protected', Abstract = true)
@@ -41,18 +42,21 @@ classdef EmFitEng < FitEng
             model = initEm(eng,model,data);
             prevLL = -realmax; converged = false;
             diagn.LL = prevLL;
-            while not(converged)
+            iter = 1;
+            while not(converged) && iter < eng.maxIter
                 ess = eStep(eng,model,data);
-                [tmpModel,mSuccess] = mStep(eng,model,ess);
-                if mSuccess, model = tmpModel;
+                [tmpModel,success] = mStep(eng,model,ess);
+                if success, model = tmpModel;
                 else
                     [model,cont,success] = handleMstepFailure(eng,model,tmpModel);
                     if ~cont, break; end
                 end
-                [converged,diagn] = checkConvergence(eng,model,data,prevLL,diagn);
+                [converged,diagn] = checkConvergence(eng,model,data,diagn);
                 displayProgress(eng,success,diagn);
             end
+            if not(converged) && eng.verbose, fprintf('Maximum number of iterations reached\n'); end
             diagn.converged = converged;
+            diagn.niter = iter;
         end
         
         function [model,cont,success] = handleMstepFailure(eng,prevModel,probModel) %#ok
@@ -61,11 +65,15 @@ classdef EmFitEng < FitEng
             model = prevModel; cont = false; success = false;
         end
         
-        function  [converged,diagn] = checkConvergence(eng,model,data,prevLL,diagn)
+        function  [converged,diagn] = checkConvergence(eng,model,data,diagn)
             % Override for more involved convergence testing, if desired.
+            prevLL = diagn.LL(end);
             currentLL = sum(logPdf(model,DataTable(data))) + logPrior(model);
             diagn.LL = [diagn.LL;currentLL];
             converged = convergenceTest(prevLL,currentLL,eng.convTol);
+            if prevLL - currentLL  > eps
+               warning('EmFitEng:LLdecrease','The log likelihood has increased from %g to %g',prevLL,currentLL);
+            end
         end
         
         function displayProgress(eng,success,diagn) %#ok

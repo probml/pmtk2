@@ -1,8 +1,5 @@
 classdef MixMvnEmFitEng < MixModelEmFitEng
 
-    properties(Access = 'protected')
-       verbose; 
-    end
     
 	methods
 

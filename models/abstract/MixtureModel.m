@@ -21,9 +21,14 @@ classdef MixtureModel < LatentVarModel
            model = initialize(model);
         end
         
-        function [L,logz] = inferLatent(model,D) 
-            [r,logz] = logPdf(model,D);
-            L = DiscreteDist(r');
+        function [ph,LL] = inferLatent(model,D)
+        % ph(i,k) = p(H=k | D(i),params) a DiscreteDist
+        % This is the posterior responsibility of component k for data i
+        % LL(i) = log p(D(i) | params)  is the log normalization constat
+            logRik = calcResponsibilities(model, D.X);
+            [Rik, LL] = normalizeLogspace(logRik);
+            Rik = exp(Rik);
+            ph = DiscreteDist('-T',Rik');
         end
         
         function C = computeMapLatent(model,D) 
@@ -38,9 +43,10 @@ classdef MixtureModel < LatentVarModel
             L = L + logPrior(model.mixingDist);
         end
         
-		function [L,logZ] = logPdf(model,D)
-            [L,logZ] = normalizeLogspace(logsumexp(calcResponsibilities(model, D.X),2));
-		end
+        function L = logPdf(model,D)
+        % L(i) = log p(D(i) | params) = log sum_k p(D(i), h=k | params)
+            L = logsumexp(calcResponsibilities(model, D.X),2);
+        end
 
         function [Y, H] = sample(model,nsamples)
         % Y(i,:) = i'th sample of observed nodes
