@@ -4,13 +4,7 @@ classdef MvnMissingEmFitEng < EmFitEng
 
 	
     
-    
-    properties(Access = 'protected')
-        
-      verbose;
-        
-    end
-
+   
 
 	methods
 
