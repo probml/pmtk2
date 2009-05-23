@@ -2,17 +2,26 @@ classdef LinRegL2FitEng < CondModelFitEng
 %LINREGL2FITENG
 
 
-	properties
+	  properties
+        
+        diagnostics;
+        
+    end
 
-
-	end
+    properties(Access = 'protected')
+       verbose; 
+    end
 
 
 	methods
 
 		function eng = LinRegL2FitEng(varargin)
 		%
-		end
+        end
+        
+        function model = fit(eng,varargin)
+            notYetImplemented();
+        end
 
 
 	end

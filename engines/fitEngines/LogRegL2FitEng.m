@@ -3,11 +3,14 @@ classdef LogRegL2FitEng < CondModelFitEng
 
 
 	properties
-        model;
+        
         diagnostics;
-        fitOptions;
-	end
+        
+    end
 
+    properties(Access = 'protected')
+       verbose; 
+    end
 
 	methods
 

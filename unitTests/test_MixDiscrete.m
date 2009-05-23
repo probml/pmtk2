@@ -37,7 +37,7 @@ classdef test_MixDiscrete < UnitTest
 			error('empty test method'); % remove this error
 		end
 
-		function test_logpdf(obj)
+		function test_logPdf(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end

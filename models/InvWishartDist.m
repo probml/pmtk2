@@ -15,7 +15,7 @@ classdef InvWishartDist < MultivarDist
 	methods
 
 		function model = InvWishartDist(varargin)
-            [model.params.Sigma,model.params.dofParam] = processArgs('-Sigma',[],'-dofParam',[]);
+            [model.params.Sigma,model.params.dofParam] = processArgs(varargin,'-Sigma',[],'-dofParam',[]);
             model = initialize(model);
 		end
 
@@ -75,6 +75,12 @@ classdef InvWishartDist < MultivarDist
 
     end
     
+    
+    methods(Access = 'protected')
+        function model = initialize(model)
+            
+        end
+    end
     
 
 

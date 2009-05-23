@@ -21,7 +21,8 @@ classdef test_DiscreteDist < UnitTest
 
 		function test_Cnstr(obj)
 			target = feval(obj.targetClass);
-		end
+        end
+        
 		function test_entropy(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
@@ -32,7 +33,7 @@ classdef test_DiscreteDist < UnitTest
 			error('empty test method'); % remove this error
 		end
 
-		function test_logpdf(obj)
+		function test_logPdf(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
 		end
@@ -60,7 +61,20 @@ classdef test_DiscreteDist < UnitTest
 		function test_var(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
-		end
+        end
+        
+        function test_logPrior(obj)
+            error('empty test method');
+        end
+            
+        function test_mkSuffStat(obj)
+            error('empty test method');
+        end
+        
+        function test_pmf(obj)
+           error('empty test method'); 
+        end
+
 
 	end
 end

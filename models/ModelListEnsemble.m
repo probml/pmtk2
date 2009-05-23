@@ -22,7 +22,7 @@ classdef ModelListEnsemble < ModelEnsemble
 		end
 
 
-		function logpPdf(model,varargin)
+		function logPdf(model,varargin)
 		%
 			notYetImplemented('ModelListEnsemble.logpdf()');
 		end

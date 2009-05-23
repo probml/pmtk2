@@ -16,11 +16,16 @@ classdef test_LogRegL1FitEng < UnitTest
 
 			 % Perform final cleanup here
 
-		end
+        end
+       
 
 
 		function test_Cnstr(obj)
 			target = feval(obj.targetClass);
-		end
+        end
+        
+        function test_fit(obj)
+            error('empty test method');
+        end
 	end
 end
