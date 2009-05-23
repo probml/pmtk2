@@ -72,12 +72,12 @@ classdef EmFitEng < FitEng
             diagn.LL = [diagn.LL;currentLL];
             converged = convergenceTest(prevLL,currentLL,eng.convTol);
             if prevLL - currentLL  > eps
-               warning('EmFitEng:LLdecrease','The log likelihood has increased from %g to %g',prevLL,currentLL);
+                warning('EmFitEng:LLdecrease','The log likelihood has increased from %g to %g',prevLL,currentLL);
             end
         end
         
         function displayProgress(eng,success,diagn) %#ok
-            % Override to display more info if desired
+            % Override to display more info
             if eng.verbose
                 fprintf('LL = %g\n',diagn.LL(end));
             end
@@ -90,4 +90,3 @@ classdef EmFitEng < FitEng
         end
     end
 end
-

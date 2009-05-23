@@ -1,37 +1,14 @@
 classdef MixDiscreteEmFitEng < MixModelEmFitEng
-
-
-
-	properties(Access = 'protected')
-
-       
-       
-        verbose;
-    end
-    
-  
-
-
-	methods
-
-		function eng = MixDiscreteEmFitEng(varargin)
-		%
+    methods
+        function eng = MixDiscreteEmFitEng(varargin)
+            eng = eng@MixModelEmFitEng(varargin{:});
         end
-        
-        
-        
-
     end
-    
-     methods(Access = 'protected')
-        
-        
-        function eng = initEm(eng)
-           notYetImplemented('MixDiscreteEmFitEng.initEm');
+    methods(Access = 'protected')
+        function model = initEm(eng,model,data)
+        % add a more intelligent initialization here.    
+            model = initEm@MixModelEmFitEng(eng,model,data);
         end
-        
     end
-
-
 end
 

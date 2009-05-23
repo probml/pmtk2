@@ -7,14 +7,30 @@ classdef MixtureModel < LatentVarModel
        mixingDist;
        dof;
 	   ndimensions;
-	   ndimsLatent;
-       params;
-       prior;
+	   ndimsLatent;  
     end
-    
-    
-    
+      
     methods
+        
+        function model = MixtureModel(varargin)
+            if nargin == 0; return; end
+            [nmixtures , template , model.mixingDist , model.mixtureComps, model.fitEng] = processArgs(varargin,...
+                '-nmixtures'    , 2                  ,...
+                '-template'     , []                 ,...
+                '-mixingDist'   , []                 ,...
+                '-mixtureComps' , {}                 ,...
+                '-fitEng'       , MixModelEmFitEng()  );
+            
+            if isempty(model.mixtureComps)
+                model.mixtureComps = copy(template,nmixtures);
+            else
+                nmixtures = numel(model.mixtureComps);
+            end
+            if isempty(model.mixingDist)
+                model.mixingDist = DiscreteDist(normalize(rand(nmixtures,1))); 
+            end
+            model = initialize(model);
+        end
        
         function model = fit(model,varargin)
            model = fit(model.fitEng,model,varargin{:}); 
@@ -77,8 +93,10 @@ classdef MixtureModel < LatentVarModel
     end
     
     methods(Access = 'protected')
-        function model = initialize(model)
-        % override in subclass (not the same as initEm!)    
+        function model = initialize(model) % not the same as initEm
+            model.dof = model.mixingDist.dof - 1 + numel(model.mixtureComps)*model.mixtureComps{1}.dof;
+            model.ndimsLatent = model.mixingDist.ndimensions;
+            model.ndimensions = model.mixtureComps{1}.ndimensions;
         end
         
         function logRik = calcResponsibilities(model,data)
@@ -91,5 +109,16 @@ classdef MixtureModel < LatentVarModel
             end 
         end
     end
+    
+    
+    properties(Hidden = true)
+    % required by super class but unused
+        params;
+        prior;
+    end
+    
+    
 end
+
+
 

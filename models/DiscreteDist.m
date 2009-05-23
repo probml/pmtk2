@@ -69,7 +69,7 @@ classdef DiscreteDist < ScalarDist & ParallelizableDist
             counts = zeros(K, d);
             if(nargin < 3)
                 for j=1:d
-                    counts(:,j) = colvec(histc(X(:,j), obj.support));
+                    counts(:,j) = colvec(histc(X(:,j), model.support));
                 end
             else
                 if size(weights,2) == 1

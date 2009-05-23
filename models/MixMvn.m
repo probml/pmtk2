@@ -1,35 +1,15 @@
 classdef MixMvn < MixtureModel
+% Mixture of Multivariate Normal Distributions    
 	methods
 		function model = MixMvn(varargin)
-		    [nmixtures , ndimensions, template , model.mixingDist , model.mixtureComps, model.fitEng] = processArgs(varargin,...
-                '-nmixtures'     , 2               ,...
-                '-ndimensions'   , 2               ,...
-                '-template'     , []               ,...
-                '-mixingDist'   , []               ,...
-                '-mixtureComps' , {}               ,...
-                '-fitEng'       , MixMvnEmFitEng()   );
-            if isempty(model.mixtureComps)
-                if isempty(template),template = MvnDist(zeros(1,ndimensions),eye(ndimensions)); end
-                model.mixtureComps = copy(template,nmixtures);
-            else
-                nmixtures = numel(model.mixtureComps);
-            end
-            if isempty(model.mixingDist),model.mixingDist = DiscreteDist(normalize(rand(nmixtures,1))); end
-            model = initialize(model);
-        end
-    end
-    methods(Access = 'protected')
-        function model = initialize(model) % not the same as initEm
-            
-                model.dof = model.mixingDist.dof - 1 + numel(model.mixtureComps)*model.mixtureComps{1}.dof; 
-                model.ndimsLatent = model.mixingDist.ndimensions;
-                model.ndimensions = model.mixtureComps{1}.ndimensions;
-                model.prior.mixingPrior   = model.mixingDist.prior;
-                model.prior.compPrior     = model.mixtureComps{1}.prior;
-                model.params.mixingParams = model.mixingDist.params;
-                model.params.compParams   = model.mixtureComps{1}.params;
-            
-            model.params = struct;
+        % sets defaults specific to the model    
+            args = processArgs(varargin                         ,...
+                '-nmixtures'    , 2                             ,...
+                '-template'     , MvnDist(randn(1,2),randpd(2)) ,...
+                '-mixingDist'   , []                            ,...
+                '-mixtureComps' , {}                            ,...
+                '-fitEng'       , MixMvnEmFitEng() );
+            model = model@MixtureModel(args{:});
         end
     end
 end

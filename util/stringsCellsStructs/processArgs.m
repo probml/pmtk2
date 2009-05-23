@@ -140,7 +140,7 @@ function varargout = processArgs(userArgs,varargin)
 %% PROCESS USERARGS
 
     %% Error Check User Args
-    if numel(userArgs) == 0 
+    if numel(userArgs) == 0 && nargout > 1
         if any(required)                                                   ,throwAsCaller(MException('PROCESSARGS:missingReqArgs',sprintf('The following required arguments were not specified:\n%s',catString(progArgNames(required))))); 
         else  return;
         end
