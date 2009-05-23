@@ -4,11 +4,7 @@ classdef MixProbPca < MixtureModel
 
 	properties
 
-		dof;
-		ndimensions;
-		ndimsLatent;
-		params;
-		prior;
+		
 
 	end
 

@@ -5,7 +5,7 @@ classdef GaussDist < ScalarDist & ParallelizableDist
 	properties
 
 		dof;
-		ndimensions;
+		
 		params;
 		prior;
 

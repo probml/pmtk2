@@ -2,9 +2,9 @@ classdef MixModelEmFitEng < EmFitEng
     
     methods(Access = 'protected')
         
-        function model = initEm(model,data)
+        function model = initEm(eng,model,data)
          % override to do something more intelligent, i.e. kmeans for a GMM etc.    
-            K = length(model.mixingComps);
+            K = length(model.mixtureComps);
             n = size(data,1);
             ss.counts = rand(1,K);
             model.mixingDist = fit(model.mixingDist,'-suffStat',ss);
@@ -13,14 +13,14 @@ classdef MixModelEmFitEng < EmFitEng
             for k=1:K
                 start = (k-1)*batchSize+1;
                 initdata = data(perm(start:start+batchSize-1),:);
-                model.mixingComps{k} = fit(model.mixingComps{k},'-data',initdata);
+                model.mixtureComps{k} = fit(model.mixtureComps{k},'-data',DataTable(initdata));
             end 
         end
         
         function ess = eStep(eng,model,data) %#ok
             data = DataTable(data);
             Rik  = pmf(inferLatent(model, data));
-            K = length(model.distributions);
+            K = length(model.mixtureComps);
             compSS = cell(1,K);
             for k=1:K
                 compSS{k} = mkSuffStat(model.mixtureComps{k},data,Rik(:,k));
@@ -30,16 +30,14 @@ classdef MixModelEmFitEng < EmFitEng
         end
         
         function  [model,success] = mStep(eng,model,ess) %#ok
-            try
-                K = numel(model.mixtureComps);
-                for i=1:K, model.distributions{i} = fit(model.mixtureComps{i},'-suffStat',ess.compSS{i}); end
-                mixSS.counts = ess.counts;
-                [model.mixingDistrib,success] = fit(model.mixingDistrib,'-suffStat',mixSS);
-                if ~success; return ;end
-            catch %#ok
-                success = false; 
-            end
-        end 
+            
+            K = numel(model.mixtureComps);
+            for i=1:K, model.mixtureComps{i} = fit(model.mixtureComps{i},'-suffStat',ess.compSS{i}); end
+            mixSS.counts = ess.counts;
+            [model.mixingDist,success] = fit(model.mixingDist,'-suffStat',mixSS);
+            if ~success; return ;end
+            
+        end
     end
 end
 

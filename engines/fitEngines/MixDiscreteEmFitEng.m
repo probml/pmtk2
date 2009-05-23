@@ -2,20 +2,14 @@ classdef MixDiscreteEmFitEng < MixModelEmFitEng
 
 
 
-	properties
+	properties(Access = 'protected')
 
-        model;
-        diagnostics;
+       
+       
         verbose;
     end
     
-    properties(Access = 'protected')
-       nrestarts;
-       convTol;
-       maxIter; 
-        
-        
-    end
+  
 
 
 	methods

@@ -71,7 +71,8 @@ classdef test_MvnDist < UnitTest
         function test_computeFunPost(obj)
             model = obj.testModel;
             M = computeFunPost(model,Query('joint'),DataTable(obj.rndData),'mode');
-            [P,M,V,C,MN,E] = computeFunPost(model,Query({{1,2,3},{1:2}}),DataTable(randn(5,3),[4:6]),'-func',{'logPdf','mode','var','cov','mean','entropy'},'-fnArgs',DataTable(rand(10,2)));
+            %[P,M,V,C,MN,E] = computeFunPost(model,Query({{1,2,3},{1:2}}),DataTable(randn(5,3),[4:6]),'-func',{'logPdf','mode','var','cov','mean','entropy'},'-fnArgs',DataTable(rand(10,2)));
+                
         end
         
         

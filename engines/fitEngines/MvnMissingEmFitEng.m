@@ -2,17 +2,12 @@ classdef MvnMissingEmFitEng < EmFitEng
 %MVNMISSINGEMFITENG
 
 
-	properties
-        model;
-        diagnostics;
-        verbose;
-    end
+	
+    
     
     properties(Access = 'protected')
         
-       nrestarts;
-       convTol;
-       maxIter; 
+      verbose;
         
     end
 

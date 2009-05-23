@@ -4,11 +4,8 @@ classdef MixLinRegExperts < MixtureModel & CondModel
 
 	properties
 
-		dof;
-		ndimensions;
-		ndimsLatent;
-		params;
-		prior;
+		
+		
 
 	end
 

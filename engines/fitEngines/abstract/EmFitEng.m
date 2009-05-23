@@ -63,7 +63,7 @@ classdef EmFitEng < FitEng
         
         function  [converged,diagn] = checkConvergence(eng,model,data,prevLL,diagn)
             % Override for more involved convergence testing, if desired.
-            currentLL = sum(logPdf(model,data)) + logPrior(model);
+            currentLL = sum(logPdf(model,DataTable(data))) + logPrior(model);
             diagn.LL = [diagn.LL;currentLL];
             converged = convergenceTest(prevLL,currentLL,eng.convTol);
         end
@@ -75,9 +75,10 @@ classdef EmFitEng < FitEng
             end
         end
         
-        function model = selectModel(eng,models,successArray,diagnArray) %#ok
+        function [model,idx] = selectModel(eng,models,successArray,diagnArray) %#ok
             % by default, just select the model with the highest LL
-            model = models{sub(sortidx(cellfun(@(c)c.LL(end),diagnArray),'descend'),1)};
+            idx = sub(sortidx(cellfun(@(c)c.LL(end),diagnArray),'descend'),1);
+            model = models{idx};
         end
     end
 end

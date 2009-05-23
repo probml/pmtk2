@@ -22,7 +22,8 @@ classdef MixtureModel < LatentVarModel
         end
         
         function [L,logz] = inferLatent(model,D) 
-            [L,logz] = DiscreteDist(logPdf(model,D));
+            [r,logz] = logPdf(model,D);
+            L = DiscreteDist(r');
         end
         
         function C = computeMapLatent(model,D) 
@@ -38,7 +39,7 @@ classdef MixtureModel < LatentVarModel
         end
         
 		function [L,logZ] = logPdf(model,D)
-            [L,logZ] = normalizeLogspace(calcResponsibilities(model, D.X));
+            [L,logZ] = normalizeLogspace(logsumexp(calcResponsibilities(model, D.X),2));
 		end
 
         function [Y, H] = sample(model,nsamples)
@@ -47,10 +48,10 @@ classdef MixtureModel < LatentVarModel
             if nargin < 2, nsamples = 1; end
             H = sample(model.mixingDist, nsamples);
             d = model.ndimensions;
-            Hcanon = canonizeLabels(H,model.mixingDist.params.support);
+            Hcanon = canonizeLabels(H,model.mixingDist.support);
             Y = zeros(nsamples, d);
             for i=1:nsamples
-                Y(i,:) = rowvec(sample(model.distributions{Hcanon(i)}));
+                Y(i,:) = rowvec(sample(model.mixtureComps{Hcanon(i)}));
             end
         end
         

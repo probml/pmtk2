@@ -14,9 +14,7 @@ classdef MvnDist < MultivarDist
     properties
         covType;
     end
-    
    
-
 	methods
 
 		function model = MvnDist(varargin)

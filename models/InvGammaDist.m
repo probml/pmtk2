@@ -5,7 +5,7 @@ classdef InvGammaDist < ScalarDist
 	properties
 
 		dof;
-		ndimensions;
+		
 		params;
 		prior;
 

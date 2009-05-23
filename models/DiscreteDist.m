@@ -3,12 +3,11 @@ classdef DiscreteDist < ScalarDist & ParallelizableDist
 	properties
 
 		dof;
-		params; % params.T stored as numel(support)-by-ndistrib
+		params;              % params.T stored as nstates-by-ndistributions
 		prior; 
         support;
 
 	end
-
 
 	methods
 
@@ -19,10 +18,10 @@ classdef DiscreteDist < ScalarDist & ParallelizableDist
         end
 
         function M = pmf(model)
-           M = model.params.T; 
+           M = model.params.T'; 
         end
 
-        function model = fit(model,varargin)
+        function [model,success] = fit(model,varargin)
             [X, SS] = processArgs(varargin,'-data', [],'-suffStat', []);
             if isempty(SS), SS = mkSuffStat(model, X); end
             d = size(SS.counts,2);
@@ -34,7 +33,11 @@ classdef DiscreteDist < ScalarDist & ParallelizableDist
                     model.params.T = normalize(SS.counts + pseudoCounts -1, 1);
                 otherwise
                     error('unknown prior ')
-            end 
+            end
+            if nargout == 2
+                T = model.params.T;
+               success = approxeq(sum(T,1),ones(1,size(T,2))) ;
+            end
             model = initialize(model);
         end
 
@@ -99,10 +102,10 @@ classdef DiscreteDist < ScalarDist & ParallelizableDist
             d = size(model.params.T,2);
             S = zeros(n, d);
             for j=1:d
-                p = obj.T(:,j);
+                p = model.params.T(:,j);
                 cdf = cumsum(p);
                 [dum, y] = histc(rand(n,1),[0 ;cdf]);
-                S(:,j) = obj.support(y);
+                S(:,j) = model.support(y);
             end
         end
         

@@ -4,12 +4,6 @@ classdef MixDiscrete < MixtureModel
 
 	properties
 
-		dof;
-		ndimensions;
-		ndimsLatent;
-		params;
-		prior;
-
 	end
 
 
