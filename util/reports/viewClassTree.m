@@ -34,10 +34,19 @@ for i=1:size(specialColors,1)
     if any(findString(nodeName,classes))
         color = specialColors{i,2};
         edgeColors = [edgeColors;{nodeName,'all',color}]; %#ok
+        C = descendants(matrix,classMap.(nodeName));
+        for k=1:numel(C)
+           if ~isleaf(matrix,C(k));
+              edgeColors = [edgeColors;{classes{C(k)},'all',color}];  %#ok
+           end
+        end
         nodeColors(classMap.(nodeName),:) = color;
     end
 end
 %%
+[E,ndx] = unique(edgeColors(:,1),'first');
+edgeColors = edgeColors(ndx,:);
+
 
 
 %% Visualize
