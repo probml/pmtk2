@@ -85,7 +85,7 @@ classdef DiscreteDist < ScalarDist & ParallelizableDist
         end
         
 		function y = mode(model)
-             y = colvec(obj.support(maxidx(model.params.T,[],1)));
+             y = colvec(model.support(maxidx(model.params.T,[],1)));
         end
 
         function h = plotPdf(model,varargin)

@@ -1,6 +1,6 @@
 function imputationDemo()
 %% Imputation on random data using specified model
-
+setSeed(1);
 d = 10;
 helper(MvnDist(randn(1,d),randpd(d)), d, false);
 
@@ -33,9 +33,15 @@ XtestMiss = Xtest;
 XtestMiss(missingTest) = NaN;
 
 model = fit(model, '-data', DataTable(XtrainMiss));
+Q = Query('missingSingles');
+Dtrain = DataTable(XtrainMiss);
+Dtest  = DataTable(XtestMiss);
 
-XimputeTrain = computeFunPost(model,Query('missingSingles'),DataTable(XtrainMiss),'mode','-filler','visibleData');
-[XimputeTest,Vtest] =  computeFunPost(model,Query('missingSingles'),DataTable(XtestMiss),{'mode','var'},'-filler',{'visibleData',0});
+XimputeTrain = computeFunPost(model,Q,Dtrain,'mode');
+[XimputeTest,Vtest] =  computeFunPost(model,Q,Dtest,{'mode','var'});
+
+
+
 
 if discrete
   errTrain = sum(sum(XimputeTrain ~= Xtrain));
@@ -63,7 +69,7 @@ else
   mm = max(conf(:));
   hintonScale({Xtest}, {'-map', 'jet', '-title',ttl}, ...
   {Xtest, (1-missingTest)*mm}, { '-title', 'observed'}, ...
-  {XimputeTest, conf}, {'-title', 'imputed mean'}, ...
+  {XimputeTest, conf}, {'-title', 'imputed mode'}, ...
   {Xtest, (missingTest)*mm}, {'-title', 'hidden truth'});
 end
 

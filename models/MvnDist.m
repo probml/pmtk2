@@ -67,9 +67,18 @@ classdef MvnDist < MultivarDist
                 '-func'     , 'mode'      ,... 
                 '-fnArgs'   , {}          ,...
                 '-expand'   , 'auto'      ,... % if true, expands output to ncases(D)-by-model.ndimensions, (e.g. for imputation)
-                '-filler'   , 0           );   % value to fill empty entries with, if expand = true - can use string 'visibleData'
-            if isempty(expand) || strcmp(expand,'auto'), expand = ~isRagged(Q); end       
-           
+                '-filler'   , {}          );   % value to fill empty entries with, if expand = true - can use string 'visibleData'
+            if ~iscell(expand) && (isempty(expand) || strcmp(expand,'auto'))
+                expand = ~isRagged(Q); 
+            end
+            if isempty(filler) && ~iscell(funstr)
+                switch funstr
+                    case {'mean','mode'}
+                        filler = 'visibleData';
+                    otherwise
+                        filler = 0;
+                end
+            end
             if iscell(funstr)  % call computeFunPost recursively for each function
                nfuncs = numel(funstr);
                [fnArgs,filler,expand,varargout] = expandCells(nfuncs,fnArgs,filler,expand,{});
@@ -150,6 +159,7 @@ classdef MvnDist < MultivarDist
             SS.XX2 = bsxfun(@times,X,weights)'*X/SS.n;
             X = bsxfun(@minus,X,SS.xbar);
             SS.XX = bsxfun(@times,X,weights)'*X/SS.n;
+            assert(isposdef(SS.XX));
         end
 
 		function [model,success,diagn] = fit(model,varargin)

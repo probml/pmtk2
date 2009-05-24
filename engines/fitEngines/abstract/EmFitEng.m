@@ -22,12 +22,13 @@ classdef EmFitEng < FitEng
         
         function [model,success,eng] = fit(eng,model,varargin)
             % Generic fit function, just specify initEm,eStep,mStep in subclass.
-            [data,eng.nrestarts,eng.convTol,eng.maxIter] = processArgs(varargin,'+*-data',DataTable(),'-nrestarts',3,'-convTol',0.01,'-maxIter',30);
+            [data,eng.nrestarts,eng.convTol,eng.maxIter] = processArgs(varargin,'+*-data',DataTable(),'-nrestarts',5,'-convTol',0.01,'-maxIter',30);
             X = data.X;
             models = cell(eng.nrestarts,1);
             successArray = false(eng.nrestarts,1);
             diagnArray = cell(eng.nrestarts,1);
             for i=1:eng.nrestarts
+                if eng.verbose,fprintf('random restart\n');end
                 [models{i},successArray(i),diagnArray{i}] = fitOnce(eng,model,X);
             end
             [model,idx] = selectModel(eng,models,successArray,diagnArray);
@@ -45,7 +46,7 @@ classdef EmFitEng < FitEng
             iter = 1;
             while not(converged) && iter < eng.maxIter
                 ess = eStep(eng,model,data);
-                [tmpModel,success] = mStep(eng,model,ess);
+                [tmpModel,success] = mStep(eng,model,ess); 
                 if success, model = tmpModel;
                 else
                     [model,cont,success] = handleMstepFailure(eng,model,tmpModel);
@@ -54,7 +55,7 @@ classdef EmFitEng < FitEng
                 [converged,diagn] = checkConvergence(eng,model,data,diagn);
                 displayProgress(eng,success,diagn);
             end
-            if not(converged) && eng.verbose, fprintf('Maximum number of iterations reached\n'); end
+            if iter >=eng.maxIter && eng.verbose, fprintf('Maximum number of iterations reached\n'); end
             diagn.converged = converged;
             diagn.niter = iter;
         end
@@ -63,6 +64,9 @@ classdef EmFitEng < FitEng
             % By default, just return the previous model and stop. Override,
             % to do something more involved.
             model = prevModel; cont = false; success = false;
+            if eng.verbose
+               warning('EMfitEng:fitFailure','Fitting one of the mixture components failed, reverting to previous component\n'); 
+            end
         end
         
         function  [converged,diagn] = checkConvergence(eng,model,data,diagn)

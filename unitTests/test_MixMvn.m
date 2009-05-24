@@ -28,8 +28,19 @@ classdef test_MixMvn < UnitTest
 		end
 
 		function test_fit(obj)
-			% add assert statements here...
-			error('empty test method'); % remove this error
+            setSeed(0);
+			m1 = MvnDist([0,0],randpd(2));
+            m2 = MvnDist([10,10],randpd(2));
+            srcmodel = MixMvn('-mixtureComps',{m1,m2});
+            S = sample(srcmodel,300);
+            plot(S(:,1),S(:,2),'.');
+            hold on;
+            model = MixMvn('-nmixtures',2);
+            model = fit(model,DataTable(S));
+            for i=1:2
+                plotPdf(model.mixtureComps{i});
+            end
+            
 		end
 
 		function test_inferLatent(obj)
