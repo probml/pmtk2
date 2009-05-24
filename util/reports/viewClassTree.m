@@ -1,30 +1,38 @@
 function  h = viewClassTree(varargin)
 % View a class inheritence hierarchy. 
-% Same args as getClasses
+% Same args as getClasses + '-topClass'
 % Needs Graphlayout
 % Classes must use classdef syntax not old style
 
-
-
-
+args = processArgs(varargin,'-source',pwd(),'-ignoreDirs',{},'-topOnly',false,'-topClass',[]);
+[topClass,unusedArgs] = extractArgs(4,args);
 layout = Treelayout();
 
-[classes,matrix] = classesBFS(varargin{:});
-nodeColors = repmat([0.9,0.9,0.5],numel(classes),1);
+[classes,matrix] = classesBFS(unusedArgs{:});
 classMap = enumerate(classes);
+
+if ~isempty(topClass)
+    keep = [classMap.(topClass),descendants(matrix,classMap.(topClass))];
+    classes = classes(keep);
+    matrix = matrix(keep,keep);
+    classMap = enumerate(classes);
+end
+
+
+nodeColors = repmat([0.9,0.9,0.5],numel(classes),1);
 shortClassNames = shortenClassNames(classes);
-nodeDescriptions = cell(numel(classes,1));
+%nodeDescriptions = cell(numel(classes,1));
 for c=1:numel(classes)
    if isabstract(classes{c}),  nodeColors(c,:) = [0.8,0.3,0.2];  end
-   nodeDescriptions{c} = catString(localMethods(classes{c},true),', ');
+   %nodeDescriptions{c} = catString(localMethods(classes{c},true),', ');
 end
 
 %%
 % Color these nodes and their outgoing edges. 
 specialColors = {'BayesModel'         ,[72  , 217 , 217 ]./255;
-                 'CondModel'           ,[0   , 255 , 0   ]./255;
+                 'CondModel'          ,[0   , 255 , 0   ]./255;
                  'LatentVarModel'     ,[128 , 0   , 255 ]./255;
-                 'ParallelizableDist' ,[239 , 167 , 16  ]./255;
+                 'GraphicalModel'     ,[239 , 167 , 16  ]./255;
                  'NonFiniteParamModel',[ 201 , 156 , 95 ] ./255;
                 };
 
@@ -44,13 +52,22 @@ for i=1:size(specialColors,1)
     end
 end
 %%
-[E,ndx] = unique(edgeColors(:,1),'first');
-edgeColors = edgeColors(ndx,:);
+if ~isempty(edgeColors)
+    [E,ndx] = unique(edgeColors(:,1),'first');
+    edgeColors = edgeColors(ndx,:);
+end
 
+    function dblcfun(label)
+       h = viewClassTree('-topClass',label); 
+       for i=1:2,shrinkNodes(h);end
+       increaseFontSize(h);
+    end
+
+doubleClickFn = @dblcfun;
 
 
 %% Visualize
-h = Graphlayout('-adjMat',matrix,'-nodeLabels',shortClassNames,'-splitLabels',true,'-layout',layout,'-nodeColors',nodeColors,'-nodeDescriptions',nodeDescriptions,'-edgeColors',edgeColors);
+h = Graphlayout('-adjMat',matrix,'-nodeLabels',shortClassNames,'-splitLabels',true,'-layout',layout,'-nodeColors',nodeColors,'-edgeColors',edgeColors,'-doubleClickFn',doubleClickFn);
 maximizeFigure();
 pause(1);
 tightenAxes(h);

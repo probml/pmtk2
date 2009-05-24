@@ -93,6 +93,7 @@ classdef Graphlayout < handle
        edgeArray    = [];     % The edges
        fig          = [];     % The main window
        ax           = [];     % The main axes
+       doubleClickFn = [];    % function to execute when a user double clicks on a node, (must be a function handle that takes in the node name
        selectedNode = [];     % The selected node, if any   
        minNodeSize  = [];     % A minimum size for the nodes
        maxNodeSize  = [];     % A maximum size for the nodes
@@ -310,7 +311,7 @@ classdef Graphlayout < handle
            
             
             
-            [adjMatrix, currentLayout, nodeLabels, nodeDescriptions, nodeColors,obj.undirected,obj.edgeColors,obj.splitLabels] = processArgs(varargin,...
+            [adjMatrix, currentLayout, nodeLabels, nodeDescriptions, nodeColors,obj.undirected,obj.edgeColors,obj.splitLabels,obj.doubleClickFn] = processArgs(varargin,...
                 '-adjMat'               , []     ,...
                 '-layout'               , []     ,...
                 '-nodeLabels'           , {}     ,...
@@ -318,7 +319,8 @@ classdef Graphlayout < handle
                 '-nodeColors'           , {}     ,...    
                 '-undirected'           , false  ,...
                 '-edgeColors'           , []     ,...
-                '-splitLabels'          , true   );
+                '-splitLabels'          , true   ,...
+                '-doubleClickFn'        , []     );
             
             
             if(~isempty(currentLayout) && ~isavailable(currentLayout))
@@ -893,8 +895,9 @@ classdef Graphlayout < handle
             node.redraw();
         end
         
-        function doubleClick(obj,node)                 %#ok
+        function doubleClick(obj,node)                
         % Called when a user double clicks on a node
+            if isempty(obj.doubleClickFn)
             description = node.description;
             if(~iscell(description))
                 description = {description};
@@ -902,6 +905,9 @@ classdef Graphlayout < handle
             answer = inputdlg('',node.label,4,description);
             if(~isempty(answer))
                 node.description = answer;
+            end
+            else
+               obj.doubleClickFn(node.label); 
             end
         end
         
