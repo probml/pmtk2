@@ -15,7 +15,7 @@ classdef MixMvnEmFitEng < MixModelEmFitEng
                compData = data(C==i,:);
                SS.n    = size(compData,1);
                SS.xbar = mean(compData,1);
-               XX   = cov(compData) + 0.01*eye(nmixtures);
+               XX   = cov(compData) + 0.01*eye(length(SS.xbar));
                if ~isposdef(XX)
                    XX = randpd(nmixtures);
                end

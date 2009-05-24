@@ -31,16 +31,17 @@ classdef test_MixMvn < UnitTest
             setSeed(0);
 			m1 = MvnDist([0,0],randpd(2));
             m2 = MvnDist([10,10],randpd(2));
-            srcmodel = MixMvn('-mixtureComps',{m1,m2});
+            m3 = MvnDist([5,0],randpd(2));
+            m4 = MvnDist([0,10],randpd(2));
+            srcmodel = MixMvn('-mixtureComps',{m1,m2,m3,m4});
             S = sample(srcmodel,300);
             plot(S(:,1),S(:,2),'.');
             hold on;
-            model = MixMvn('-nmixtures',2);
+            model = MixMvn('-nmixtures',4);
             model = fit(model,DataTable(S));
-            for i=1:2
+            for i=1:4
                 plotPdf(model.mixtureComps{i});
             end
-            
 		end
 
 		function test_inferLatent(obj)
