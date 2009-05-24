@@ -1,13 +1,10 @@
-%% Fit a Mixture of Gaussians to the Old Faithful Data Set
+%% Demo of using a 2d Gaussian
 %#testPMTK
 
-load oldFaith;
-D = DataTable(X);
-m  = MixMvn('-nmixtures',2);
-m.fitEng.verbose = true;
-m = fit(m,D);
-post = inferLatent(m,D);
-plot(X(:,1),X(:,2),'.');
-hold on;
-plotPdf(m.mixtureComps{1});
-plotPdf(m.mixtureComps{2});
+Xtrain = randn(10,2);
+M = MvnDist('-covType', 'spherical');
+M = fit(M, DataTable(Xtrain));
+figure; plotPdf(M)
+X = sample(M, 1000);
+hold on; scatter(X(:,1), X(:,2), '.');
+LL = sum(logPdf(M, X))
