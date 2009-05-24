@@ -68,11 +68,30 @@ classdef test_MvnDist < UnitTest
         end
         
         
+        function test_imputation(obj)
+            
+           model = MvnDist(randn(1,10),randpd(10));
+           S = sample(model,100);
+           data = S;
+           data(1:7:end) = NaN;
+           filledData = computeFunPost(model,Query('missingSingles'),DataTable(data),'mode','-filler','visibleData');
+           
+            
+            
+        end
+        
+        
         function test_computeFunPost(obj)
             model = obj.testModel;
             M = computeFunPost(model,Query('joint'),DataTable(obj.rndData),'mode');
             %[P,M,V,C,MN,E] = computeFunPost(model,Query({{1,2,3},{1:2}}),DataTable(randn(5,3),[4:6]),'-func',{'logPdf','mode','var','cov','mean','entropy'},'-fnArgs',DataTable(rand(10,2)));
-                
+            M = computeFunPost(model,Query('joint'),'-func','logPdf','-fnArgs',DataTable(rand(100,10)))    
+            data = rand(100,10);
+            data(1:7:end) = NaN;
+            model = MvnDist(randn(1,10),randpd(10));
+            [M,E] = computeFunPost(model,Query('missingSingles'),DataTable(data),{'mode','entropy'},'-filler',{'visibleData',0})
+            
+            
         end
         
         

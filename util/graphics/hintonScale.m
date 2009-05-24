@@ -55,7 +55,7 @@ function [] = hintonScale(varargin)
 
 
 
-  figure();
+  %figure();
 
   [plotRows,plotCols] = nsubplots(nplots);
   for p=1:nplots
