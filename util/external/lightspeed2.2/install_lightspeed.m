@@ -17,6 +17,7 @@ v = sscanf(version,'%d.%d.%*s (R%d) %*s');
 % could also use v(3)>=13
 atleast65 = (v(1)>6 || (v(1)==6 && v(2)>=5));
 atleast75 = (v(1)>7 || (v(1)==7 && v(2)>=5));
+atleast78 = (v(1)>7 || (v(1)==7 && v(2)>=8));
 
 % copy matlab's original repmat.m as xrepmat.m
 if exist('xrepmat.m') ~= 2
@@ -106,13 +107,21 @@ if ispc
     % standalone programs
     % compilation instructions are described at:
     % http://www.mathworks.com/access/helpdesk/help/techdoc/matlab_external/ch1_im15.html#27765
+    %{
+    % Commented out by KPM, 24May09, since does not work on Windows matlab
+    % 2009a, and matfile.c is not needed anyway
     if atleast65
       % -V5 is required for Matlab >=6.5
-      mex -f lccengmatopts.bat matfile.c -V5
+      if atleast78
+        mex -f lccengmatopts.bat matfile.c 
+      else
+        mex -f lccengmatopts.bat matfile.c -V5
+      end
       %mex -f msvc71engmatopts.bat matfile.c -V5
     else
       mex -f lccengmatopts.bat matfile.c
     end
+    %}
     % uncomment the line below if you want to build test_flops.exe
     % This program lets you check the flop counts on your processor.
     % mex -f lccengmatopts.bat tests/test_flops.c

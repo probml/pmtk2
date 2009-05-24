@@ -27,9 +27,9 @@ function compilePMTKmex()
         end
     end
     
-    if(~ismac)
+    if (~ismac)
         try
-            cd(fullfile(PMTKroot,'util','lightspeed2.2'));
+            cd(fullfile(PMTKroot,'util','external','lightspeed2.2'));
             install_lightspeed;
         catch
             cd(savedDir);
