@@ -18,7 +18,7 @@ classdef MvnDist < MultivarDist
 	methods
 
 		function model = MvnDist(varargin)
-           
+           if isempty(varargin), model=[]; return; end
             [ model.params.mu , model.params.Sigma        ,...
               model.prior     , model.ndimensions         ,...
               model.infEng    , model.fitEng              ,...
@@ -32,7 +32,7 @@ classdef MvnDist < MultivarDist
               '-fitEng'      , []                         ,...
               '-covType'     , 'full'                     ,...
               '-domain'      , []                         );
-            model = initialize(model); % sets ndimensions, dof
+            model = initialize(model); % sets ndimensions, dof, params if nec.
         end
 
         
@@ -162,32 +162,37 @@ classdef MvnDist < MultivarDist
             assert(isposdef(SS.XX));
         end
 
-		function [model,success,diagn] = fit(model,varargin)
-            if isempty(model.fitEng)
-                [D,SS] = processArgs(varargin,'+-data',DataTable(),'-suffStat',[]);
-                
-                switch class(model.prior)
-                    case 'NoPrior'
-                        if isempty(SS)
-                            X = D.X;
-                            mu = mean(X,1);
-                            Sigma = cov(X);
-                        else
-                            mu    = SS.xbar;
-                            Sigma = SS.XX;
-                        end
-                    otherwise
-                        [mu,Sigma] = fitMap(model,varargin);
+        function [model,success,diagn] = fit(model,varargin)
+          if ~isempty(model.fitEng)
+            [model,success,diagn] = fit(model.fitEng,model,varargin{:});
+          else
+            [D,SS] = processArgs(varargin,'+-data',DataTable(),'-suffStat',[]);
+            switch class(model.prior)
+              case 'NoPrior'
+                if isempty(SS)
+                  X = D.X;
+                  mu = mean(X,1);
+                  Sigma = cov(X);
+                else
+                  mu    = SS.xbar;
+                  Sigma = SS.XX;
                 end
-                success = isposdef(model.params.Sigma);
-                model.params.mu    = mu;
-                model.params.Sigma = Sigma;
-                diagn = [];
-            else
-               [model,success,diagn] = fit(model.fitEng,model,varargin{:}); 
+              otherwise
+                [mu,Sigma] = fitMap(model,varargin);
             end
-            model = initialize(model);  % sets dof, ndimensions, etc
-		end
+            switch model.covType
+              case 'diag', Sigma = diag(diag(Sigma)); % store as matrix not vector
+              case 'spherical', error('spherical Mvn not yet supported')
+            end
+            success = isposdef(model.params.Sigma);
+            model.params.mu    = mu;
+            model.params.Sigma = Sigma;
+            diagn = [];
+          end
+          % KPM: no longer call initialize since size of model
+          % known at construction time
+          %model = initialize(model);  % sets dof, ndimensions, etc
+        end
 
 		function logp = logPdf(model,D)
             logp = computeLogPdf(model.infEng,model,D);
@@ -202,11 +207,19 @@ classdef MvnDist < MultivarDist
 		end
 
 		function h = plotPdf(model,varargin)
-            if model.ndimensions == 2
-                h = gaussPlot2d(model.params.mu,model.params.Sigma);
-            else
-               notYetImplemented('Only 2D plotting currently supported'); 
-            end
+      mu = model.params.mu; Sigma = model.params.Sigma;
+      d = model.ndimensions;
+      switch d
+        case 1,
+          xs = linspace(mu-4*Sigma, mu+4*Sigma, 100);
+          % DataTable must be a column vector, otherwise interpreted as
+          % product
+          h = plot(xs, exp(logPdf(model, DataTable(colvec(xs)))));
+        case 2,
+          h = gaussPlot2d(mu, Sigma);
+        otherwise
+          error(sprintf('cannot plot in %d dimensions', d))
+      end
 		end
 
 		function S = sample(model,n)
@@ -225,28 +238,54 @@ classdef MvnDist < MultivarDist
     
     
     methods(Access = 'protected')
-       
-        function model = initialize(model)
-        % Called from constructor and fit    
-            model.params.mu = rowvec(model.params.mu);
-            d = length(model.params.mu);
-            if isempty(model.ndimensions)
-                model.ndimensions = d;
+      
+      function model = initialize(model)
+        % Make random params if none specified.
+        % Infer values of other fields.
+        % Called from constructor
+        if isempty(model.params.mu)
+          if isempty(model.ndimensions)
+            error('must specify mu or ndimensions')
+          else
+            % Make rnd params of required size
+            d = model.ndimensions;
+            model.params.mu = randn(d,1);
+            switch model.covType
+              % We currently always store Sigma as a full matrix 
+              case 'full', model.params.Sigma = randpd(d);
+              case 'diag', model.params.Sigma = diag(rand(d,1));
+              case 'spherical', model.params.Sigma = rand(1,1)*eye(d);
             end
-            model.dof = d + ((d*(d+1))/2);   % Not d^2 since Sigma is symmetric 
-            if isempty(model.params.domain)
-               model.params.domain = 1:length(model.params.mu); 
+          end
+        else
+          model.params.mu = rowvec(model.params.mu);
+          d = length(model.params.mu);
+          if ~isempty(model.ndimensions)
+            if model.ndimensions ~= d
+              error('inconsistent ndimensions')
             end
+          else
+            model.ndimensions = d;
+          end
         end
-        
-        
-        function [mu,Sigma] = fitMap(model,SS)
-            notYetImplemented('MVN Map Estimation');
+        switch model.covType
+          case 'full', model.dof = d + ((d*(d+1))/2);   
+          case 'diag', model.dof = d + d;
+          case 'spherical', model.dof = d+1;
         end
+        if isempty(model.params.domain)
+          model.params.domain = 1:model.ndimensions;
+        end
+      end
+      
+      
+      function [mu,Sigma] = fitMap(model,SS)
+        notYetImplemented('MVN Map Estimation');
+      end
+      
         
-        
+      end
+      
+      
     end
-
-
-end
 
