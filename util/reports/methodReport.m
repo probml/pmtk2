@@ -8,7 +8,7 @@ function  methodReport(varargin)
 % 'A'   for Abstract    (has only the abstract definition, either local or inherited)
 % 'C'   for Concrete    (has access to a concrete implementation)
 % 'L'   for Local       (local, possibly abstract definition)
-% 'E'   for external    (no local definition, inherited from a super class)
+% 'I'   for external    (no local definition, inherited from a super class)
 % 'N'   for new         (local definition new to this branch of the tree
 % '*'   not finished    (implemented, but not yet finished)
 % '--'  does not have access to the method at all
@@ -17,10 +17,19 @@ function  methodReport(varargin)
     ABSTRACT     = 'A';
     CONCRETE     = 'C';
     OVERRIDES    = 'O';
-    EXTERNAL     = 'E';
+    EXTERNAL     = 'I';
     NEW          = 'N';
     NYF          = '*';
     NUL          = '';
+    
+     legend =  { ABSTRACT   , 'Abstract' ;
+                 CONCRETE   , 'Concrete';
+                 NEW        , 'Introduces';
+                 OVERRIDES  , 'Overrides';
+                 EXTERNAL   , 'Inherits';
+                 NYF        , 'Unfinished';
+               };
+    
 
     [source,excludeClasses,dosave,filename,diffOnly,includeLegend]= processArgs(varargin,'-source',PMTKroot(),'-excludeClasses',{},'-dosave',false,'-filename','','-diffOnly',true,'-includeLegend',true);
     if dosave, includeLegend = false; end
@@ -78,17 +87,6 @@ function  methodReport(varargin)
     dataColors = dataColors(mperm,:);
     
     classNames = shortenNames(classes);
-   
-    
-    
-    legend =  {'A' , 'Abstract' ;
-               'C' , 'Concrete';
-               'N' , 'Introduces';
-               'O' , 'Overrides';
-               'E' , 'Inherits';
-               '*' , 'Unfinished';
-               };
-          
            
      legColors = repmat({'white'},size(legend));
      legColors(3,:) = {'lightgreen'}; 
