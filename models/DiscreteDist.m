@@ -115,6 +115,11 @@ classdef DiscreteDist < ScalarDist & ParallelizableDist
         end
  
         function m = mean(model)
+            % E(X) = sum_i(x_i*p(x_i)) 
+            % If we used a one-of-k encoding for X, E(X) would just be T,
+            % but in this model, X takes on values in model.support. For
+            % the Bernoulli subclass with support [0,1], the two
+            % representations are equivalent.
             m = sum(bsxfun(@times,colvec(model.support),model.params.T));
         end
 
@@ -122,13 +127,13 @@ classdef DiscreteDist < ScalarDist & ParallelizableDist
     
     methods(Access = 'protected')
         function model = initialize(model)
-           if ~isempty(model.params.T)
+            if isvector(model.params.T), model.params.T = colvec(model.params.T); end
+            if ~isempty(model.params.T)
                model.dof = size(model.params.T,1) - 1;
                if isempty(model.support)
                     model.support = 1:size(model.params.T,1);
                end
            end  
-           if isvector(model.params.T), model.params.T = colvec(model.params.T); end
         end 
     end
 end

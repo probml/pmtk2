@@ -43,20 +43,19 @@ classdef JointGaussInfEng < InfEng
             end
         end
         
-        function [M,v] = computeMarginals(eng,Q)
+        function [M,qryNdx] = computeMarginals(eng,Q)
             
             assertTrue(~isempty(eng.mu),'You must call enterEvidence before calling computeMarinals');
-            if nargin < 2 || isempty(Q), M = {};v = {}; return;  end
+            if nargin < 2 || isempty(Q), M = {};qryNdx = {}; return;  end
             qry = Q.variables;
             if ischar(qry)     % named queries
                 Q = convertStringQuery(eng,qry);
-                [M,v] = computeMarginals(eng,Q);
+                [M,qryNdx] = computeMarginals(eng,Q);
             elseif iscell(qry) % batch queries
-                [M,v] = cellfun(@(c)computeMarginals(eng,Query(c)),qry,'UniformOutput',false); %can't use cellfuncell because of multiple outputs
+                [M,qryNdx] = cellfun(@(c)computeMarginals(eng,Query(c)),qry,'UniformOutput',false); %can't use cellfuncell because of multiple outputs
             else               % numeric / base case
-               qryCanon = canonizeLabels(qry,eng.domain); 
-               M = MvnDist(eng.mu(qryCanon),eng.Sigma(qryCanon,qryCanon),'-domain',qry);
-               v = qryCanon;
+               qryNdx = canonizeLabels(qry,eng.domain); 
+               M = MvnDist(eng.mu(qryNdx),eng.Sigma(qryNdx,qryNdx),'-domain',qry);
             end 
             
         end

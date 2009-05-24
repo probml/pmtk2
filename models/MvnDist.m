@@ -46,12 +46,14 @@ classdef MvnDist < MultivarDist
                 for i=1:nc
                     M{i} = rowvec(computeMarginals(enterEvidence(model.infEng,model,D(i)),Q));
                 end
-            else 
+            else  % expand to ncases(D)-by-model.ndimensions
                 M = cell(nc,model.ndimensions);
                 for i=1:nc
                     eng = enterEvidence(model.infEng,model,D(i));
-                    [marg,v] = computeMarginals(eng,Q);
-                    if ~isempty(v), M(i,unwrapCell(v)) = marg; end
+                    [marg,qryNdx] = computeMarginals(eng,Q);
+                    if ~isempty(qryNdx) 
+                        M(i,unwrapCell(qryNdx)) = marg;
+                    end
                 end
             end
              M = unwrapCell(M); 
@@ -59,33 +61,43 @@ classdef MvnDist < MultivarDist
         
         function varargout = computeFunPost(model,varargin)
         % Compute a function of the posterior    
-            [Q,D,funstr,fnArgs,expand] = processArgs(varargin,'+-query',Query(),'+-data',DataTable(),'-func','mode','-fnArgs',{},'-expand','auto');
-            if strcmp(expand,'auto'), expand = ~isRagged(Q); end
-            fnArgs = cellwrap(fnArgs);
-            if iscell(funstr)
-               fnArgs = expandCell(fnArgs,numel(funstr));
-               for i=1:numel(funstr),funstr{i} = curry(str2func(funstr{i}),fnArgs{i}); end
-               varargout = cellfuncell(@(f)computeFunPost(model,Q,D,f),funstr) ; return;
+            [Q , D , funstr , fnArgs , expand , filler] = processArgs(varargin,...
+                '+-query'   , Query()     ,...
+                '+-data'    , DataTable() ,...
+                '-func'     , 'mode'      ,... 
+                '-fnArgs'   , {}          ,...
+                '-expand'   , 'auto'      ,... % if true, expands output to ncases(D)-by-model.ndimensions, (e.g. for imputation)
+                '-filler'   , 0           );   % value to fill empty entries with, if expand = true - can use string 'visibleData'
+            if isempty(expand) || strcmp(expand,'auto'), expand = ~isRagged(Q); end       
+           
+            if iscell(funstr)  % call computeFunPost recursively for each function
+               nfuncs = numel(funstr);
+               [fnArgs,filler,expand,varargout] = expandCells(nfuncs,fnArgs,filler,expand,{});
+               for i=1:nfuncs
+                   varargout{i} = computeFunPost(model,Q,D,funstr{i},fnArgs{i},expand{i},filler{i});
+               end
+               return;
             end
-            if ischar(funstr), func = str2func(funstr); else func = funstr; end
-            P = infer(model,Q,D,'-expand',expand); % if ~ragged, expand P to ncases(D)-by-model.ndimensions with possibly empty cells
-            if ~iscell(P)
-                 varargout = {func(P,fnArgs{:})};
+            
+            func = str2func(funstr);
+            P = infer(model,Q,D,'-expand',boolValue(expand)); 
+            
+            if ~iscell(P) % not a batch query
+                 varargout = cellwrap(func(P,fnArgs{:})); % apply the function to the posterior
             else
-                M = unwrapCell(cellfunR(protect(curry(func,fnArgs{:}),NaN),P));
-                if isnumeric(M) 
-                    switch funstr
-                        case {'mean','mode'}  % fill in blanks with the data
-                            X = D.X;
-                            ndx = isnan(M);
-                            M(isnan(M)) = X(ndx);
-                        case 'logPdf'
-                            M = M';
-                        otherwise
-                            M(isnan(M)) = 0;
+                func = protect(curry(func,fnArgs{:}),NaN); % fill in empty entries with NaN so we can easily fill them in later
+                M = unwrapCell(cellfunR(func,P));          % recursively apply the function to all posterior objects
+                if expand
+                    filler = unwrapCell(filler);
+                    ndx = isnan(M);
+                    if ischar(filler) && strcmpi(filler,'visibleData')
+                        X = D.X;
+                        M(ndx) = X(ndx);   
+                    else
+                        M(ndx) = filler;
                     end
                 end
-                varargout = {M};
+                varargout = cellwrap(M);
             end
         end
         

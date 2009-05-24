@@ -1,9 +1,8 @@
-function [Xtrain,Xtest,ytrain,ytest] = setupMnist(binary, Ntrain, Ntest,full)
+function [Xtrain,ytrain,Xtest,ytest] = setupMnist(varargin)%binary, Ntrain, Ntest,full)
 
-if nargin < 1, binary = false; end
-if nargin < 2, Ntrain = 60000; end
-if nargin < 3, Ntest = 10000; end
-if nargin < 4, full  = false; end
+[binary,Ntrain,Ntest,keepSparse,classes] = processArgs(varargin,'-binary',false,'-ntrain',60000,'-ntest',10000,'-keepSparse',true,'-classes',0:9);
+        
+if nargout < 3, Ntest = 0; end
 
 load mnistALL
 Xtrain = reshape(mnist.train_images(:,:,1:Ntrain),28*28,Ntrain)';
@@ -21,9 +20,16 @@ end
 ytrain = double(ytrain);
 ytest  = double(ytest);
 
-if(full)
+if(~keepSparse)
    Xtrain = double(Xtrain);
    Xtest  = double(Xtest);
+end
+
+if ~isequal(classes,0:9)
+    Xtrain = Xtrain(ismember(ytrain,classes),:); 
+    if numel(Ntest) > 0
+       Xtest = Xtest(ismember(ytest,classes),:);
+    end
 end
 
 end
