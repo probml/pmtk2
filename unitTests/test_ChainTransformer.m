@@ -30,7 +30,19 @@ classdef test_ChainTransformer < UnitTest
 		function test_trainAndApply(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
-		end
+        end
+        
+        
+        function test_addOffset(obj)
+			% add assert statements here...
+			error('empty test method'); % remove this error
+        end
+        
+        function test_ndimensions(obj)
+			% add assert statements here...
+			error('empty test method'); % remove this error
+        end
+        
 
 	end
 end

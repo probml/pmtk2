@@ -22,11 +22,6 @@ classdef MvnConjDist < MvnDist & BayesModel
 		end
 
 
-		function logMargLik(model,varargin)
-		%
-			notYetImplemented('MvnConjDist.logmarglik()');
-		end
-
 
 	end
 

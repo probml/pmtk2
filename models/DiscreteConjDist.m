@@ -22,11 +22,7 @@ classdef DiscreteConjDist < DiscreteDist & BayesModel
 		end
 
 
-		function logMargLik(model,varargin)
-		%
-			notYetImplemented('DiscreteConjDist.logmarglik()');
-		end
-
+		
 
 	end
 

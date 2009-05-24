@@ -181,7 +181,7 @@ while fEvals < maxIter
             curvSat = sum(old_dirs(free==1,:).*old_stps(free==1,:)) > 1e-10;
             
             % Compute descent direction
-            d(free==1) = lbfgsC(-g(free==1),old_dirs(free==1,curvSat),old_stps(free==1,curvSat),Hdiag);
+            d(free==1) = lbfgs(-g(free==1),old_dirs(free==1,curvSat),old_stps(free==1,curvSat),Hdiag);
 
         end
         g_prev = g;

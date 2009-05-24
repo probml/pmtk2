@@ -28,10 +28,7 @@ classdef test_LogRegLaplace < UnitTest
 			error('empty test method'); % remove this error
 		end
 
-		function test_logMargLik(obj)
-			% add assert statements here...
-			error('empty test method'); % remove this error
-        end
+		
         
         function test_getParamPost(obj)
             error('empty test method');

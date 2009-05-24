@@ -1,6 +1,6 @@
 function imputationDemo()
 %% Imputation on random data using specified model
-setSeed(1);
+setSeed(0);
 d = 10;
 helper(MvnDist(randn(1,d),randpd(d)), d, false);
 
@@ -39,7 +39,7 @@ Dtest  = DataTable(XtestMiss);
 
 XimputeTrain = computeFunPost(model,Q,Dtrain,'mode');
 [XimputeTest,Vtest] =  computeFunPost(model,Q,Dtest,{'mode','var'});
-
+Vtest = sqrt(Vtest);
 
 
 

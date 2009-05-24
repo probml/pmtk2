@@ -22,10 +22,7 @@ classdef UgmGaussDecompConj < UgmGaussDecomp & BayesModel
 		end
 
 
-		function logMargLik(model,varargin)
-		%
-			notYetImplemented('UgmGaussDecompConj.logmarglik()');
-		end
+	
 
 
 	end

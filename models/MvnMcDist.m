@@ -22,11 +22,7 @@ classdef MvnMcDist < MvnDist & BayesModel
 		end
 
 
-		function logMargLik(model,varargin)
-		%
-			notYetImplemented('MvnMcDist.logmarglik()');
-		end
-
+	
 
 	end
 

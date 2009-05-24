@@ -22,10 +22,7 @@ classdef MixMvnVb < MixMvn & BayesModel
 		end
 
 
-		function logMargLik(model,varargin)
-		%
-			notYetImplemented('MixMvnVb.logmarglik()');
-		end
+	
 
 
 	end

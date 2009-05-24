@@ -22,12 +22,6 @@ classdef LinRegConj < LinReg & BayesModel
 		end
 
 
-		function logMargLik(model,varargin)
-		%
-			notYetImplemented('LinRegConj.logmarglik()');
-		end
-
-
 	end
 
 

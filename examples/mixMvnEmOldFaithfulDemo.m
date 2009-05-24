@@ -4,7 +4,7 @@
 load oldFaith;
 D = DataTable(X);
 m  = MixMvn('-nmixtures',2);
-m.fitEng.verbose = true;
+%m.fitEng.verbose = true;
 m = fit(m,D);
 post = inferLatent(m,D);
 plot(X(:,1),X(:,2),'.');

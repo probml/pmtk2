@@ -8,7 +8,7 @@ classdef BayesModel
     methods(Abstract = true)
         
         getParamPost;
-        logMargLik;
+
         
         
     end

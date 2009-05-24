@@ -22,11 +22,7 @@ classdef LogRegMc < LogReg & BayesModel
 		end
 
 
-		function logMargLik(model,varargin)
-		%
-			notYetImplemented('LogRegMc.logmarglik()');
-		end
-
+		
 
 	end
 

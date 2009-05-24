@@ -22,12 +22,6 @@ classdef GaussConjDist < GaussDist & BayesModel
 		end
 
 
-		function logMargLik(model,varargin)
-		%
-			notYetImplemented('GaussConjDist.logmarglik()');
-		end
-
-
 	end
 
 

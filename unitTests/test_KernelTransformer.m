@@ -30,7 +30,12 @@ classdef test_KernelTransformer < UnitTest
 		function test_trainAndApply(obj)
 			% add assert statements here...
 			error('empty test method'); % remove this error
-		end
+        end
+        
+        function test_ndimensions(obj)
+            
+           error('empty test method'); 
+        end
 
 	end
 end

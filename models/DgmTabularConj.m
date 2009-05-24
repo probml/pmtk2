@@ -22,11 +22,7 @@ classdef DgmTabularConj < DgmTabular & BayesModel
 		end
 
 
-		function logMargLik(model,varargin)
-		%
-			notYetImplemented('DgmTabularConj.logmarglik()');
-		end
-
+		
 
 	end
 
