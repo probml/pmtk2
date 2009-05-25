@@ -1,5 +1,5 @@
 classdef GaussProcReg < CondModel & NonFiniteParamModel
-%GAUSSPROCREG
+%#NotYetImplemented
 
 
 	properties

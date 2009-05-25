@@ -56,6 +56,10 @@ for i=1:size(specialColors,1)
         nodeColors(classMap.(nodeName),:) = color;
     end
 end
+NYItag = '%#NotYetImplemented';
+ndx = cellfun(@(c)tagsearch(which(c),NYItag),classes);
+nodeColors(ndx,:) = repmat([180,180,180]./255,sum(ndx),1); % grey
+
 %%
 if ~isempty(edgeColors)
     [E,ndx] = unique(edgeColors(:,1),'first');

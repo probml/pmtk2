@@ -1,6 +1,5 @@
 classdef Rbm < BoltzmannMachine
-%RBM
-
+%#NotYetImplemented
 
 	properties
 

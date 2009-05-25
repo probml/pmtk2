@@ -1,5 +1,5 @@
 classdef KdeDist < MultivarDist & NonFiniteParamModel
-%KDEDIST
+%#NotYetImplemented
 
 
 	properties

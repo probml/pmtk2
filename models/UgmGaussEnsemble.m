@@ -1,5 +1,5 @@
 classdef UgmGaussEnsemble < UgmGauss & ModelEnsemble
-
+%#NotYetImplemented
 
 
 	properties

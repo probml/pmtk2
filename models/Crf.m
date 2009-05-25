@@ -1,5 +1,5 @@
 classdef Crf < Ugm & CondModel
-%CRF
+%#NotYetImplemented
 
 
 	properties

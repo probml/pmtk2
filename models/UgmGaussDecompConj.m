@@ -1,5 +1,5 @@
 classdef UgmGaussDecompConj < UgmGaussDecomp & BayesModel
-%UGMGAUSSDECOMPCONJ
+%#NotYetImplemented
 
 
 	properties

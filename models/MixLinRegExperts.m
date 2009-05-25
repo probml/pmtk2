@@ -1,5 +1,5 @@
 classdef MixLinRegExperts < MixtureModel & CondModel
-%MIXLINREGEXPERTS
+%#NotYetImplemented
 
 
 	properties

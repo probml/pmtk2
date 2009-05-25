@@ -1,5 +1,5 @@
 classdef CrfChain < CondModel & ChainModel
-%CRFCHAIN
+%#NotYetImplemented
 
 
 	properties

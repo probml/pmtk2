@@ -1,5 +1,5 @@
 classdef MvnMcDist < MvnDist & BayesModel
-%MVNMCDIST
+%#NotYetImplemented
 
 
 	properties

@@ -1,5 +1,5 @@
 classdef CrfLattice < LatticeModel & CondModel
-%CRFLATTICE
+%#NotYetImplemented
 
 
 	properties

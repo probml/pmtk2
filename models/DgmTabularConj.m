@@ -1,5 +1,5 @@
 classdef DgmTabularConj < DgmTabular & BayesModel
-%DGMTABULARCONJ
+%#NotYetImplemented
 
 
 	properties

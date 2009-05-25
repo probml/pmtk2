@@ -1,5 +1,5 @@
 classdef BoltzmannMachine < Ugm & LatentVarModel
-%BOLTZMANNMACHINE
+%#NotYetImplemented
 
 
 	properties

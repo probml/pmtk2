@@ -1,5 +1,5 @@
 classdef MixProbPca < MixtureModel
-%MIXPROBPCA
+%#NotYetImplemented
 
 
 	properties

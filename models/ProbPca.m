@@ -1,5 +1,5 @@
 classdef ProbPca < LatentVarModel
-%PROBPCA
+%#NotYetImplemented
 
 
 	properties

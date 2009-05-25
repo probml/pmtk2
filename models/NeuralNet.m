@@ -1,5 +1,5 @@
 classdef NeuralNet < CondModel
-%NEURALNET
+%#NotYetImplemented
 
 
 	properties

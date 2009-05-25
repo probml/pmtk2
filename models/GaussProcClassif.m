@@ -1,5 +1,5 @@
 classdef GaussProcClassif < CondModel & NonFiniteParamModel
-%GAUSSPROCCLASSIF
+%#NotYetImplemented
 
 
 	properties

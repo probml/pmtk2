@@ -1,5 +1,5 @@
 classdef ProbCart < CondModel
-%PROBCART
+%#NotYetImplemented
 
 
 	properties
