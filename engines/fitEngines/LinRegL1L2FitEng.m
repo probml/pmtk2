@@ -3,12 +3,11 @@ classdef LinRegL1L2FitEng < CondModelFitEng
     properties
         
         diagnostics;
+        verbose; 
         
     end
 
-    properties(Access = 'protected')
-       verbose; 
-    end
+   
 
 	methods
 

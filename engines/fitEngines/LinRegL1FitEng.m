@@ -5,14 +5,10 @@ classdef LinRegL1FitEng < CondModelFitEng
 	  properties
         
         diagnostics;
-        
+        verbose; 
     end
 
-    properties(Access = 'protected')
-       verbose; 
-    end
-
-
+   
 	methods
 
 		function eng = LinRegL1FitEng(varargin)

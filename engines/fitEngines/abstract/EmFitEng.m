@@ -3,13 +3,14 @@ classdef EmFitEng < FitEng
     
     properties
         diagnostics;
+        verbose = true;
     end
     
     properties(Access = 'protected')
         nrestarts;
         convTol;
         maxIter;
-        verbose = true;
+        
     end
     
     methods(Access = 'protected', Abstract = true)

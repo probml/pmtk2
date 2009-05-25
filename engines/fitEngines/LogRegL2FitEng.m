@@ -1,6 +1,6 @@
 classdef LogRegL2FitEng < LogRegFitEng
       
-    properties(Access = 'protected')
+    properties
         verbose;
     end
     

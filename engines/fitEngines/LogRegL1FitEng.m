@@ -1,8 +1,9 @@
 classdef LogRegL1FitEng < LogRegFitEng
    
     
-    properties(Access = 'protected')
+    properties
         verbose;
+        diagnostics;
     end
     
     methods
@@ -28,7 +29,7 @@ classdef LogRegL1FitEng < LogRegFitEng
                 options.order = -1; % significant speed improvement with this setting
                 options.maxIter = 250;
             end
-            [w,output.fEvals] = L1General(eng.optMethod, objective, winit,lambdaVec, options);
+            [w,eng.diagnostics.fEvals] = L1General(eng.optMethod, objective, winit,lambdaVec, options);
         end
     end
 end
