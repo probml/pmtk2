@@ -136,7 +136,7 @@ function publishExamples(destination,version)
         fid = fopen(fname,'w+');
         fprintf(fid,'<html>\n');
         fprintf(fid,'<head>\n');
-        fprintf(fid,'<font align="left" style="color:#990000"><h2>PMTK Documentation</h2></font>\n');
+        fprintf(fid,'<font align="left" style="color:#990000"><h2>PMTK examples</h2></font>\n');
         if ~isempty(version)
             fprintf(fid,'PMTK Version: %s<br>\n',version);
         end
