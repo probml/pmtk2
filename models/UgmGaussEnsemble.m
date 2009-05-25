@@ -1,10 +1,9 @@
-classdef UgmGaussEnsemble < ModelEnsemble
-%UGMGAUSSENSEMBLE
+classdef UgmGaussEnsemble < UgmGauss & ModelEnsemble
+
 
 
 	properties
 
-		ndimensions;
 
 	end
 
@@ -13,24 +12,6 @@ classdef UgmGaussEnsemble < ModelEnsemble
 
 		function model = UgmGaussEnsemble(varargin)
 		%
-		end
-
-
-		function fit(model,varargin)
-		%
-			notYetImplemented('UgmGaussEnsemble.fit()');
-		end
-
-
-		function logPdf(model,varargin)
-		%
-			notYetImplemented('UgmGaussEnsemble.logpdf()');
-		end
-
-
-		function sample(model,varargin)
-		%
-			notYetImplemented('UgmGaussEnsemble.sample()');
 		end
 
 

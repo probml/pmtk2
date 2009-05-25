@@ -1,12 +1,11 @@
-classdef SimpleDist < ParamModel
-   
-  
-    
+classdef ProbDist
+
     methods(Abstract = true)
-        mean;        
+        mean;
         mode;
         var;
-        entropy;
+        cov;
+        entropy
         plotPdf;
     end
     

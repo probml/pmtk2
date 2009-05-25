@@ -1,7 +1,7 @@
-classdef ModelEnsemble < ProbModel
+classdef ModelEnsemble 
+%#abstract    
+  
+  
     
-    methods(Abstract = true)
-       fit; 
-    end
     
 end

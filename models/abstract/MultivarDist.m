@@ -1,10 +1,7 @@
-classdef MultivarDist < SimpleDist
-
+classdef MultivarDist < ParamDist
+%#abstract
     
-    methods(Abstract = true)
-       cov; 
-        
-    end
+   
     
     
 end

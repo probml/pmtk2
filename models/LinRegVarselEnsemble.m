@@ -1,10 +1,9 @@
-classdef LinRegVarselEnsemble < ModelEnsemble
-%LINREGVARSELENSEMBLE
+classdef LinRegVarselEnsemble < LinReg & ModelEnsemble
+
 
 
 	properties
 
-		ndimensions;
 
 	end
 
@@ -13,24 +12,6 @@ classdef LinRegVarselEnsemble < ModelEnsemble
 
 		function model = LinRegVarselEnsemble(varargin)
 		%
-		end
-
-
-		function fit(model,varargin)
-		%
-			notYetImplemented('LinregVarselEnsemble.fit()');
-		end
-
-
-		function logPdf(model,varargin)
-		%
-			notYetImplemented('LinregVarselEnsemble.logpdf()');
-		end
-
-
-		function sample(model,varargin)
-		%
-			notYetImplemented('LinregVarselEnsemble.sample()');
 		end
 
 

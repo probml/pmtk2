@@ -20,7 +20,7 @@ classdef LogRegFitEng < CondModelFitEng
             C = model.nclasses;
             Y1 = oneOfK(y, C);
             winit = zeros(d*(C-1),1);
-            [W, eng.diagnostics, model] = fitCore(eng, model, X, Y1,  winit);
+            W = fitCore(eng, model, X, Y1,  winit);
             if model.addOffset
                 model.params.w0 = W(1,:);
                 model.params.w = W(2:end,:);

@@ -1,5 +1,5 @@
-classdef ScalarDist < SimpleDist
-
+classdef ScalarDist < ParamDist
+%#abstract
     properties
        ndimensions = 1; 
     end

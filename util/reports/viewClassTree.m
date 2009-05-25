@@ -28,12 +28,17 @@ for c=1:numel(classes)
 end
 
 %%
-% Color these nodes and their outgoing edges. 
-specialColors = {'BayesModel'         ,[72  , 217 , 217 ]./255;
-                 'CondModel'          ,[0   , 255 , 0   ]./255;
-                 'LatentVarModel'     ,[128 , 0   , 255 ]./255;
-                 'GraphicalModel'     ,[239 , 167 , 16  ]./255;
-                 'NonFiniteParamModel',[ 201 , 156 , 95 ] ./255;
+% Color these nodes and their outgoing edges. First come first serve - if a
+% node has two incomming edges of different colors, the color of its
+% outgoing edges will be whichever comes first in this list. 
+
+specialColors = {'BayesModel'         ,[72  , 217 , 217 ] ./255;
+                 'CondModel'          ,[0   , 255 , 0   ] ./255;
+                 'LatentVarModel'     ,[128 , 0   , 255 ] ./255;
+                 'GraphicalModel'     ,[239 , 167 , 16  ] ./255;
+                 'NonFiniteParamModel',[ 0  , 0   , 255 ] ./255;
+                 'ProbDist'           ,[0   , 128 , 64  ] ./255;
+                 'ModelEnsemble'      ,[221,  0   , 0   ] ./255;
                 };
 
 edgeColors = {};

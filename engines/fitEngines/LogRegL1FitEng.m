@@ -3,7 +3,7 @@ classdef LogRegL1FitEng < LogRegFitEng
     
     properties
         verbose;
-        diagnostics;
+        
     end
     
     methods
@@ -24,6 +24,9 @@ classdef LogRegL1FitEng < LogRegFitEng
             if model.addOffset,lambdaVec(:,1) = 0;end % don't regularize w0
             lambdaVec = lambdaVec(:);
             objective = @(w,varargin)multinomLogregNLLGradHessL2(w, X, Y1,0,false); % unpenalized objective (lambda=0 turns off L2 regularizer)
+            %TODO move multinomLogRegNLLGradHessL2 from /util/misc to
+            %LogRegFitEng protected methods
+            
             options.verbose = eng.verbose;
             if strcmpi(eng.optMethod, 'projection')
                 options.order = -1; % significant speed improvement with this setting
