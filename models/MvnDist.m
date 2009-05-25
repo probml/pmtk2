@@ -163,6 +163,7 @@ classdef MvnDist < MultivarDist
         end
 
         function [model,success,diagn] = fit(model,varargin)
+          % Find MLE or MAP estimate of an Mvn
           if ~isempty(model.fitEng)
             [model,success,diagn] = fit(model.fitEng,model,varargin{:});
           else
