@@ -245,17 +245,18 @@ classdef MvnDist < MultivarDist
         % Called from constructor
         if isempty(model.params.mu)
           if isempty(model.ndimensions)
-            error('must specify mu or ndimensions')
-          else
-            % Make rnd params of required size
-            d = model.ndimensions;
-            model.params.mu = randn(d,1);
-            switch model.covType
-              % We currently always store Sigma as a full matrix 
-              case 'full', model.params.Sigma = randpd(d);
-              case 'diag', model.params.Sigma = diag(rand(d,1));
-              case 'spherical', model.params.Sigma = rand(1,1)*eye(d);
-            end
+            model.ndimensions = 1;
+            % must be able to an object of type MvnDist with no params
+            %error('must specify mu or ndimensions')
+          end
+          % Make rnd params of required size
+          d = model.ndimensions;
+          model.params.mu = randn(d,1);
+          switch model.covType
+            % We currently always store Sigma as a full matrix
+            case 'full', model.params.Sigma = randpd(d);
+            case 'diag', model.params.Sigma = diag(rand(d,1));
+            case 'spherical', model.params.Sigma = rand(1,1)*eye(d);
           end
         else
           model.params.mu = rowvec(model.params.mu);
