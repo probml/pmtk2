@@ -3,7 +3,7 @@ classdef SampleDist < ParamFreeDist
     properties
         
         ndimensions;
-        samples;
+        samples; % rows samples, cols = dimensions
         domain;  % integer labels for the columns
         
     end
