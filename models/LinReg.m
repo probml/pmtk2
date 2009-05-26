@@ -1,13 +1,15 @@
 classdef LinReg < CondModel
-%LINREG
-
 
 	properties
 
 		dof;
-		ndimensions;
+		ndimensions = 1;
 		params;
 		prior;
+        transformer;
+        lambda;
+        fitEng;
+        addOffset;
 
 	end
 
@@ -15,19 +17,28 @@ classdef LinReg < CondModel
 	methods
 
 		function model = LinReg(varargin)
-		%
+               [model.params.w0,...
+                model.params.w,...
+                model.params.sigma2,...
+                model.prior,...
+                model.lambda,...
+                model.fitEng,...
+                model.addOffset,...
+                model.transformer] = processArgs(varargin,...
+                '-w0',[],...
+                '-w' ,[],...
+                '-sigma2',[],...
+                '-prior',NoPrior(),...
+                '-lambda',0,...
+                '-fitEng',[],...
+                '-addOffset',true,...
+                '-transformer',NoOpTransformer());
+                
 		end
 
-
-		function computeMapOutput(model,varargin)
-		%
-			notYetImplemented('LinReg.computeMapOutput()');
-		end
-
-
-		function fit(model,varargin)
-		%
-			notYetImplemented('LinReg.fit()');
+		function model = fit(model,varargin)
+            D = processArgs(varargin,'+*-data',DataTableXY());
+			model = fit(model.fitEng,model,D);
 		end
 
 

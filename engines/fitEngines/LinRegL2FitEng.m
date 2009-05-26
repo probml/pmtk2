@@ -1,29 +1,34 @@
 classdef LinRegL2FitEng < CondModelFitEng
-
-
-
-	  properties
+    
+    
+    
+    properties
         
         diagnostics;
-        verbose; 
-        
+        verbose = true;
     end
-
     
-
-	methods
-
-		function eng = LinRegL2FitEng(varargin)
-		%
-        end
+    
+    methods(Access = 'protected')
         
-        function model = fit(eng,varargin)
-            notYetImplemented();
+        function [w,dof] = fitCore(eng,model,XC,yC) 
+            d = size(XC,2);
+            XX  = [XC; sqrt(model.lambda)*eye(d)];
+            yy = [yC; zeros(d,1)];
+            w  = XX \ yy; % QR
+            dof = dofRidge(eng,XC,model.lambda);
         end
-
-
-	end
-
-
+    end
 end
+
+
+
+
+
+
+
+
+
+
+
 
