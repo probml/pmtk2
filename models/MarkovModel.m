@@ -1,15 +1,11 @@
 classdef MarkovModel < ChainModel
     
     properties
-        
         dof;
         ndimensions;
-        params;    % stores transitionDist
-        prior;     % starting distribution
-        
-        
+        params;      % stores transitionDist
+        prior;       % starting distribution 
     end
-    
     
     methods
         
@@ -48,8 +44,6 @@ classdef MarkovModel < ChainModel
             model.transitionDist = fit(model.transitionDist,'-suffStat',SS);
         end
         
-       
-        
         function logp = logPdf(model,X)
             % logp(i) = log(p(X(i,:) | params)) or log(p(X{i} | params)
             map = @(x)canonizeLabels(x,model.params.transDist.support);
@@ -81,10 +75,5 @@ classdef MarkovModel < ChainModel
             T = pmf(model.params.transDist)';
             pi = DiscreteDist((ones(1,K) / (eye(K)-T+ones(K)))');
         end
-        
-        
     end
-    
-    
 end
-
