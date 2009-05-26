@@ -110,35 +110,6 @@ classdef MvnDist < MultivarDist
             end
         end
         
-        
-        
-        
-        
-        %         function mat = computeFunPostMissing(model,D)
-        %
-        %         end
-        %
-        
-        %         function M = computeMap(model,varargin)
-        %             [Q,D] = processArgs(varargin,'+-query',Query(),'+-data',DataTable());
-        %             M = rowvec(mode(infer(model,Q,D(1))));
-        %             nc = ncases(D);
-        %             if nc > 1
-        %                M = [M,zeros(nc-1,size(M,2))];
-        %                for i=2:nc
-        %                    M(i,:) = rowvec(mode(infer(model,Q,D(i))));
-        %                end
-        %             end
-        %         end
-        
-        %         function D = computeMapMissing(model,D)
-        %         % imputation
-        %             for i=1:ncases(D)
-        %                 hid = hidden(D(i));
-        %                 D(i,hid) = mode(infer(model,Query(hid),D(i,visible(D(i)))));
-        %             end
-        %         end
-        
         function S = cov(model,varargin)
             S = model.params.Sigma;
         end
