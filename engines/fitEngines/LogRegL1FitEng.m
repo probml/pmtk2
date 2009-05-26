@@ -23,7 +23,7 @@ classdef LogRegL1FitEng < LogRegFitEng
             lambdaVec = model.lambda*ones(d,C-1);
             if model.addOffset,lambdaVec(:,1) = 0;end % don't regularize w0
             lambdaVec = lambdaVec(:);
-            objective = @(w,varargin)multinomLogregNLLGradHessL2(w, X, Y1,0,false); % unpenalized objective (lambda=0 turns off L2 regularizer)
+            objective = @(w,varargin)LogRegFitEng.multinomLogregNLLGradHessL2(w, X, Y1,0,false); % unpenalized objective (lambda=0 turns off L2 regularizer)
             %TODO move multinomLogRegNLLGradHessL2 from /util/misc to
             %LogRegFitEng protected methods
             
