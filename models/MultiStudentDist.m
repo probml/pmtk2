@@ -17,7 +17,7 @@ classdef MultiStudentDist < MultivarDist
         
         function model = MultiStudentDist(varargin)
             [model.params.dof,model.params.mu,model.params.Sigma] = processArgs(varargin,'-dof',[],'-mu',[],'-Sigma',[]);
-            model.ndimensions = length(model.mu);
+            model.ndimensions = length(model.params.mu);
         end
         
         
@@ -118,7 +118,9 @@ classdef MultiStudentDist < MultivarDist
                 + (d/2)*log(v) + (d/2)*log(pi);
         end
         
-        
+    end
+    
+    methods
         % These should really be added to an inference engine
          
         function mm = marginal(model, queryVars)
@@ -128,7 +130,7 @@ classdef MultiStudentDist < MultivarDist
             if d == 1, error('cannot compute marginal of a 1d rv'); end
             mu = mean(model); C = cov(model);
             dims = queryVars;
-            mm = MvtDist(model.params.dof, mu(dims), C(dims,dims));
+            mm = MultiStudentDist(model.params.dof, mu(dims), C(dims,dims));
             if length(dims)==1
                 mm = convertToScalarDist(mm);
             end

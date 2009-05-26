@@ -9,7 +9,7 @@ classdef LogRegFitEng < CondModelFitEng
         
         function model = fit(eng,model,D)
             
-            X = D.X; y = D.Y;
+            X = D.X; y = D.y;
             [X, model.transformer] = trainAndApply(model.transformer, X);
             n = size(X,1);
             if model.addOffset,  X = [ones(n,1) X];  end

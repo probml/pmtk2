@@ -11,6 +11,7 @@ classdef LinReg < CondModel
         fitEng;
         addOffset;
         
+        
     end
     
     
@@ -30,7 +31,7 @@ classdef LinReg < CondModel
                 '-sigma2',[],...
                 '-prior',NoPrior(),...
                 '-lambda',0,...
-                '-fitEng',LogRegL2FitEng,...
+                '-fitEng',LinRegL2FitEng,...
                 '-addOffset',true,...
                 '-transformer',NoOpTransformer());
             
@@ -59,7 +60,7 @@ classdef LinReg < CondModel
             yHat = X*ww;
             if nargout >= 2
                 sigma2Hat = model.params.sigma2*ones(n,1); % constant variance!
-                pY = GaussDist(yhat, sigma2Hat);
+                pY = GaussDist(yHat, sigma2Hat);
             end
             
             

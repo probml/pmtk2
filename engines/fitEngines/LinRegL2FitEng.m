@@ -1,4 +1,4 @@
-classdef LinRegL2FitEng < CondModelFitEng
+classdef LinRegL2FitEng < LinRegFitEng
     
     
     

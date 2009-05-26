@@ -95,17 +95,17 @@ classdef LinRegConj < LinReg & BayesModel
         end
         
         function [w0,S0,a0,b0] = getHyperparamsUnknownVariance(model, d)
-            if isempty(model.wSigmaDist) % make a prior of specified strength
+            if isempty(model.paramDist.wSigmaDist) % make a prior of specified strength
                 w0 = zeros(d,1);
                 prior_precision = model.lambda*eye(d);
                 prior_precision(1,1) = 1e-10; % for offset
                 S0 = diag(1./diag(prior_precision));  % prior cov mat
                 a0 = 0.01; b0 = 0.01;  % vague
             else
-                a0 = model.wSigmaDist.a;
-                b0 = model.wSigmaDist.b;
-                w0 = model.wSigmaDist.mu(:);
-                S0 = model.wSigmaDist.Sigma;
+                a0 = model.paramDist.wSigmaDist.params.a;
+                b0 = model.paramDist.wSigmaDist.params.b;
+                w0 = model.paramDist.wSigmaDist.params.mu(:);
+                S0 = model.paramDist.wSigmaDist.params.Sigma;
             end
         end
         
@@ -133,7 +133,7 @@ classdef LinRegConj < LinReg & BayesModel
                 noninformative = false;
                 Lam0 = inv(S0);
             end
-            [wn, Sn] = LinregConjugate.normalEqnsBayes(X, y, Lam0, w0, 1);
+            [wn, Sn] = LinRegConj.normalEqnsBayes(X, y, Lam0, w0, 1);
             n = size(X,1);
             vn = v0 + n;
             an = vn/2;
@@ -143,7 +143,7 @@ classdef LinRegConj < LinReg & BayesModel
                 sn2 = (1/vn)*(v0*s02 + (y-X*wn)'*(y-X*wn) + (wn-w0)'*Sn*(wn-w0));
             end
             bn = vn*sn2/2;
-            model.wSigmaDist = MvnInvGammaDist('mu', wn, 'Sigma', Sn, 'a', an, 'b', bn);
+            model.paramDist.wSigmaDist = MvnInvGammaDist('-mu', wn, '-Sigma', Sn, '-a', an, '-b', bn);
         end
         
         
