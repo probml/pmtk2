@@ -73,7 +73,7 @@ classdef InvWishartDist < MultivarDist
 
 
 		function m = mean(model)
-            m = model.params.Sigma / (model.params.dofParam - model.ndimensions(model) - 1);
+            m = model.params.Sigma / (model.params.dof - model.ndimensions - 1);
 		end
 
 
@@ -82,17 +82,17 @@ classdef InvWishartDist < MultivarDist
         end
 
 
-        function [h,p] = plotPdf(model, varargin)
-            if mode.ndimensions==1
+        function h = plotPdf(model, varargin)
+            if model.ndimensions==1
                 objS = convertToScalarDist(model);
-                [h,p] = plotPdf(objS, varargin{:});
+                h = plotPdf(objS, varargin{:});
             else
                 error('can only plot 1d')
             end
         end
         
         
-        function sample(model,n)
+        function  X = sample(model,n)
         % X(:,:,i) is a random matrix drawn from IW() for i=1:n
             d = model.ndimensions;
             if nargin < 2, n = 1; end
@@ -109,8 +109,8 @@ classdef InvWishartDist < MultivarDist
             nr = d; nc = d;
             for i=1:d
                 subplot2(nr,nc,i,i);
-                m = marginal(model, i);
-                plot(m, 'plotArgs', {'linewidth',2});
+                m = marginal(model, Query(i));
+                plotPdf(m, '-plotArgs', {'linewidth',2});
                 title(sprintf('%s_%d','\sigma^2', i));
             end
             n = 1000;
@@ -141,7 +141,7 @@ classdef InvWishartDist < MultivarDist
             for i=1:n
                 pgauss = MvnDist([0 0], Sigmas(:,:,i));
                 subplot(nr, nc,i)
-                h=gaussPlot2d(pgauss.mu, pgauss.Sigma);
+                h=gaussPlot2d(pgauss.params.mu, pgauss.params.Sigma);
                 %grid on
             end
         end
@@ -162,7 +162,11 @@ classdef InvWishartDist < MultivarDist
     
     methods(Access = 'protected')
         function model = initialize(model)
-            
+            if ~isempty(model.params.Sigma)
+                model.ndimensions = length(model.params.Sigma);
+            else
+                model.ndimensions = 1;
+            end
         end
     end
     

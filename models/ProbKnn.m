@@ -44,7 +44,7 @@ classdef ProbKnn < CondModel & NonFiniteParamModel
             X = D.X; y = D.y;
             [X,model.transformer] = trainAndApply(model.transformer,X);
             model.params.X = X;
-            if isemtpy(model.params.support)
+            if isempty(model.prior.support)
                 model.prior.support = unique(y);
             end
             model.params.y = y;
@@ -59,7 +59,7 @@ classdef ProbKnn < CondModel & NonFiniteParamModel
             nclasses = numel(model.prior.support);
             probs = zeros(ntest,nclasses);
             batch = largestBatch(model,1,ntest);
-            if(obj.verbose)
+            if(model.verbose)
                 if(batch(end) == ntest)
                     wbar = waitbar(0,sprintf('Classifying all %d examples in a single batch...',ntest));
                 else
@@ -69,12 +69,12 @@ classdef ProbKnn < CondModel & NonFiniteParamModel
             end
             while ~isempty(batch)
                 probs(batch,:) = inferHelper(model,Xtest(batch,:));
-                if(obj.verbose),t = toc; waitbar(batch(end)/ntest,wbar,sprintf('%d of %d Classified\nElapsed Time: %.2f seconds',batch(end),ntest,t));end
+                if(model.verbose),t = toc; waitbar(batch(end)/ntest,wbar,sprintf('%d of %d Classified\nElapsed Time: %.2f seconds',batch(end),ntest,t));end
                 batch = largestBatch(model,batch(end)+1,ntest);
             end
             if(model.verbose && ishandle(wbar)),close(wbar);end
             SS.counts = probs';
-            pY = fit(DiscreteDist('-suffStat',SS));
+            pY = fit(DiscreteDist(),'-suffStat',SS);
             yHat = mode(pY);
         end
         
@@ -108,10 +108,10 @@ classdef ProbKnn < CondModel & NonFiniteParamModel
                 weights = model.params.localKernel(data,model.params.X,sortedDst,kNearest);
                 counts = zeros(size(data,1),nclasses);
                 for j=1:nclasses
-                    counts(:,j) = counts(:,j) + sum((support(kNearest) == j).*weights,2);
+                    counts(:,j) = counts(:,j) + sum((model.params.y(kNearest) == j).*weights,2);
                 end
             else
-                counts = histc(support(kNearest),1:nclasses,2);
+                counts = histc(model.params.y(kNearest),1:nclasses,2);
             end
             if(model.params.useSoftMax)
                 probs = normalize(exp(counts*model.params.invTemp),2);
@@ -138,7 +138,7 @@ classdef ProbKnn < CondModel & NonFiniteParamModel
         
         function model = setLocalKernel(model)
             if ~ischar(model.params.localKernel), return; end
-            switch lower(kernelName)
+            switch lower(model.params.localKernel)
                 case 'epanechnikov'
                     model.params.localKernel = @epanechnikovKernel;
                 case 'tricube'

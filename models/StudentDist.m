@@ -11,7 +11,7 @@ classdef StudentDist < ScalarDist
     methods
         
         function model = StudentDist(varargin)
-            [model.params.mu,model.params.Sigma2,model.params.dof] = processArgs(varargin,'-mu',[],'-Sigma2',[],'-dof',[]);
+            [model.params.mu,model.params.sigma2,model.params.dof] = processArgs(varargin,'-mu',[],'-Sigma2',[],'-dof',[]);
         end
         
         function [l,u] = credibleInterval(model, p)
@@ -85,7 +85,11 @@ classdef StudentDist < ScalarDist
         end
         
         
-        function h=plot(model, varargin)
+        function c = cov(model)
+           c = var(model); 
+        end
+        
+        function h=plotPdf(model, varargin)
             sf = 2;
             m = mean(model); v = sqrt(var(model));
             xrange = [m-sf*v, m+sf*v];

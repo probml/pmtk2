@@ -48,7 +48,7 @@ classdef GaussDist < ScalarDist & ParallelizableDist
         end
         
         function mu = mean(m)
-            mu = m.mu;
+            mu = m.params.mu;
         end
         
         function mu = mode(m)
@@ -56,7 +56,7 @@ classdef GaussDist < ScalarDist & ParallelizableDist
         end
         
         function v = var(m)
-            v = m.sigma2;
+            v = m.params.sigma2;
         end
         
         
@@ -70,7 +70,7 @@ classdef GaussDist < ScalarDist & ParallelizableDist
         end
         
         
-        function h=plot(model, varargin)
+        function h=plotPdf(model, varargin)
             sf = 2;
             m = mean(model); v = sqrt(var(model));
             xrange = [m-sf*v, m+sf*v];
@@ -78,7 +78,7 @@ classdef GaussDist < ScalarDist & ParallelizableDist
                 varargin, '-plotArgs' ,{}, '-npoints', 100, ...
                 '-xrange', xrange, '-useLog', false);
             xs = linspace(xrange(1), xrange(2), npoints);
-            p = logPdf(model, xs(:));
+            p = logPdf(model, DataTable(xs(:)));
             if ~useLog, p = exp(p); end
             h = plot(colvec(xs), colvec(p), plotArgs{:});
         end
@@ -91,6 +91,9 @@ classdef GaussDist < ScalarDist & ParallelizableDist
             X = randn(n,d) .* repmat(sqrt(model.params.sigma2), n, 1) + repmat(model.params.mu, n, 1);
         end
         
+        function c = cov(model)
+           c = var(model); 
+        end
         
         
         function [L,Lij] = logPdf(model,D)

@@ -39,7 +39,7 @@ classdef DirichletDist < MultivarDist
         end
         
         
-        function p = logprob(obj, D)
+        function p = logPdf(obj, D)
             % p(i) = log p(X(i,:) | params) where each row is a vector of size d
             % that sums to one
             X = D.X;
