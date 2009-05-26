@@ -4,7 +4,7 @@ function  h = viewClassTree(varargin)
 % Needs Graphlayout
 % Classes must use classdef syntax not old style
 
-args = processArgs(varargin,'-source',pwd(),'-ignoreDirs',{},'-topOnly',false,'-topClass',[]);
+args = processArgs(varargin,'-source',pwd(),'-ignoreDirs',{'unitTests',fullfile('util','graphs','graphlayout')},'-topOnly',false,'-topClass',[]);
 [topClass,unusedArgs] = extractArgs(4,args);
 layout = Treelayout();
 
