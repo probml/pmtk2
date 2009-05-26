@@ -1,12 +1,12 @@
 classdef MvnDist < MultivarDist
-% Multivariate Normal Distribution
-
-
-	properties
-		dof;
-		ndimensions;
-		params;
-		prior;
+    % Multivariate Normal Distribution
+    
+    
+    properties
+        dof;
+        ndimensions;
+        params;
+        prior;
         infEng;
         fitEng;
     end
@@ -14,30 +14,30 @@ classdef MvnDist < MultivarDist
     properties
         covType;
     end
-   
-	methods
-
-		function model = MvnDist(varargin)
-           if nargin == 0; return ;end
+    
+    methods
+        
+        function model = MvnDist(varargin)
+            if nargin == 0; return ;end
             [ model.params.mu , model.params.Sigma        ,...
-              model.prior     , model.ndimensions         ,...
-              model.infEng    , model.fitEng              ,...
-              model.covType   , model.params.domain       ,...
-            ] = processArgs(varargin                      ,...
-              '-mu'          , []                         ,...
-              '-Sigma'       , []                         ,...
-              '-prior'       , NoPrior()                  ,...
-              '-ndimensions' , []                         ,...
-              '-infEng'      , MvnJointGaussInfEng()      ,...
-              '-fitEng'      , []                         ,...
-              '-covType'     , 'full'                     ,...
-              '-domain'      , []                         );
+                model.prior     , model.ndimensions         ,...
+                model.infEng    , model.fitEng              ,...
+                model.covType   , model.params.domain       ,...
+                ] = processArgs(varargin                      ,...
+                '-mu'          , []                         ,...
+                '-Sigma'       , []                         ,...
+                '-prior'       , NoPrior()                  ,...
+                '-ndimensions' , []                         ,...
+                '-infEng'      , MvnJointGaussInfEng()      ,...
+                '-fitEng'      , []                         ,...
+                '-covType'     , 'full'                     ,...
+                '-domain'      , []                         );
             model = initialize(model); % sets ndimensions, dof, params if nec.
         end
-
         
-        function M = infer(model,varargin)   
-            [Q,D,expand] = processArgs(varargin,'+-query',Query(),'+-data',DataTable(),'-expand',false); 
+        
+        function M = infer(model,varargin)
+            [Q,D,expand] = processArgs(varargin,'+-query',Query(),'+-data',DataTable(),'-expand',false);
             nc = ncases(D);
             if nc < 2
                 M = computeMarginals(enterEvidence(model.infEng,model,D),Q);
@@ -51,25 +51,25 @@ classdef MvnDist < MultivarDist
                 for i=1:nc
                     eng = enterEvidence(model.infEng,model,D(i));
                     [marg,qryNdx] = computeMarginals(eng,Q);
-                    if ~isempty(qryNdx) 
+                    if ~isempty(qryNdx)
                         M(i,unwrapCell(qryNdx)) = marg;
                     end
                 end
             end
-             M = unwrapCell(M); 
+            M = unwrapCell(M);
         end
         
         function varargout = computeFunPost(model,varargin)
-        % Compute a function of the posterior    
+            % Compute a function of the posterior
             [Q , D , funstr , fnArgs , expand , filler] = processArgs(varargin,...
                 '+-query'   , Query()     ,...
                 '+-data'    , DataTable() ,...
-                '-func'     , 'mode'      ,... 
+                '-func'     , 'mode'      ,...
                 '-fnArgs'   , {}          ,...
                 '-expand'   , 'auto'      ,... % if true, expands output to ncases(D)-by-model.ndimensions, (e.g. for imputation)
                 '-filler'   , {}          );   % value to fill empty entries with, if expand = true - can use string 'visibleData'
             if ~iscell(expand) && (isempty(expand) || strcmp(expand,'auto'))
-                expand = ~isRagged(Q); 
+                expand = ~isRagged(Q);
             end
             if isempty(filler) && ~iscell(funstr)
                 switch funstr
@@ -80,19 +80,19 @@ classdef MvnDist < MultivarDist
                 end
             end
             if iscell(funstr)  % call computeFunPost recursively for each function
-               nfuncs = numel(funstr);
-               [fnArgs,filler,expand,varargout] = expandCells(nfuncs,fnArgs,filler,expand,{});
-               for i=1:nfuncs
-                   varargout{i} = computeFunPost(model,Q,D,funstr{i},fnArgs{i},expand{i},filler{i});
-               end
-               return;
+                nfuncs = numel(funstr);
+                [fnArgs,filler,expand,varargout] = expandCells(nfuncs,fnArgs,filler,expand,{});
+                for i=1:nfuncs
+                    varargout{i} = computeFunPost(model,Q,D,funstr{i},fnArgs{i},expand{i},filler{i});
+                end
+                return;
             end
             
             func = str2func(funstr);
-            P = infer(model,Q,D,'-expand',boolValue(expand)); 
+            P = infer(model,Q,D,'-expand',boolValue(expand));
             
             if ~iscell(P) % not a batch query
-                 varargout = cellwrap(func(P,fnArgs{:})); % apply the function to the posterior
+                varargout = cellwrap(func(P,fnArgs{:})); % apply the function to the posterior
             else
                 func = protect(curry(func,fnArgs{:}),NaN); % fill in empty entries with NaN so we can easily fill them in later
                 M = unwrapCell(cellfunR(func,P));          % recursively apply the function to all posterior objects
@@ -101,7 +101,7 @@ classdef MvnDist < MultivarDist
                     ndx = isnan(M);
                     if ischar(filler) && strcmpi(filler,'visibleData')
                         X = D.X;
-                        M(ndx) = X(ndx);   
+                        M(ndx) = X(ndx);
                     else
                         M(ndx) = filler;
                     end
@@ -114,44 +114,44 @@ classdef MvnDist < MultivarDist
         
         
         
-%         function mat = computeFunPostMissing(model,D)
-%             
-%         end
-%         
+        %         function mat = computeFunPostMissing(model,D)
+        %
+        %         end
+        %
         
-%         function M = computeMap(model,varargin)    
-%             [Q,D] = processArgs(varargin,'+-query',Query(),'+-data',DataTable());
-%             M = rowvec(mode(infer(model,Q,D(1))));
-%             nc = ncases(D);
-%             if nc > 1
-%                M = [M,zeros(nc-1,size(M,2))];
-%                for i=2:nc
-%                    M(i,:) = rowvec(mode(infer(model,Q,D(i))));
-%                end
-%             end
-%         end
+        %         function M = computeMap(model,varargin)
+        %             [Q,D] = processArgs(varargin,'+-query',Query(),'+-data',DataTable());
+        %             M = rowvec(mode(infer(model,Q,D(1))));
+        %             nc = ncases(D);
+        %             if nc > 1
+        %                M = [M,zeros(nc-1,size(M,2))];
+        %                for i=2:nc
+        %                    M(i,:) = rowvec(mode(infer(model,Q,D(i))));
+        %                end
+        %             end
+        %         end
         
-%         function D = computeMapMissing(model,D)
-%         % imputation
-%             for i=1:ncases(D)
-%                 hid = hidden(D(i));
-%                 D(i,hid) = mode(infer(model,Query(hid),D(i,visible(D(i)))));    
-%             end   
-%         end
+        %         function D = computeMapMissing(model,D)
+        %         % imputation
+        %             for i=1:ncases(D)
+        %                 hid = hidden(D(i));
+        %                 D(i,hid) = mode(infer(model,Query(hid),D(i,visible(D(i)))));
+        %             end
+        %         end
         
         function S = cov(model,varargin)
             S = model.params.Sigma;
-		end
-
-		function H = entropy(model,varargin)
-           H = 0.5*logdet(model.params.Sigma) + (model.ndimensions/2)*(1+log(2*pi));
+        end
+        
+        function H = entropy(model,varargin)
+            H = 0.5*logdet(model.params.Sigma) + (model.ndimensions/2)*(1+log(2*pi));
         end
         
         function SS = mkSuffStat(model,D,weights) %#ok
-        % SS.n
-        % SS.xbar = 1/n sum_i X(i,:)'
-        % SS.XX(j,k) = 1/n sum_i XC(i,j) XC(i,k) - centered around xbar
-        % SS.XX2(j,k) = 1/n sum_i X(i,j) X(i,k)  - not mean centered
+            % SS.n
+            % SS.xbar = 1/n sum_i X(i,:)'
+            % SS.XX(j,k) = 1/n sum_i XC(i,j) XC(i,k) - centered around xbar
+            % SS.XX2(j,k) = 1/n sum_i X(i,j) X(i,k)  - not mean centered
             if nargin < 3, weights = ones(ncases(D),1); end
             X = D.X;
             SS.n = sum(weights,1);
@@ -161,74 +161,74 @@ classdef MvnDist < MultivarDist
             SS.XX = bsxfun(@times,X,weights)'*X/SS.n;
             assert(isposdef(SS.XX));
         end
-
+        
         function [model,success,diagn] = fit(model,varargin)
-          % Find MLE or MAP estimate of an Mvn
-          if ~isempty(model.fitEng)
-            [model,success,diagn] = fit(model.fitEng,model,varargin{:});
-          else
-            [D,SS] = processArgs(varargin,'+-data',DataTable(),'-suffStat',[]);
-            switch class(model.prior)
-              case 'NoPrior'
-                if isempty(SS)
-                  X = D.X;
-                  mu = mean(X,1);
-                  Sigma = cov(X);
-                else
-                  mu    = SS.xbar;
-                  Sigma = SS.XX;
+            % Find MLE or MAP estimate of an Mvn
+            if ~isempty(model.fitEng)
+                [model,success,diagn] = fit(model.fitEng,model,varargin{:});
+            else
+                [D,SS] = processArgs(varargin,'+-data',DataTable(),'-suffStat',[]);
+                switch class(model.prior)
+                    case 'NoPrior'
+                        if isempty(SS)
+                            X = D.X;
+                            mu = mean(X,1);
+                            Sigma = cov(X);
+                        else
+                            mu    = SS.xbar;
+                            Sigma = SS.XX;
+                        end
+                    otherwise
+                        [mu,Sigma] = fitMap(model,varargin);
                 end
-              otherwise
-                [mu,Sigma] = fitMap(model,varargin);
+                switch model.covType
+                    case 'diag', Sigma = diag(diag(Sigma)); % store as matrix not vector
+                    case 'spherical', error('spherical Mvn not yet supported')
+                end
+                success = isposdef(model.params.Sigma);
+                model.params.mu    = mu;
+                model.params.Sigma = Sigma;
+                diagn = [];
             end
-            switch model.covType
-              case 'diag', Sigma = diag(diag(Sigma)); % store as matrix not vector
-              case 'spherical', error('spherical Mvn not yet supported')
-            end
-            success = isposdef(model.params.Sigma);
-            model.params.mu    = mu;
-            model.params.Sigma = Sigma;
-            diagn = [];
-          end
-          % KPM: no longer call initialize since size of model
-          % known at construction time
-          %model = initialize(model);  % sets dof, ndimensions, etc
+            % KPM: no longer call initialize since size of model
+            % known at construction time
+            %model = initialize(model);  % sets dof, ndimensions, etc
         end
-
-		function logp = logPdf(model,D)
+        
+        function logp = logPdf(model,D)
             logp = computeLogPdf(model.infEng,model,D);
-		end
-
-		function mu = mean(model,varargin)
+        end
+        
+        function mu = mean(model,varargin)
             mu = model.params.mu;
-		end
-
-		function mu = mode(model,varargin)
+        end
+        
+        function mu = mode(model,varargin)
             mu = mean(model,varargin{:});
-		end
-
-		function h = plotPdf(model,varargin)
-      mu = model.params.mu; Sigma = model.params.Sigma;
-      d = model.ndimensions;
-      switch d
-        case 1,
-          xs = linspace(mu-4*Sigma, mu+4*Sigma, 100);
-          % DataTable must be a column vector, otherwise interpreted as
-          % product
-          h = plot(xs, exp(logPdf(model, DataTable(colvec(xs)))));
-        case 2,
-          h = gaussPlot2d(mu, Sigma);
-        otherwise
-          error(sprintf('cannot plot in %d dimensions', d))
-      end
-		end
-
-		function S = sample(model,n)
+        end
+        
+        function h = plotPdf(model,varargin)
+            mu = model.params.mu; Sigma = model.params.Sigma;
+            d = model.ndimensions;
+            switch d
+                case 1,
+                    xs = linspace(mu-4*Sigma, mu+4*Sigma, 100);
+                    % DataTable must be a column vector, otherwise interpreted as
+                    % product
+                    h = plot(xs, exp(logPdf(model, DataTable(colvec(xs)))));
+                case 2,
+                    h = gaussPlot2d(mu, Sigma);
+                otherwise
+                    error(sprintf('cannot plot in %d dimensions', d))
+            end
+        end
+        
+        function S = sample(model,n)
             if nargin < 2, n = 1; end
             S = computeSamples(model.infEng,model,n);
         end
         
-		function v = var(model,varargin)
+        function v = var(model,varargin)
             v = diag(model.params.Sigma);
         end
     end
@@ -239,55 +239,55 @@ classdef MvnDist < MultivarDist
     
     
     methods(Access = 'protected')
-      
-      function model = initialize(model)
-        % Make random params if none specified.
-        % Infer values of other fields.
-        % Called from constructor
-        if isempty(model.params.mu)
-          if isempty(model.ndimensions)
-            model.ndimensions = 1;
-            % must be able to an object of type MvnDist with no params
-            %error('must specify mu or ndimensions')
-          end
-          % Make rnd params of required size
-          d = model.ndimensions;
-          model.params.mu = randn(d,1);
-          switch model.covType
-            % We currently always store Sigma as a full matrix
-            case 'full', model.params.Sigma = randpd(d);
-            case 'diag', model.params.Sigma = diag(rand(d,1));
-            case 'spherical', model.params.Sigma = rand(1,1)*eye(d);
-          end
-        else
-          model.params.mu = rowvec(model.params.mu);
-          d = length(model.params.mu);
-          if ~isempty(model.ndimensions)
-            if model.ndimensions ~= d
-              error('inconsistent ndimensions')
-            end
-          else
-            model.ndimensions = d;
-          end
-        end
-        switch model.covType
-          case 'full', model.dof = d + ((d*(d+1))/2);   
-          case 'diag', model.dof = d + d;
-          case 'spherical', model.dof = d+1;
-        end
-        if isempty(model.params.domain)
-          model.params.domain = 1:model.ndimensions;
-        end
-      end
-      
-      
-      function [mu,Sigma] = fitMap(model,SS)
-        notYetImplemented('MVN Map Estimation');
-      end
-      
         
-      end
-      
-      
+        function model = initialize(model)
+            % Make random params if none specified.
+            % Infer values of other fields.
+            % Called from constructor
+            if isempty(model.params.mu)
+                if isempty(model.ndimensions)
+                    model.ndimensions = 1;
+                    % must be able to an object of type MvnDist with no params
+                    %error('must specify mu or ndimensions')
+                end
+                % Make rnd params of required size
+                d = model.ndimensions;
+                model.params.mu = randn(d,1);
+                switch model.covType
+                    % We currently always store Sigma as a full matrix
+                    case 'full', model.params.Sigma = randpd(d);
+                    case 'diag', model.params.Sigma = diag(rand(d,1));
+                    case 'spherical', model.params.Sigma = rand(1,1)*eye(d);
+                end
+            else
+                model.params.mu = rowvec(model.params.mu);
+                d = length(model.params.mu);
+                if ~isempty(model.ndimensions)
+                    if model.ndimensions ~= d
+                        error('inconsistent ndimensions')
+                    end
+                else
+                    model.ndimensions = d;
+                end
+            end
+            switch model.covType
+                case 'full', model.dof = d + ((d*(d+1))/2);
+                case 'diag', model.dof = d + d;
+                case 'spherical', model.dof = d+1;
+            end
+            if isempty(model.params.domain)
+                model.params.domain = 1:model.ndimensions;
+            end
+        end
+        
+        
+        function [mu,Sigma] = fitMap(model,SS)
+            notYetImplemented('MVN Map Estimation');
+        end
+        
+        
     end
+    
+    
+end
 
