@@ -63,9 +63,10 @@ classdef LogReg < CondModel
 		end
 
         function P = logPdf(model,D)
-            y = D.Y;
-            y = canonizeLabels(y, obj.labelSpace);
-            [Pdist, T] = inferOutput(model,D);
+            y = D.y;
+            y = canonizeLabels(y, model.labelSpace);
+            [yHat,pY] = inferOutput(model,D);
+            T = pmf(pY);
             Y = oneOfK(y, model.nclasses);
             P =  sum(Y.*log(T), 2);
         end

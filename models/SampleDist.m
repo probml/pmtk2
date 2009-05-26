@@ -100,6 +100,9 @@ classdef SampleDist < ParamFreeDist
             m = maxidx(model.samples,[],2);
         end
         
+        function mu = median(model)
+            mu = median(model.samples)';
+        end
         
         function p = pmf(obj, nstates)
             % p(j) = p(X=j), j=1:nstates of the joint configuration
