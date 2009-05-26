@@ -66,7 +66,7 @@ properties:
     
     properties
         %X;
-        Y;
+        y;
         %Xnames;
         Ynames;
     end
@@ -74,7 +74,7 @@ properties:
     methods
         function obj = DataTableXY(varargin)
             %DataTable(X, Y, Xnames, Ynames)
-            [obj.X, obj.Y, Xnames, Ynames] = processArgs(varargin, ...
+            [obj.X, obj.y, Xnames, Ynames] = processArgs(varargin, ...
                 '-X', [], '-Y', [], '-Xnames', [], '-Ynames', []);
             %%if nargin < 3, Xnames = []; end
             %if nargin < 4, Ynames = []; end
@@ -86,7 +86,7 @@ properties:
                 end
             end
             if isempty(Ynames)
-                [n  T] = size(obj.Y);
+                [n  T] = size(obj.y);
                 for j=1:T
                     Ynames{j} = sprintf('Y%d',j);
                 end
@@ -96,11 +96,11 @@ properties:
         end
         
         function n = noutputs(D)
-            n = size(D.Y,2);
+            n = size(D.y,2);
         end
         
         function n = ncases(D)
-            n =  max(size(D.Y,1), size(D.X,1));
+            n =  max(size(D.y,1), size(D.X,1));
         end
         
         function C = horzcat(A,B)
