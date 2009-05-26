@@ -13,14 +13,14 @@ classdef LogRegLaplace < LogReg & BayesModel
         
         function model = LogRegLaplace(varargin)
             model.nclasses = 2;
-            [model.paramDist,model.lambda,model.transformer,model.fitEng,model.addOffset,model.labelSpace] = processArgs('-wDist',[],'-lambda',0,'-transformer',NoOpTransformer(),'-fitEng',LogRegL2FitEng(),'-addOffset',false,'-labelSpace',[1,2]);
+            [model.paramDist,model.lambda,model.transformer,model.fitEng,model.addOffset,model.labelSpace] = processArgs(varargin,'-wDist',[],'-lambda',0,'-transformer',NoOpTransformer(),'-fitEng',LogRegL2FitEng(),'-addOffset',false,'-labelSpace',[1,2]);
         end
         
         function model = fit(model,varargin)
             D = processArgs(varargin,'+*-data',DataTableXY());
             mtmp = fit@LogReg(model,D);
             wMAP = [mtmp.params.w0;colvec(mtmp.params.w)];
-            X = D.X; y = D.Y;
+            X = D.X; y = D.y;
             [X, model.transformer] = trainAndApply(model.transformer, X);
             n = ncases(D);
             X = [ones(n,1) X];
@@ -32,7 +32,7 @@ classdef LogRegLaplace < LogReg & BayesModel
         end
         
         function [yHat,pY] = inferOutput(model,D,varargin)
-            [method,nsamples] = processArgs('-method','mc','-nsamples',100);
+            [method,nsamples] = processArgs(varargin,'-method','mc','-nsamples',100);
             n = ncases(D);
             X = [ones(n,1) apply(model.transformer, D.X)];
             switch lower(method)
@@ -41,17 +41,17 @@ classdef LogRegLaplace < LogReg & BayesModel
                     pY = DiscreteDist(p');
                 case 'mc'
                     wsamples = sample(model.paramDist,nsamples);
-                    psamples = zeros(n,ns);
-                    for s=1:ns
+                    psamples = zeros(n,nsamples);
+                    for s=1:nsamples
                         psamples(:,s) = sigmoid(X*wsamples(s,:)');
                     end
-                    pY = SampleBasedDist(psamples');
-                    p = mean(pred);
+                    pY = SampleDist(psamples');
+                    p = mean(pY);
             end
             yHat = ones(n,1);
-            ndx2 = (p > 0.5);
+            ndx2 = (p < 0.5);
             yHat(ndx2) = 2;
-            yHat = model.labelSpace(yHat);
+            yHat = colvec(model.labelSpace(yHat));
         end
         
         function P = getParamPost(model)

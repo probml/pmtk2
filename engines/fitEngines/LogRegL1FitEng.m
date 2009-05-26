@@ -16,7 +16,7 @@ classdef LogRegL1FitEng < LogRegFitEng
     
     methods(Access = 'protected')
         
-        function [w, output, model] = fitCore(eng,model, X, Y1,  winit)
+        function [w, dof, output] = fitCore(eng,model, X, Y1,  winit)
         % Y1 is n*C (one of K)
             d = size(X,2);
             C = model.nclasses;
@@ -33,6 +33,8 @@ classdef LogRegL1FitEng < LogRegFitEng
                 options.maxIter = 250;
             end
             [w,eng.diagnostics.fEvals] = L1General(eng.optMethod, objective, winit,lambdaVec, options);
+            output = eng.diagnostics;
+            dof = [];
         end
     end
 end

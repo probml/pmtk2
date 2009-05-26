@@ -21,7 +21,7 @@ classdef LogRegMhFitEng < FitEng
                 '-verbose', false);
         end
         
-        function model = fit(eng, model, D)
+        function [model,output] = fit(eng, model, D)
             % m = fit(eng, m, D) Compute posterior estimate
             % D is DataTable containing:
             % X(i,:) is i'th input; do *not* include a column of 1s
@@ -70,6 +70,7 @@ classdef LogRegMhFitEng < FitEng
             
             %figure;scatter(samples(:,1), samples(:,2))
             %hold on; plot(wMAP(1), wMAP(2), 'rx');
+            output = [];
         end
         
         

@@ -92,6 +92,13 @@ classdef SampleDist < ParamFreeDist
             v = var(model.samples)';
         end
         
+        function e = entropy(model)
+            notYetImplemented();
+        end
+        
+        function m = mode(model)
+            m = maxidx(model.samples,[],2);
+        end
         
         
         function p = pmf(obj, nstates)

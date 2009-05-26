@@ -43,11 +43,11 @@ classdef LogReg < CondModel
             yHat = model.labelSpace(maxidx(T,[],2));
 		end
 
-		function model = fit(model,varargin)
-            model = fit(model.fitEng,model,varargin{:}); % also sets dof
+		function [model,output] = fit(model,varargin)
+            [model,output] = fit(model.fitEng,model,varargin{:}); % also sets dof
 		end
 
-		function [P,T] = inferOutput(model,D)
+		function [yHat,pY] = inferOutput(model,D)
         % P(i) = p(y|X(i,:), w) a DiscreteDist
             X = D.X;
             X = apply(model.transformer,X);
@@ -58,10 +58,8 @@ classdef LogReg < CondModel
                 W = model.params.w;
             end
             T = multiSigmoid(X,W(:));
-            P = cell(ncases(D),1);
-            for i=1:ncases(D)
-               P{i} = DiscreteDist(T(i,:)','-support',model.labelSpace); 
-            end
+            pY = DiscreteDist(T');
+            yHat = maxidx(T,[],2);
 		end
 
         function P = logPdf(model,D)
