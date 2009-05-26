@@ -8,6 +8,7 @@ classdef GenClassifier < CondModel
 		ndimensions;
 		params;
 		prior;
+        transformer;
 
 	end
 
@@ -15,7 +16,9 @@ classdef GenClassifier < CondModel
 	methods
 
 		function model = GenClassifier(varargin)
-            [model.params.classConditionals,model.prior,template,nclasses] = processArgs(varargin,'-classConditionals',{},'-classPrior',DiscreteDist(),'-template',[],'-nclasses',[]);
+            [model.params.classConditionals,model.prior,template,nclasses,model.transformer] = processArgs(varargin,...
+                '-classConditionals',{},'-classPrior',DiscreteDist(),...
+                '-template',[],'-nclasses',[],'-transformer',NoOpTransformer());
             if ~isempty(template) && ~isempty(nclasses), model.params.classConditionals = copy(template,nclasses); end
             model = initialize(model);
 		end
@@ -24,6 +27,7 @@ classdef GenClassifier < CondModel
 		function model = fit(model,varargin)
             D = processArgs(varargin,'+-data',DataTableXY());
             X = D.X; y = D.y;
+            [X,model.transformer] = trainAndApply(model.transformer,X);
             model.prior = fit(model.prior, '-data',  colvec(y));
             classConds = model.params.classConditionals;
             support = model.prior.support;
@@ -37,6 +41,7 @@ classdef GenClassifier < CondModel
 
         function [yHat,pY] = inferOutput(model,D)
             X = D.X;
+            X = apply(model.transformer,X);
             logpy = log(pmf(model.prior));
             n = ncases(D);
             classConds = model.params.classConditionals;

@@ -1,6 +1,6 @@
 classdef NoOpTransformer < Transformer
      methods
-         function D = trainAndApply(T,D)
+         function [D,T] = trainAndApply(T,D)
          end
          function D = apply(T,D)
          end

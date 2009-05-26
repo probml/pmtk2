@@ -113,6 +113,10 @@ classdef DiscreteDist < ScalarDist & ParallelizableDist
             T = model.params.T;
             v = T.*(1-T);
         end
+        
+        function c = cov(model)
+           c = var(model); 
+        end
  
         function m = mean(model)
             % E(X) = sum_i(x_i*p(x_i)) 
