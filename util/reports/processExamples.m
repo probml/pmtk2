@@ -62,7 +62,7 @@ function text = processExamples(includeTags,excludeTags,pauseTime,doformat)
     if nargin > 1 && ~isempty(excludeTags)                                 % if there are exclude tags
         
         
-        comments = cellfuncell(@(c)csvstr(cellfuncell(@(s)regexprep...     % construct comments for mfiles with excludeTags from the tags themselves
+        comments = cellfuncell(@(c)catString(cellfuncell(@(s)regexprep...     % construct comments for mfiles with excludeTags from the tags themselves
             (s,'#',''),intersect(c,excludeTags)),' & '),tags(include));    
         
         ndx = find((cellfun(@(c)~isempty(c),comments)));                   % indices into mfiles(include) of files with excludeTags and thus non-empty comments      

@@ -26,6 +26,11 @@ classdef DataTable < DataStore
             n = size(D.X,2);
         end
         
+        function T = convertToDataSequence(D)
+           T = DataSequence(mat2cellRows(D.X)); 
+        end
+        
+        
         function [visVars,visVals] = visible(D)
            idx = (all(~isnan(D.X),1));
            visVars = rowvec(D.Xnames(idx));

@@ -12,7 +12,7 @@ classdef LogRegMc < LogReg & BayesModel
         
         function model = LogRegMc(varargin)
             % LogregBinaryMc(transformer, fitEng, addOffset)
-            [m.lambda, m.transformer, m.fitEng,  m.addOffset] = ...
+            [model.lambda, model.transformer, model.fitEng,  model.addOffset] = ...
                 processArgs( varargin ,...
                 '-lambda', [], ...
                 '-transformer', NoOpTransformer(), ...
@@ -33,7 +33,7 @@ classdef LogRegMc < LogReg & BayesModel
             wsamples = model.paramDist.wsamples; % wsamples(j,s), j=1 for w0
             psamples = sigmoid(X*wsamples);
             pY = SampleDist(psamples, model.paramDist.weights);
-            p = mean(pred);
+            p = mean(pY);
             yHat = zeros(n,1);
             ndx2 = (p > 0.5);
             yHat(ndx2) = 1;
@@ -46,24 +46,24 @@ classdef LogRegMc < LogReg & BayesModel
         end
         
         function p = logPdf(model,varargin)
-            [D,method] = processArgs(varargin,'-data',D,'-method',1);
+            [D,method] = processArgs(varargin,'-data',[],'-method',1);
             % p(i) = log sum_s p(y(i) | D.X(i,:), beta(s)) w(s)
             % where w(s) is weight for sample s
             
-            X = D.X; y = canonizeLables(X)-1;
+            X = D.X; y = canonizeLabels(D.y)-1;
             n = size(X,1);
             [yhat, pred] = inferOutput(model,D); % pred is n*S
             p1 = pred.samples;
             p0 = 1-p1;
             nS = size(p1,2);
-            W = repmat(pred.weights, n, 1);
+            W = pred.weights;
             mask1 = repmat((y==1), 1, nS);
             mask0 = repmat((y==0), 1, nS);
             pp = (mask1 .* p1 + mask0 .* p0) .* W;
             p1 = log(sum(pp,2));
             
             %plug in posterior mean
-            mu1 = mean(pred);
+            mu1 = p1;
             Y = oneOfK(y, 2);
             P = [1-mu1(:) mu1(:)];
             p2 =  sum(Y.*log(P), 2);

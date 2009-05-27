@@ -1,5 +1,5 @@
 classdef HmmFwdBackInfEng < FwdBackInfEng
-%HMMFWDBACKINFENG
+
 
 
 	properties

@@ -5,13 +5,14 @@ classdef LogRegImptceSampleFitEng < LogRegFitEng
 properties
   nsamples;
   verbose;
+  
 end
 
 
 %% Main methods
 methods
   
-  function m = LogregBinaryImptceSampleFitEng(varargin)
+  function m = LogregImptceSampleFitEng(varargin)
     % LogregBinaryImptceSampleFitEng(nsamples, verbose, scheme)
     [m.nsamples, m.verbose] = ...
       processArgs( varargin ,...
@@ -29,11 +30,11 @@ methods
      [X, model.transformer] = trainAndApply(model.transformer, D.X);
      if addOffset(model.transformer), error('don''t add column of 1s'); end
    
-   y01 = canonizeLabels(X)-1;
+   y01 = canonizeLabels(D.y)-1;
    
    % First find mode
     tmp = LogReg('-prior','L2','-lambda',model.lambda,'-transformer', model.transformer, ...
-     '-addOffset', model.addOffset, '-verbose', false,'-fitEng',LogRegL2FitEng('-optMethod','newton'));
+     '-addOffset', model.addOffset,'-fitEng',LogRegL2FitEng('-optMethod','newton'));
    tmp = fit(tmp, D);
    
    % Then find Hessian at mode
@@ -74,5 +75,11 @@ methods
   
 end % methods
 
+
+methods(Access = 'protected')
+    % unused
+    function fitCore(eng)
+    end
+end
 
 end

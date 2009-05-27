@@ -1,4 +1,4 @@
-classdef LogRegMhFitEng < FitEng
+classdef LogRegMhFitEng < LogRegFitEng
     % Metropolis Hastings using random walk proposal centered at MAP for
     % Binary logistic regression with spherical Gaussian prior
     
@@ -75,6 +75,13 @@ classdef LogRegMhFitEng < FitEng
         
         
     end % methods
+    
+    
+    methods(Access = 'protected')
+        % unused
+        function fitCore(eng)
+        end
+    end
     
     
 end

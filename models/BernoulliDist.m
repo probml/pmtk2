@@ -5,10 +5,14 @@ classdef BernoulliDist < DiscreteDist
         end
         
         function L = logPdf(model,D)
-        % override to do more efficiently
         
+        % Override to do more efficiently than DiscreteDist, since we can 
+        % transform the data to [0,1] and use it like a mask against T
+        % rather than indexing into T. 
+        
+          
             X = canonizeLabels(D.X)-1; % make sure its in [0,1]
-            L0 = bsxfun(@times,log(model.params.T(1,:)+eps),double(~X));
+            L0 = bsxfun(@times,log(model.params.T(1,:)+eps),double(~X)); 
             L1 = bsxfun(@times,log(model.params.T(2,:)+eps),X);
             L = sum(L0+L1,2);
         end
