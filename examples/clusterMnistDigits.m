@@ -1,4 +1,5 @@
 %% Cluster MNIST Digits and Visualize the Cluster Centers
+%#testPMTK
 %% Setup data
 setSeed(1);
 classes   = 5:7;       % Confine task to digits 5:7 (must be a subset of 0:9)

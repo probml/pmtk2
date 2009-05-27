@@ -1,3 +1,6 @@
+%% Compare logistic regression optimizers on SAT grade
+%#testPMTK
+
 setSeed(0);
 stat = load('satData.txt');
 

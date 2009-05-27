@@ -2,6 +2,7 @@
 % Here we fit a binary logistic regression model to synthetic data and visualize the
 % predictive distribution. We compare the MLE to L1 and L2 regularized
 % models.
+%#testPMTK
 %% Load and Plot the Data
 % Load synthetic data generated from a mixture of Gaussians. Source:
 % <<http://research.microsoft.com/~cmbishop/PRML/webdatasets/datasets.htm>>

@@ -1,3 +1,6 @@
+%% Fit an MVN to missing data using EM
+%#testPMTK
+
 function testMvnMissingData
     setSeed(0);
     data = randn(100,10);

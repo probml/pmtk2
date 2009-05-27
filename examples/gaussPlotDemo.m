@@ -1,4 +1,4 @@
-%% Plot a Gaussian
+%% Plot a Gaussian pdf and cdf
 xs = -3:0.01:3;
 mu = 0; sigma2 = 1;
 obj = GaussDist(mu, sigma2);

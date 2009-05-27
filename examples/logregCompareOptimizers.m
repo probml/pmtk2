@@ -1,4 +1,5 @@
 %% Compare speed of different optimizers for logistic regressiion
+%#testPMTK
 function logregCompareOptimizers()
 
 setSeed(1);

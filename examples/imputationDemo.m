@@ -1,5 +1,6 @@
 function imputationDemo()
 %% Imputation on random data using specified model
+%#testPMTK
 setSeed(0);
 d = 10;
 helper(MvnDist(randn(1,d),randpd(d)), d, false);

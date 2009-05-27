@@ -1,5 +1,5 @@
 %% Apply K-means clustering to 2d old faithful data
-
+%#testPMTK
 X = load('faithful.txt');
 figure; plot(X(:,1), X(:,2), '.', 'markersize', 10)
 title('old faithful data')
