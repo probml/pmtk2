@@ -5,18 +5,21 @@ classdef SampleDist < ParamFreeDist
         ndimensions;
         samples; % rows samples, cols = dimensions
         domain;  % integer labels for the columns
-        
+        weights;
     end
     
     
     methods
         
         function model = SampleDist(varargin)
-            [X, model.domain] = processArgs(varargin, ...
-                '-samples', [], '-domain', []);
+            [X, model.weights,model.domain] = processArgs(varargin, ...
+                '-samples', [], '-weights',[],'-domain', []);
             if isempty(model.domain), model.domain = 1:size(X,2); end
             model.samples = X;
             model.ndimensions = numel(model.domain);
+            if isempty(model.weights)
+               model.weights = normalize(ones(size(X,1),1)); 
+            end
         end
         
         
