@@ -1,4 +1,3 @@
-
 %% check logreg functions are syntactically correct
 n = 10; d = 3; C = 3;
 X = randn(n,d );

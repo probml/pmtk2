@@ -13,6 +13,6 @@ for j=1:length(alphavec)
       subplot(n,1,i); bar(probs(i,:))
       if i==1, title(sprintf('Samples from Dir %3.1f', alpha)); end
   end
-  if doPrintPmtk, printPmtkFigures(sprintf('dir%d', alphavecstr{j})); end;
+  printPmtkFigure(sprintf('dir%d', alphavecstr{j})); 
   restoreSeed();
 end

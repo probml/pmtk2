@@ -1,5 +1,5 @@
 %% Illustrate the Robustness of the T-Distribution Compared to the Gaussian.
-%#broken
+%#testPMTK
 function gaussVsToutlierDemo
 
 warning('off','stats:tlsfit:IterOrEvalLimit');
@@ -13,12 +13,12 @@ nbins = 7;
 figure;
 plotHist(data,nbins,n);
 plotPDFs(data);
-if doPrintPmtk, printPmtkFigures('gaussVsT'); end;
+printPmtkFigure('gaussVsT');
 figure;
 plotHist(data,nbins,n+nn);
 plotHist(outliers,nn,n+nn);
 plotPDFs([data ; outliers]);
-if doPrintPmtk, printPmtkFigures('gaussVsToutlier'); end;
+printPmtkFigure('gaussVsToutlier'); 
 warning('on','stats:tlsfit:IterOrEvalLimit');
 end
 

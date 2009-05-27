@@ -12,5 +12,5 @@
 cd(fileparts(which('loadPMTK.m')));   % Make sure the current directory is the root of PMTK
 addpath(genpath(fullfile(pwd,'util')));        % Add util first to get access to genpathPMTK.m
 addpath(genpathPMTK(pwd));             % Add all subdirectories, (except for svn, old, etc)
-printPmtkOff;     clear filepath       % Change to printPmtkOn to print figures for book
+%printPmtkOff;     clear filepath       % Change to printPmtkOn to print figures for book
 fprintf('Welcome to PMTK 2\n');
