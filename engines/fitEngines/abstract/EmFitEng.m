@@ -23,7 +23,7 @@ classdef EmFitEng < FitEng
         
         function [model,success,eng] = fit(eng,model,varargin)
             % Generic fit function, just specify initEm,eStep,mStep in subclass.
-            [data,eng.nrestarts,eng.convTol,eng.maxIter] = processArgs(varargin,'+*-data',DataTable(),'-nrestarts',5,'-convTol',0.01,'-maxIter',30);
+            [data,eng.nrestarts,eng.convTol,eng.maxIter] = processArgs(varargin,'+*-data',DataTable(),'-nrestarts',3,'-convTol',0.01,'-maxIter',30);
             X = data.X;
             models = cell(eng.nrestarts,1);
             successArray = false(eng.nrestarts,1);

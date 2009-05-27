@@ -40,6 +40,10 @@ classdef DataTable < DataStore
             n = size(D.X,1);
         end
         
+        function n = nfeatures(D)
+           n = size(D.X,2); 
+        end
+        
         function e = isempty(D)
            e = ncases(D) == 0; 
         end
