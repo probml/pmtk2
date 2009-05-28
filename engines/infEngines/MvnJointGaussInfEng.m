@@ -1,5 +1,7 @@
 classdef MvnJointGaussInfEng < JointGaussInfEng
     
+    
+    % everything done in JointGaussInfEng
     methods(Access = 'protected')        
         
         function [mu,Sigma,domain] = convertToMvn(eng,model,varargin)   %#ok

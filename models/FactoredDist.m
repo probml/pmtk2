@@ -10,6 +10,7 @@ classdef FactoredDist < MultivarDist
 		prior;         
         ndistributions;
         parallelized;
+        support;
 	end
 
 
@@ -21,14 +22,22 @@ classdef FactoredDist < MultivarDist
             if ~isempty(template) 
                 if isa(template,'ParallelizableDist')
                    model.params.distributions = template;
+                else
+                    model.params.distributions = copy(template,model.ndistributions);
                 end
-                model.params.distributions = copy(template,model.ndistributions);
             elseif iscell(model.params.distributions)
                 model.ndistributions = numel(model.params.distributions);
             elseif isempty(model.ndistributions)
                 error('you must specify the number of distributions');
             end
             model.parallelized = isa(model.params.distributions,'ParallelizableDist');
+            try  %#ok
+                if model.parallelized
+                    model.support = model.params.distributions.support; 
+                else
+                    model.support = model.params.distributions{1}.support;  
+                end
+            end
         end
         
         function I = infer(model,D,Q)
@@ -48,15 +57,21 @@ classdef FactoredDist < MultivarDist
 		function entropy(model,varargin)
 		%
 			notYetImplemented('FactoredDist.entropy()');
-		end
-
+        end
+        
+        function T = pmf(model)
+            if model.parallelized
+                T = pmf(model.params.distributions);
+            else
+                notYetImplemented;
+            end
+        end
 
         function [model,success] =  fit(model,varargin)
             if model.parallelized
                 [model.params.distributions,success] = fit(model.params.distributions,varargin{:});
             else
                 [D,SS] = processArgs(varargin,'-data',DataTable(),'-suffStat',[]);
-                if ~isempty(SS), notYetImplemented(); end
                 dists = model.params.distributions;
                 successArray = false(model.ndistributions,1);
                 for i=1:model.ndistributions;
@@ -111,9 +126,12 @@ classdef FactoredDist < MultivarDist
 		end
 
 
-		function sample(model,varargin)
-		%
-			notYetImplemented('FactoredDist.sample()');
+		function S = sample(model,n)
+            if model.parallelized
+                S = sample(model.params.distributions,n);
+            else
+                notYetImplemented();
+            end
 		end
 
 

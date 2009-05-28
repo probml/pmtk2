@@ -23,7 +23,7 @@ classdef EmFitEng < FitEng
         
         function [model,success,eng] = fit(eng,model,varargin)
             % Generic fit function, just specify initEm,eStep,mStep in subclass.
-            [data,eng.nrestarts,eng.convTol,eng.maxIter] = processArgs(varargin,'+*-data',DataTable(),'-nrestarts',3,'-convTol',0.01,'-maxIter',30);
+            [data,eng.nrestarts,eng.convTol,eng.maxIter] = processArgs(varargin,'*-data',DataTable(),'-nrestarts',3,'-convTol',0.01,'-maxIter',30);
             X = data.X;
             models = cell(eng.nrestarts,1);
             successArray = false(eng.nrestarts,1);
@@ -73,7 +73,7 @@ classdef EmFitEng < FitEng
         function  [converged,diagn] = checkConvergence(eng,model,data,diagn)
             % Override for more involved convergence testing, if desired.
             prevLL = diagn.LL(end);
-            currentLL = sum(logPdf(model,DataTable(data))) + logPrior(model);
+            currentLL = sum(logPdf(model,wrapData(data))) + logPrior(model);
             diagn.LL = [diagn.LL;currentLL];
             converged = convergenceTest(prevLL,currentLL,eng.convTol);
             if prevLL - currentLL  > eps

@@ -1,13 +1,30 @@
 classdef FwdBackInfEng < InfEng
   
-    methods(Access = 'protected',Abstract = true)
-        
-        setStartDist;
-        setTransMat;
-        setLocalEvidence(); 
-        
+    properties(GetAccess = 'protected',Abstract = true)
+       pi;
+       A;
+       localEvidence;
     end
+   
+   
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     
     
+  
 end
 

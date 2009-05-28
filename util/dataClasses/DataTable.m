@@ -131,7 +131,11 @@ classdef DataTable < DataStore
                     if(~isempty(A.Xnames))
                         Xnames = A.Xnames(colNDX);
                     end
-                    B = DataTable(A.X(S.subs{1},colNDX),Xnames);
+                    try
+                        B = DataTable(A.X(S.subs{1},colNDX),Xnames);
+                    catch %#ok
+                        B = [];
+                    end
                 case '.' %Still provide access of the form d.X and d.y
                     B = builtin('subsref', A, S);
             end

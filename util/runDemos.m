@@ -21,15 +21,10 @@ logregCompareOptimizers;                 pclear(2);
 logregCompareOptimizersSat;              pclear(2);
 logregFitCrabs;                          pclear(2);
 logregSAT;                               pclear(2);
-logregTest;                              pclear(2);
 logregVisualizePredictive;               pclear(2);
-misconceptionRank;                       pclear(2);
 mixMvnEmOldFaithfulDemo;                 pclear(2);
 mvn1dDemo;                               pclear(2);
 mvn2dDemo;                               pclear(2);
-newsgroupsProcessData;                   pclear(2);
-newsgroupsVisualize;                     pclear(2);
-plotMFCC;                                pclear(2);
 testMvnMissingData;                      pclear(2);
 
 

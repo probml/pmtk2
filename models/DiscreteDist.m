@@ -12,8 +12,9 @@ classdef DiscreteDist < ScalarDist & ParallelizableDist
 	methods
 
 		function model = DiscreteDist(varargin)
+            if nargin == 0 ;return; end
 		    [model.params.T , model.support , model.prior] = processArgs(varargin,...
-                '-T',[],'-support',[],'-prior',NoPrior());
+                '-T',[],'*-support',[],'-prior',NoPrior());
             model = initialize(model);
         end
 
@@ -42,7 +43,7 @@ classdef DiscreteDist < ScalarDist & ParallelizableDist
         end
 
         function [L,LL] = logPdf(model,D)
-            X = canonizeLabels(D.X,model.support);
+            X = canonizeLabels(unwrap(D),model.support);
             LL = log(model.params.T(X,:));
             L = sum(LL,2);
         end

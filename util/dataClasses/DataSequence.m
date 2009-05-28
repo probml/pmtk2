@@ -9,6 +9,10 @@ classdef DataSequence < DataStore
         
         
         function T = DataSequence(X)
+            if nargin == 0; return; end
+            if isa(X,'DataSequence')
+                X = X.X;
+            end
             if ~iscell(X)
                 X = mat2cellRows(X);
             end
@@ -18,6 +22,11 @@ classdef DataSequence < DataStore
         
         function n = ncases(T)
             n = numel(T.X);
+        end
+        
+        function l = length(T,i)
+            if nargin < 2, i = 1;end
+            l = length(unwrap(T(i)));
         end
         
         function l = sequenceLengths(T)
@@ -43,8 +52,9 @@ classdef DataSequence < DataStore
         % of data, the first dimension is d and the second is the length of the
         % observation. ndx stores the indices into X corresponding to the start
         % of each new sequence. 
-              X = cell2mat(T.X)';
-              ndx = cumsum([1,cell2mat(cellfuncell(@(seq)size(seq,2),X))]);
+              
+              X = cell2mat(cellfuncell(@colvec,T.X));
+              ndx = cumsum([1,rowvec(cell2mat(cellfuncell(@(seq)size(seq,2),T.X)))]);
               ndx = ndx(1:end-1);
         end
         

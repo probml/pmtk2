@@ -11,7 +11,7 @@ classdef LatentVarModel < ParamModel
     methods(Abstract = true)
         
         inferLatent;
-        computeMapLatent;
+     
         
         
     end
