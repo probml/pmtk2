@@ -63,7 +63,12 @@ classdef JointGaussInfEng < InfEng
         %% Always unconditional
         function L = computeLogPdf(eng,model,D)
             [mu,Sigma] = convertToMvn(eng,model);
-            X = D.X;
+            X = unwrap(D);
+            [nrows,ncols] = size(X);
+            if ncols ~= model.ndimensions && nrows == model.ndimensions
+                X = X';
+            end
+                
             d = length(mu);
             XC = bsxfun(@minus,X,rowvec(mu));
             L = -0.5*sum((XC*inv(Sigma)).*XC,2);

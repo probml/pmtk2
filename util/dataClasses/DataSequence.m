@@ -49,11 +49,14 @@ classdef DataSequence < DataStore
         % same dimensionality. X is a matrix of all of these sequences stacked
         % together in an n-by-d matrix where n is the sum of the lengths of all
         % of the sequences and d is the shared dimensionality. Within each cell
-        % of data, the first dimension is d and the second is the length of the
-        % observation. ndx stores the indices into X corresponding to the start
+        % of data, the first dimension is the length of the
+        % observation and the second is the shared dimensionality, d.
+        % ndx stores the indices into X corresponding to the start
         % of each new sequence. 
-              
-              X = cell2mat(cellfuncell(@colvec,T.X));
+               
+              %X = cell2mat(cellfuncell(@(c)c',T.X)')';
+              X  = cell2mat(T.X')';
+             
               ndx = cumsum([1,rowvec(cell2mat(cellfuncell(@(seq)size(seq,2),T.X)))]);
               ndx = ndx(1:end-1);
         end

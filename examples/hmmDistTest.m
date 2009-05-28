@@ -23,24 +23,27 @@ nsamples = 20; lens = [repmat(13,nsamples/2,1);repmat(30,nsamples/2,1)];
 
 
 model = Hmm('-emissionTemplate',DiscreteDist('-support',1:6),'-nstates',2);
+
 model = fit(model,'-data',observed);
 
-% 
-% 
-% model = condition(model,'Y',observed{1}');
-% postSample = mode(samplePost(model,1000),2)'
-% viterbi = mode(model)
-% maxmarg = maxidx(marginal(model,':'))
-% 
-% %% MVN Observations
-% trueObsModel = {MvnDist(zeros(1,10),randpd(10));MvnDist(ones(1,10),randpd(10))};
-% trueTransDist = DiscreteDist('-T',[0.8,0.2;0.1,0.90]','-support',1:2);
-% trueStartDist = DiscreteDist('-T',[0.5;0.5],'-support',1:2);
-% trueModel = HmmDist('startDist'     ,trueStartDist,...
-%     'transitionDist',trueTransDist,...
-%     'emissionDist'  ,trueObsModel);
-% nsamples = 50; length = 5;
-% [observed,trueHidden] = sample(trueModel,nsamples,length);
+[postSample,viterbi] = computeFunPost(model,'-data',sample(trueModel,1,100),'-funcs',{'sample','mode'});
+maxmarg = maxidx(inferLatent(model,'-query',Query('singles'),'-data',sample(trueModel,1,100)));
+
+%% MVN Observations
+ trueObsModel = {MvnDist(zeros(1,10),randpd(10));MvnDist(ones(1,10),randpd(10))};
+ 
+ trueModel = Hmm('-startDist'     , trueStartDist,...
+                '-transDist'      , trueTransDist,...
+                '-emissionDists'  , trueObsModel,...
+                '-nstates'        , 2           );
+            
+[observed,trueHidden] = sample(trueModel,50,25);
+model = Hmm('-emissionTemplate',MvnDist(rand(1,10),randpd(10)),'-nstates',2);
+model = fit(model,'-data',observed);
+[postSample,viterbi] = computeFunPost(model,'-data',sample(trueModel,1,100),'-funcs',{'sample','mode'});
+maxmarg = maxidx(inferLatent(model,'-query',Query('singles'),'-data',sample(trueModel,1,100)));
+ 
+ 
 % model = HmmDist('emissionDist',MvnDist(),'nstates',3);
 % model = fit(model,'data',observed);
 % %% MvnMixDist Observations

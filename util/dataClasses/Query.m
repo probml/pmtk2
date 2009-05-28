@@ -44,7 +44,13 @@ classdef Query
             if numel(S) == 1
                 switch S.type
                     case {'()','{}'}
-                        B = Query(A.variables(S.subs{1}),A.layer,A.modifiers);
+                        if ~ischar(A.variables)
+                            B = Query(A.variables(S.subs{1}),A.layer,A.modifiers);
+                        elseif S.subs{1}==1
+                            B = Query(A.variables,A.layer,A.modifiers); 
+                        else
+                            error('invalid index');
+                        end
                     case '.'
                         B = builtin('subsref', A, S);
                 end

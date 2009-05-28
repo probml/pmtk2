@@ -51,7 +51,7 @@ classdef HmmEmFitEng < EmFitEng
             if(batchSize < 2), batchSize = n;end
             eDists = model.params.emissionDists;
             for i=1:nstates
-               eDists{i} =  fit(eDists{i},'-data',DataTable(colvec(X(sub(randperm(n),1:batchSize),:))));
+               eDists{i} =  fit(eDists{i},'-data',DataTable(X(sub(randperm(n),1:batchSize),:)));
             end
             model.params.emissionDists = eDists;
             

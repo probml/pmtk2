@@ -50,18 +50,18 @@ classdef Hmm < ChainModel & LatentVarModel
         
         function post = inferLatent(model,varargin)
             [Q,D] = processArgs(varargin,'+-query',Query(),'-data',DataSequence());
-            n = max(nqueries(Q),1);
-            d = max(ncases(D),1);
+            n = max(1,nqueries(Q));
+            d = max(1,ncases(D));
             post = cell(n,d);
             for j=1:d
                 eng = enterEvidence(model.infEng,model,D(j)); % now reuse this eng for all of the queries
                 for i=1:n
-                    post(i,j) = cellWrap(computeMarginals(eng,Q(i)));
+                    post(i,j) = cellwrap(computeMarginals(eng,Q(i)));
                 end
             end
-            if n == 1 && d == 1
+%             if n == 1 && d == 1
                 post = unwrapCell(post);
-            end
+%             end
         end
         
         function varargout = computeFunPost(model,varargin)
@@ -108,8 +108,9 @@ classdef Hmm < ChainModel & LatentVarModel
             for i=1:nsamples
                 hid{i} = mc_sample(pi,A,lens(i),1);
                 for t = 1:lens(i)
-                    obs{i}(:,t) = rowvec(sample(eDists{hid{i}(1,t)}));
+                    obs{i}(:,t) = colvec(sample(eDists{hid{i}(1,t)}));
                 end
+                
             end
             observed = DataSequence(obs);
             hidden   = DataSequence(obs);

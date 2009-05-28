@@ -111,7 +111,7 @@ classdef HmmFwdBackInfEng < FwdBackInfEng
         end
         
         function S = computeSamples(eng,varargin)
-            [model,D,nsamples,iscached] = processArgs('-model',[],'-data',[],'-nsamples',1,'-cached',false);
+            [model,D,nsamples,iscached] = processArgs(varargin,'-model',[],'-data',[],'-nsamples',1,'-cached',false);
             if ~iscached
                 eng = enterEvidence(eng,model,D);
             end

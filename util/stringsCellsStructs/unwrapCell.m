@@ -60,6 +60,7 @@ function M = unwrapCell(C)
 
 if isempty(C), M = []; return; end
 if ~iscell(C), M = C;  return; end
+if numel(C) == 1, M = C{1}; return; end
 if allSameTypes(C) && iscell(C{1}) && numel(C{1}) == 1
     M = unwrapCell(cellfuncell(@(a)a{1},C));
     return;
