@@ -24,6 +24,19 @@ classdef DataSequence < DataStore
             n = numel(T.X);
         end
         
+        function T = correctDims(T,d)
+            
+            sizes = cell2mat(cellfuncell(@size,T.X));
+            if all(sizes(:,2)==d)
+                return;
+            elseif all(sizes(:,1)== d) 
+                T.X = cellfuncell(@(c)c',T.X);
+            else
+                error('the sequences do not share %d as a common dimension length',d);
+            end
+            
+        end
+        
         function l = length(T,i)
             if nargin < 2, i = 1;end
             l = length(unwrap(T(i)));

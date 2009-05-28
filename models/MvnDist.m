@@ -130,7 +130,7 @@ classdef MvnDist < MultivarDist
             SS.XX2 = bsxfun(@times,X,weights)'*X/SS.n;
             X = bsxfun(@minus,X,SS.xbar);
             SS.XX = bsxfun(@times,X,weights)'*X/SS.n;
-            assert(isposdef(SS.XX));
+            assert(isposdef(SS.XX))
         end
         
         function [model,success,diagn] = fit(model,varargin)

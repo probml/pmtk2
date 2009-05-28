@@ -18,9 +18,13 @@ classdef ProbModel
          
       
         
-        function cellArray = copy(dist,n)
+        function cellArray = copy(dist,n,varargin)
             % Copy the model n times and return copies in a cell array
-            cellArray = num2cell(repmat(dist,n,1));
+            if nargin < 3
+                cellArray = num2cell(repmat(dist,n,1));
+            else
+                cellArray = fevalNtimes(class(dist),n,varargin{:}); 
+            end
         end
         
     end

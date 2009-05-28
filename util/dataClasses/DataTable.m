@@ -22,6 +22,18 @@ classdef DataTable < DataStore
            X = D.X; 
         end
         
+        function T = correctDims(T,d)
+           [nrows,ncols] = size(T.X);
+           if ncols == d; 
+               return;
+           elseif nrows == d;
+               T.X = T.X';
+           else
+               error('incorrect data dimensions');
+           end
+            
+        end
+        
         function n = ndimensions(D)
             n = size(D.X,2);
         end

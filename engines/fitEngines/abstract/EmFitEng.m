@@ -24,7 +24,7 @@ classdef EmFitEng < FitEng
         function [model,success,eng] = fit(eng,model,varargin)
             % Generic fit function, just specify initEm,eStep,mStep in subclass.
             [data,eng.nrestarts,eng.convTol,eng.maxIter] = processArgs(varargin,'*-data',DataTable(),'-nrestarts',3,'-convTol',0.01,'-maxIter',30);
-            X = data.X;
+            X = unwrap(data);
             models = cell(eng.nrestarts,1);
             successArray = false(eng.nrestarts,1);
             diagnArray = cell(eng.nrestarts,1);
@@ -48,12 +48,13 @@ classdef EmFitEng < FitEng
             while not(converged) && iter < eng.maxIter
                 ess = eStep(eng,model,data);
                 [tmpModel,success] = mStep(eng,model,ess); 
-                if success, model = tmpModel;
+                [converged,diagn,convSuccess] = checkConvergence(eng,model,data,diagn);
+                if success && convSuccess
+                    model = tmpModel;
                 else
                     [model,cont,success] = handleMstepFailure(eng,model,tmpModel);
                     if ~cont, break; end
                 end
-                [converged,diagn] = checkConvergence(eng,model,data,diagn);
                 displayProgress(eng,success,diagn);
             end
             if iter >=eng.maxIter && eng.verbose, fprintf('Maximum number of iterations reached\n'); end
@@ -70,13 +71,20 @@ classdef EmFitEng < FitEng
             end
         end
         
-        function  [converged,diagn] = checkConvergence(eng,model,data,diagn)
+        function  [converged,diagn,success] = checkConvergence(eng,model,data,diagn)
             % Override for more involved convergence testing, if desired.
             prevLL = diagn.LL(end);
-            currentLL = sum(logPdf(model,wrapData(data))) + logPrior(model);
+            try
+                currentLL = sum(logPdf(model,wrapData(data))) + logPrior(model);
+                success = true;
+            catch %#ok
+                success = false; 
+                converged = false;
+                return;
+            end
             diagn.LL = [diagn.LL;currentLL];
             converged = convergenceTest(prevLL,currentLL,eng.convTol);
-            if prevLL - currentLL  > eps
+            if currentLL < prevLL && abs(currentLL-prevLL)/abs(currentLL) > 1e-3
                 warning('EmFitEng:LLdecrease','The log likelihood has increased from %g to %g',prevLL,currentLL);
             end
         end

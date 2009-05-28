@@ -32,8 +32,14 @@ classdef MixtureModel < LatentVarModel
             model = initialize(model);
         end
        
-        function model = fit(model,varargin)
-           model = fit(model.fitEng,model,varargin{:}); 
+        function [model,success] = fit(model,varargin)
+           args = processArgs(varargin,'-data',DataTable(),'-nrestarts',3,'-convTol',0.01,'-maxIter',30,'-suffStat',[]);
+           [suffStat,remaining] = extractArgs(5,args);
+           if isempty(suffStat)
+               [model,success] = fit(model.fitEng,model,remaining{:}); 
+           else
+               [model,success] = fitSS(model,suffStat);
+           end
            model = initialize(model);
         end
         
@@ -41,7 +47,7 @@ classdef MixtureModel < LatentVarModel
         % ph(i,k) = p(H=k | D(i),params) a DiscreteDist
         % This is the posterior responsibility of component k for data i
         % LL(i) = log p(D(i) | params)  is the log normalization constat
-            logRik = calcResponsibilities(model, D.X);
+            logRik = calcResponsibilities(model, unwrap(D));
             [Rik, LL] = normalizeLogspace(logRik);
             Rik = exp(Rik);
             ph = DiscreteDist('-T',Rik');
@@ -61,7 +67,7 @@ classdef MixtureModel < LatentVarModel
         
         function L = logPdf(model,D)
         % L(i) = log p(D(i) | params) = log sum_k p(D(i), h=k | params)
-            L = logsumexp(calcResponsibilities(model, D.X),2);
+            L = logsumexp(calcResponsibilities(model, unwrap(D)),2);
         end
 
         function [Y, H] = sample(model,nsamples)
@@ -79,15 +85,15 @@ classdef MixtureModel < LatentVarModel
         
         function SS = mkSuffStat(model,data,weights)
             if(nargin < 2), weights = ones(size(data,1)); end
-            logRik = calcResponsibilities(model,data);
+            logRik = calcResponsibilities(model,unwrap(data));
             gamma2 = exp(normalizeLogspace(bsxfun(@plus,logRik,log(weights+eps)))); % combine alpha,beta,local evidence - see qe 13.109 in pml24nov08.pdf
             nmixtures = numel(model.mixtureComps);
             ess = cell(nmixtures,1);
             for k=1:nmixtures
                 ess{k} = model.mixtureComps{k}.mkSuffStat(DataTable(data),gamma2(:,k));
             end
-            SS.ess = ess;
-            SS.weights = gamma2;
+            SS.compEss = ess;
+            SS.mixEss.counts = colvec(normalize(sum(gamma2,1)));
         end
    
     end
@@ -105,8 +111,23 @@ classdef MixtureModel < LatentVarModel
             logRik = zeros(n,nmixtures);
             mixWeights = pmf(model.mixingDist);
             for k=1:nmixtures
-                logRik(:,k) = log(mixWeights(k)+eps) + logPdf(model.mixtureComps{k},DataTable(data));
+                logRik(:,k) = log(mixWeights(k)+eps) + logPdf(model.mixtureComps{k},wrapData(data));
             end 
+        end
+        
+        
+        function [model,success] = fitSS(model,suffStat)
+            
+            compEss = suffStat.compEss;
+            mixEss  = suffStat.mixEss;
+            [model.mixingDist,mixSuccess] = fit(model.mixingDist,'-suffStat',mixEss);
+            mixComps = model.mixtureComps;
+            nmixtures = numel(mixComps);
+            successArray = false(nmixtures,1);
+            for i=1:numel(mixComps)
+                [mixComps{i},successArray(i)] = fit(mixComps{i},'-suffStat',compEss{i});
+            end
+            success = mixSuccess && all(successArray);
         end
     end
     

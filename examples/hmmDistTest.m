@@ -1,76 +1,35 @@
 %%  A Simple Test of the HmmDist Class
 
-%% Discrete Observations
+
 setSeed(0);
-trueObsModel = {DiscreteDist('-T',ones(6,1)./6       ,'-support',1:6)
-    DiscreteDist('-T',[ones(5,1)./10;0.5],'-support',1:6)};
-
-trueTransDist = FactoredDist(DiscreteDist('-T',[0.8,0.2;0.3,0.70]','-support',1:2),'-ndistributions',2);
-trueStartDist = DiscreteDist('-T',[0.5,0.5]','-support',1:2);
-
-
-
-trueModel = Hmm('-startDist'      , trueStartDist,...
-                '-transDist'      , trueTransDist,...
-                '-emissionDists'  ,trueObsModel,...
-                '-nstates'        ,2           );
-            
-            
-            
-
-nsamples = 20; lens = [repmat(13,nsamples/2,1);repmat(30,nsamples/2,1)];
-[observed,hidden] = sample(trueModel,nsamples,lens);
-
-
-model = Hmm('-emissionTemplate',DiscreteDist('-support',1:6),'-nstates',2);
-
+nHiddenStates = 4;
+nObsStates    = 6; 
+nsamples = 20; lens = [13*ones(10,1);30*ones(10,1)]; 
+%% Discrete Observations
+fprintf('Discrete Observations\n');
+obsModel  = copy(DiscreteDist,nHiddenStates,'-nstates',nObsStates);        % remaining args get passed to constructor
+srcModel  = Hmm(obsModel);  
+[observed,hidden] = sample(srcModel,nsamples,lens);
+model = Hmm('-emissionTemplate',DiscreteDist('-nstates',nObsStates),'-nstates',nHiddenStates); % alternative way to construct the object
 model = fit(model,'-data',observed);
-
-[postSample,viterbi] = computeFunPost(model,'-data',sample(trueModel,1,100),'-funcs',{'sample','mode'});
-maxmarg = maxidx(inferLatent(model,'-query',Query('singles'),'-data',sample(trueModel,1,100)));
-
+[postSample , viterbi] = computeFunPost(model , '-data' , observed(1) , '-funcs' , {'sample','mode'}) %#ok
+maxmarg = maxidx(inferLatent(model , '-query' , Query('singles') , '-data' , observed(1)))            %#ok
 %% MVN Observations
- trueObsModel = {MvnDist(zeros(1,10),randpd(10));MvnDist(ones(1,10),randpd(10))};
- 
- trueModel = Hmm('-startDist'     , trueStartDist,...
-                '-transDist'      , trueTransDist,...
-                '-emissionDists'  , trueObsModel,...
-                '-nstates'        , 2           );
-            
-[observed,trueHidden] = sample(trueModel,50,25);
-model = Hmm('-emissionTemplate',MvnDist(rand(1,10),randpd(10)),'-nstates',2);
+fprintf('Mvn Observations\n');
+obsModel =    copy(MvnDist,nHiddenStates,'-ndimensions',10);
+srcModel = Hmm(obsModel);
+[observed,trueHidden] = sample(srcModel,nsamples,lens);
+model = Hmm('-emissionTemplate',MvnDist('-ndimensions',10),'-nstates',nHiddenStates);
 model = fit(model,'-data',observed);
-[postSample,viterbi] = computeFunPost(model,'-data',sample(trueModel,1,100),'-funcs',{'sample','mode'});
-maxmarg = maxidx(inferLatent(model,'-query',Query('singles'),'-data',sample(trueModel,1,100)));
- 
- 
-% model = HmmDist('emissionDist',MvnDist(),'nstates',3);
-% model = fit(model,'data',observed);
-% %% MvnMixDist Observations
-% 
-% nstates = 5; d = 2; nmixcomps = 2;
-% emissionDist = cell(5,1);
-% for i=1:nstates
-%     %emissionDist{i} = mkRndParams(MvnMixDist('nrestarts',5,'verbose',false),d,nmixcomps);
-%     emissionDist{i} = mkRndParams(MixMvn(nmixcomps,d));
-% end
-% pi = DiscreteDist('-T',normalize(ones(nstates,1)));
-% A = DiscreteDist('-T',normalize(rand(nstates),1));
-% trueModel = HmmDist('startDist',pi,'transitionDist',A,'emissionDist',emissionDist,'nstates',nstates);
-% [observed,hidden] = sample(trueModel,1,500);
-% %model = HmmDist('emissionDist',MvnMixDist('nmixtures',nmixcomps,'verbose',false,'nrestarts',1),'nstates',nstates);
-% model = HmmDist('emissionDist',MixMvn(nmixcomps, d),'nstates',nstates);
-% model = fit(model,'data',observed,'maxIter',20);
-% %% DiscreteMixDist Observations
-% 
-% nstates = 5;  nmixcomps = 2; d = 3;
-% emissionDist = cell(5,1);
-% for i=1:nstates
-%     emissionDist{i} = mkRndParams(DiscreteMixDist('nmixtures',nmixcomps),d,nmixcomps);
-% end
-% pi = DiscreteDist('-T',normalize(rand(nstates,1)));
-% A = DiscreteDist('-T',normalize(rand(nstates),1));
-% trueModel = HmmDist('startDist',pi,'transitionDist',A,'emissionDist',emissionDist,'nstates',nstates);
-% [observed,hidden] = sample(trueModel,1,500);
-% model = HmmDist('emissionDist',DiscreteMixDist('nmixtures',nmixcomps,'verbose',false),'nstates',nstates);
-% model = fit(model,'data',observed,'maxIter',20);
+[postSample,viterbi] = computeFunPost(model,'-data',observed(1),'-funcs',{'sample','mode'}) %#ok
+maxmarg = maxidx(inferLatent(model,'-query',Query('singles'),'-data',observed(1))) %#ok
+%% MixMvn Observations
+fprintf('MixMvn Observations\n');
+obsModel = copy(MixMvn,nHiddenStates,'-nmixtures',2,'-ndimensions',12);
+srcModel = Hmm(obsModel);
+[observed,trueHidden] = sample(srcModel,nsamples,lens);
+model = Hmm('-emissionTemplate',MixMvn('-nmixtures',2,'-ndimensions',12),'-nstates',nHiddenStates);
+model = fit(model,'-data',observed);
+[postSample,viterbi] = computeFunPost(model,'-data',observed(1),'-funcs',{'sample','mode'}) %#ok
+maxmarg = maxidx(inferLatent(model,'-query',Query('singles'),'-data',observed(1))) %#ok
+

@@ -5,6 +5,7 @@ classdef HmmEmFitEng < EmFitEng
         function ess = eStep(eng,model,data) %#ok
             data = DataSequence(data);
             [stackedData , seqndx] = stackData(data);
+            data = correctDims(data,model.ndimensions);
             nstates = model.nstates;
             pi      = zeros(nstates,1);
             trans   = zeros(nstates,nstates);
@@ -51,14 +52,17 @@ classdef HmmEmFitEng < EmFitEng
             if(batchSize < 2), batchSize = n;end
             eDists = model.params.emissionDists;
             for i=1:nstates
-               eDists{i} =  fit(eDists{i},'-data',DataTable(X(sub(randperm(n),1:batchSize),:)));
+               if isproperty(eDists{i},'fitEng') && ~isempty(eDists{i}.fitEng),eDists{i}.fitEng.verbose = false; end
+               try %#ok
+                   eDists{i} =  fit(eDists{i},'-data',DataTable(X(sub(randperm(n),1:batchSize),:)));
+               end
             end
             model.params.emissionDists = eDists;
             
             % don't want to hard code distribution types here so we fit on
             % random data instead.
             priorSupport = model.prior.support;
-            D = DataTable(colvec(priorSupport(randint(100,1,1:numel(priorSupport)))));
+            D = DataTable(colvec(priorSupport(randint(100,1,[1,numel(priorSupport)]))));
             model.prior = fit(model.prior,D);
             transSupport = model.params.transDist.support;
             D = DataTable(transSupport(randint(100,nstates,[1,numel(transSupport)])));

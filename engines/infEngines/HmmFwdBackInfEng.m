@@ -14,6 +14,7 @@ classdef HmmFwdBackInfEng < FwdBackInfEng
     methods
         
         function eng = enterEvidence(eng,model,D)
+            D = correctDims(D,model.ndimensions);
             eng.pi = pmf(model.prior);
             eng.A  = pmf(model.params.transDist);
             if nargin < 3 || isempty(D)
@@ -115,7 +116,7 @@ classdef HmmFwdBackInfEng < FwdBackInfEng
             if ~iscached
                 eng = enterEvidence(eng,model,D);
             end
-            S = hmmSamplePost(eng.pi, eng.A, eng.localEvidence, nsamples);
+            S = hmmSamplePost(eng.pi, eng.A, eng.localEvidence, nsamples)';
         end
     end
     

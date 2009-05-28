@@ -13,8 +13,12 @@ classdef DiscreteDist < ScalarDist & ParallelizableDist
 
 		function model = DiscreteDist(varargin)
             if nargin == 0 ;return; end
-		    [model.params.T , model.support , model.prior] = processArgs(varargin,...
-                '-T',[],'*-support',[],'-prior',NoPrior());
+		    [model.params.T , model.support , model.prior, nstates, ndistributions] = processArgs(varargin,...
+                '-T',[],'-support',[],'-prior',NoPrior(),'-nstates',[],'-ndistributions',1);
+            if isempty(model.params.T)
+               if isempty(nstates),nstates = numel(model.support); end
+               model.params.T = normalize(rand(nstates,ndistributions),1);
+            end
             model = initialize(model);
         end
 
@@ -137,8 +141,8 @@ classdef DiscreteDist < ScalarDist & ParallelizableDist
                model.dof = size(model.params.T,1) - 1;
                if isempty(model.support)
                     model.support = 1:size(model.params.T,1);
-               end
-           end  
+               end 
+            end
         end 
     end
 end

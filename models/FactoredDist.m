@@ -18,10 +18,12 @@ classdef FactoredDist < MultivarDist
 
 		function model = FactoredDist(varargin)
             if nargin == 0; return; end
-            [model.params.distributions,template,model.ndistributions,model.prior] = processArgs(varargin,'-distributions',{},'-template',[],'-ndistributions',[],'-prior',NoPrior());
+            [model.params.distributions,template,model.ndistributions,model.ndistributions,model.prior] = processArgs(varargin,'-distributions',{},'-template',[],'-ndistributions',[],'-ndimensions',[],'-prior',NoPrior());
+            
+            if numel(model.params.distributions) == 1, template = model.params.distributions; end
             if ~isempty(template) 
                 if isa(template,'ParallelizableDist')
-                   model.params.distributions = template;
+                    model.params.distributions = template;
                 else
                     model.params.distributions = copy(template,model.ndistributions);
                 end
