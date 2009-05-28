@@ -11,7 +11,7 @@ classdef BernoulliDist < DiscreteDist
         % rather than indexing into T. 
         
           
-            X = canonizeLabels(D.X)-1; % make sure its in [0,1]
+            X = canonizeLabels(unwrap(D))-1; % make sure its in [0,1]
             L0 = bsxfun(@times,log(model.params.T(1,:)+eps),double(~X)); 
             L1 = bsxfun(@times,log(model.params.T(2,:)+eps),X);
             L = sum(L0+L1,2);

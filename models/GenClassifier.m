@@ -1,6 +1,4 @@
 classdef GenClassifier < CondModel
-%GENCLASSIFIER
-
 
 	properties
 
@@ -51,7 +49,7 @@ classdef GenClassifier < CondModel
                 L(:,c) = logPdf(classConds{c},X) + logpy(c);
             end;
             post = exp(normalizeLogspace(L));
-            yHat = maxidx(post,[],2);
+            yHat = model.prior.support(maxidx(post,[],2))';
             if nargout > 2
                 pY = DiscreteDist(post', '-support', model.prior.support);
             end

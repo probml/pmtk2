@@ -14,7 +14,7 @@ classdef DiscreteDist < ScalarDist & ParallelizableDist
 		function model = DiscreteDist(varargin)
             if nargin == 0 ;return; end
 		    [model.params.T , model.support , model.prior, nstates, ndistributions] = processArgs(varargin,...
-                '-T',[],'-support',[],'-prior',NoPrior(),'-nstates',[],'-ndistributions',1);
+                '-T',[],'-support',[],'-prior',NoPrior(),'-nstates',2,'-ndistributions',1);
             if isempty(model.params.T)
                if isempty(nstates),nstates = numel(model.support); end
                model.params.T = normalize(rand(nstates,ndistributions),1);
@@ -71,7 +71,7 @@ classdef DiscreteDist < ScalarDist & ParallelizableDist
         end
         
         function SS = mkSuffStat(model, D,weights)
-            X = D.X;
+            X = unwrap(D);
             K = numel(model.support);
             d = size(X,2);
             counts = zeros(K, d);
