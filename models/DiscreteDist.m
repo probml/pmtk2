@@ -18,7 +18,10 @@ classdef DiscreteDist < ScalarDist & ParallelizableDist
             if isempty(model.params.T)
                if isempty(nstates),nstates = numel(model.support); end
                model.params.T = normalize(rand(nstates,ndistributions),1);
+            elseif isempty(model.support)
+               model.support = 1:size(model.params.T,1); 
             end
+                
             model = initialize(model);
         end
 

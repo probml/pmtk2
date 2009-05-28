@@ -80,6 +80,7 @@ classdef Hmm < ChainModel & LatentVarModel
             if ncases(D) > 1 ; notYetImplemented('not yet vectorized w.r.t. data - call once for each data case'); end
             if ~isempty(Q)   ; notYetImplemented('queries not yet supported'); end 
             eng = enterEvidence(model.infEng,model,D);
+            funcs = cellwrap(funcs);
             for f=1:numel(funcs)
                 switch funcs{f}
                     case 'mode'
@@ -123,7 +124,7 @@ classdef Hmm < ChainModel & LatentVarModel
                 
             end
             observed = DataSequence(obs);
-            hidden   = DataSequence(obs);
+            hidden   = DataSequence(hid);
         end
         
         

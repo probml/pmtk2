@@ -18,7 +18,7 @@ classdef FactoredDist < MultivarDist
 
 		function model = FactoredDist(varargin)
             if nargin == 0; return; end
-            [model.params.distributions,template,model.ndistributions,model.ndistributions,model.prior] = processArgs(varargin,'-distributions',{},'-template',[],'-ndistributions',[],'-ndimensions',[],'-prior',NoPrior());
+            [model.params.distributions,template,model.ndistributions,model.ndimensions,model.prior] = processArgs(varargin,'-distributions',{},'-template',[],'-ndistributions',[],'-ndimensions',[],'-prior',NoPrior());
             
             if numel(model.params.distributions) == 1, template = model.params.distributions; end
             if ~isempty(template) 

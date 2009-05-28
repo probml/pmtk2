@@ -17,6 +17,7 @@ classdef Query
           
           [Q.variables,Q.layer,Q.modifiers] = processArgs(varargin,'-variables',{},'-layer','default','-modifiers',{});
           if iscell(Q.variables),Q.variables = colvec(Q.variables); end
+          if ~isempty(Q.modifiers), Q.modifiers = cellwrap(Q.modifiers); end
         end
         
         function n = nqueries(Q)
@@ -45,7 +46,12 @@ classdef Query
                 switch S.type
                     case {'()','{}'}
                         if ~ischar(A.variables)
-                            B = Query(A.variables(S.subs{1}),A.layer,A.modifiers);
+                            if numel(A.modifiers) == numel(A.variables)
+                                mod = A.modifiers(S.subs{1});
+                            else
+                                mod = A.modifiers; 
+                            end
+                            B = Query(A.variables(S.subs{1}),A.layer,mod);
                         elseif S.subs{1}==1
                             B = Query(A.variables,A.layer,A.modifiers); 
                         else

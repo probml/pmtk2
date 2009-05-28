@@ -1,6 +1,5 @@
 %%  A Simple Test of the HmmDist Class
 
-
 setSeed(0);
 nHiddenStates = 4;
 nObsStates    = 6; 
@@ -25,10 +24,10 @@ model = fit(model,'-data',observed);
 maxmarg = maxidx(inferLatent(model,'-query',Query('singles'),'-data',observed(1))) %#ok
 %% MixMvn Observations
 fprintf('MixMvn Observations\n');
-obsModel = copy(MixMvn,nHiddenStates,'-nmixtures',2,'-ndimensions',12);
+obsModel = copy(MixMvn,nHiddenStates,'-nmixtures',3,'-ndimensions',10);
 srcModel = Hmm(obsModel);
 [observed,trueHidden] = sample(srcModel,nsamples,lens);
-model = Hmm('-emissionTemplate',MixMvn('-nmixtures',2,'-ndimensions',12),'-nstates',nHiddenStates);
+model = Hmm('-emissionTemplate',MixMvn('-nmixtures',2,'-ndimensions',10),'-nstates',nHiddenStates);
 model = fit(model,'-data',observed);
 [postSample,viterbi] = computeFunPost(model,'-data',observed(1),'-funcs',{'sample','mode'}) %#ok
 maxmarg = maxidx(inferLatent(model,'-query',Query('singles'),'-data',observed(1))) %#ok

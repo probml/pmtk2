@@ -8,7 +8,14 @@ classdef HmmFwdBackInfEng < FwdBackInfEng
         pi;
         A;
         localEvidence;
+        
+        % a new engine is used in separate calls to inferLatent or
+        % computeFunPost but a single call be a batch query. 
         cachedLogLik;
+        cachedAlpha;
+        cachedBeta;
+        cachedGamma;
+        cachedMarginals;
     end
     
     methods
@@ -32,37 +39,32 @@ classdef HmmFwdBackInfEng < FwdBackInfEng
         
         
         function M = computeMarginals(eng,Q)
-            % This is very ugly, we might be able to clean it up by
-            % calculating the queries recursively, but we don't want to
-            % recalcuate gamma and friends each time. 
-            
+       
             vars = Q.variables;
-            if isequal(vars,'viterbi')
-                % not used directly by end user - they call computeFunPost
-                % and ask for the mode instead, but that code will use
-                % this. We could move this to new engine method.
-                M = hmmViterbi(eng.pi, eng.A, eng.localEvidence);
-                return;
+            if isequal(unwrapCell(vars),'viterbi') % not used directly by end user - they call computeFunPost and ask for the mode instead, but that code will use this. 
+                M = hmmViterbi(eng.pi, eng.A, eng.localEvidence); return;
             end
-            
             filteredOnly = ismember('filtered',Q.modifiers);
-            
             if filteredOnly
-                [eng.cachedLogLik,alpha] = hmmFwd(eng.pi,eng.A,eng.localEvidence); % trust that the queries only need alpha!
+                if isempty(eng.cachedLogLik)|| isempty(eng.cachedAlpha)
+                    [eng.cachedLogLik,eng.cachedAlpha] = hmmFwd(eng.pi,eng.A,eng.localEvidence); 
+                end
+                alpha = eng.cachedAlpha;
             else
-                [gamma, alpha, beta,eng.cachedLogLik] = hmmFwdBack(eng.pi, eng.A, eng.localEvidence);
+                if isempty(eng.cachedGamma) || isempty(eng.cachedAlpha) ||isempty(eng.cachedBeta) || isempty(eng.cachedLogLik);
+                    [eng.cachedGamma, eng.cachedAlpha, eng.cachedBeta,eng.cachedLogLik] = hmmFwdBack(eng.pi, eng.A, eng.localEvidence);
+                end
+                gamma = eng.cachedGamma; alpha = eng.cachedAlpha; beta  = eng.cachedBeta;
             end
             switch class(vars)
                 case 'char'
                     switch lower(vars)
                         case 'singles'
-                            if filteredOnly
-                                M = alpha;
-                            else
-                                M = gamma;
+                            if filteredOnly, M = alpha;
+                            else             M = gamma;
                             end
                         case 'pairs'
-                            M = hmmComputeTwoSlice(alpha, beta, eng.A, eng.localEvidence);
+                            M = hmmComputeTwoSlice(alpha, beta, eng.A, eng.localEvidence); % we don't cache this
                         otherwise
                             error('%s is not a supported query',vars);
                     end
@@ -72,20 +74,17 @@ classdef HmmFwdBackInfEng < FwdBackInfEng
                     for i=1:numel(vars)
                         v = vars{i};
                         if numel(v) == 1 && isnumeric(v)
-                            if filteredOnly
-                                M{i} = alpha(:,v);
-                            else
-                                M{i} = gamma(:,v);
+                            if filteredOnly,  M{i} = alpha(:,v);
+                            else              M{i} = gamma(:,v);
                             end
                         elseif numel(v) == 2 && isnumeric(v) && diff(v) == 1
+                            xi_summed = hmmComputeTwoSlice(alpha,beta,eng.A,eng.localEvidence);
                             M{i} = xi_summed(v(1),v(2));
                         elseif ischar(v)
                             switch lower(v)
                                 case 'singles'
-                                    if filteredOnly
-                                        M{i} = alpha;
-                                    else
-                                        M{i} = gamma;
+                                    if filteredOnly,   M{i} = alpha;
+                                    else               M{i} = gamma;
                                     end
                                 case 'pairs'
                                     M{i} = hmmComputeTwoSlice(alpha, beta, eng.A, eng.localEvidence);
