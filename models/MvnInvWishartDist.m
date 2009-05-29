@@ -7,7 +7,7 @@ classdef MvnInvWishartDist < MultivarDist
         ndimensions;
         params;
         prior = NoPrior();
-        
+        covType = 'full';
     end
     
     
