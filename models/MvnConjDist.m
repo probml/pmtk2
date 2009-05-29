@@ -7,7 +7,7 @@ classdef MvnConjDist < MvnDist & BayesModel
 % MvnInvWishartDist, MvnInvGammaDist.
     
     properties
-        paramDist; % always stores a distribution
+        paramDist; % always stores a distribution, (not a struct or FactoredDist - use getParamPost())
     end
     
     methods
@@ -71,6 +71,7 @@ classdef MvnConjDist < MvnDist & BayesModel
         end
         
         function varargout = getParamPost(model,funstr)
+        % optionally allow for a function of the posterior    
             if nargin < 2
                 varargout = {model.paramDist}; % type depends on the prior
             else
