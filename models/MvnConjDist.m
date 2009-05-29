@@ -128,6 +128,7 @@ classdef MvnConjDist < MvnDist & BayesModel
         end
         
         function  M = infer(model,varargin)
+            notYetImplemented();
             if isempty(model.infEng)
                 error('The posterior predictive distribution does not support general inference. Either specify an inference engine or consider clamping mu and Sigma to point estimates and performing inference using a plugin approximation.');
             else
@@ -217,7 +218,7 @@ classdef MvnConjDist < MvnDist & BayesModel
             T   = hyperParams.Sigma;
             dof = hyperParams.dof;
             d = model.ndimensions;
-            m = MvtDist(dof - d + 1, model.params.mu, T/(dof-d+1));        % Same as the MVNIW result, except the last term is missing a factor of (k+1)/k
+            m = MultiStudentDist(dof - d + 1, model.params.mu, T/(dof-d+1));        % Same as the MVNIW result, except the last term is missing a factor of (k+1)/k
         end
         
         function m = marginalMIGprior(model)

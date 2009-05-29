@@ -1,5 +1,6 @@
 classdef LinDynSys < ChainModel & LatentVarModel
-    
+%#broken
+% The design of this class needs some work too
     
     
     properties

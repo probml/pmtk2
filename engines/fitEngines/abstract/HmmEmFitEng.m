@@ -31,7 +31,7 @@ classdef HmmEmFitEng < EmFitEng
         end
         
         function [model,success] = mStep(eng,model,ess) %#ok
-            [model.prior            , ps] = fit(model.prior            ,'-suffStat' ,ess.pi    );
+            [model.params.initDist            , ps] = fit(model.params.initDist            ,'-suffStat' ,ess.pi    );
             [model.params.transDist , ts] = fit(model.params.transDist ,'-suffStat' ,ess.trans );
             eDists = model.params.emissionDists;
             eStats = ess.obs;
@@ -61,9 +61,9 @@ classdef HmmEmFitEng < EmFitEng
             
             % don't want to hard code distribution types here so we fit on
             % random data instead.
-            priorSupport = model.prior.support;
-            D = DataTable(colvec(priorSupport(randint(100,1,[1,numel(priorSupport)]))));
-            model.prior = fit(model.prior,D);
+            initSupport = model.params.initDist.support;
+            D = DataTable(colvec(initSupport(randint(100,1,[1,numel(initSupport)]))));
+            model.params.initDist = fit(model.params.initDist,D);
             transSupport = model.params.transDist.support;
             D = DataTable(transSupport(randint(100,nstates,[1,numel(transSupport)])));
             model.params.transDist = fit(model.params.transDist,D); 

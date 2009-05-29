@@ -10,7 +10,7 @@ classdef LinReg < CondModel
         lambda;
         fitEng;
         addOffset;
-        
+        modelSelEng;
         
     end
     

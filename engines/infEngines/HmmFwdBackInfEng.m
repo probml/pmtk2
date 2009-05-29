@@ -22,7 +22,7 @@ classdef HmmFwdBackInfEng < FwdBackInfEng
         
         function eng = enterEvidence(eng,model,D)
             D = correctDims(D,model.ndimensions);
-            eng.pi = pmf(model.prior);
+            eng.pi = pmf(model.params.initDist);
             eng.A  = pmf(model.params.transDist);
             if nargin < 3 || isempty(D)
                 eng.localEvidence = ones(model.nstates,1);

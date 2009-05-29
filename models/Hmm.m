@@ -7,8 +7,8 @@ classdef Hmm < ChainModel & LatentVarModel
         dof;
         ndimensions;     % dimensionality of the observation model
         ndimsLatent = 1;
-        params;          % stores transition dist and emission dists
-        prior;           % starting distribution over hidden states
+        params;          % stores starting dist & starting distribution over hidden states
+        prior = NoPrior();
         nstates;         % number of hidden states
         fitEng;
         infEng;
@@ -19,7 +19,7 @@ classdef Hmm < ChainModel & LatentVarModel
         
         function model = Hmm(varargin)
             if nargin == 0; return; end
-            [   model.params.emissionDists , model.prior            ,...              
+            [   model.params.emissionDists , model.params.initDist  ,...
                 model.params.transDist     , model.nstates          ,...
                 emissionTemplate           , model.fitEng           ,...
                 model.infEng]              = processArgs(varargin   ,...
@@ -33,9 +33,9 @@ classdef Hmm < ChainModel & LatentVarModel
             
             if isempty(model.nstates)
                 if ~isempty(model.params.emissionDists)
-                   model.nstates = numel(model.params.emissionDists); 
-                elseif ~isempty(model.prior.support)
-                    model.nstates = numel(model.prior.support);
+                    model.nstates = numel(model.params.emissionDists);
+                elseif ~isempty(model.params.initDist.support)
+                    model.nstates = numel(model.params.initDist.support);
                 else
                     error('You must specify the number of hidden states -nstates');
                 end
@@ -43,8 +43,8 @@ classdef Hmm < ChainModel & LatentVarModel
             if ~isempty(emissionTemplate)
                 model.params.emissionDists = copy(emissionTemplate,model.nstates);
             end
-            if isempty(model.prior)
-                model.prior = DiscreteDist('-support',1:model.nstates);
+            if isempty(model.params.initDist)
+                model.params.initDist = DiscreteDist('-support',1:model.nstates);
             end
             if isempty(model.params.transDist)
                 model.params.transDist = FactoredDist(DiscreteDist('-support',1:model.nstates,'-ndistributions',model.nstates));
@@ -69,16 +69,16 @@ classdef Hmm < ChainModel & LatentVarModel
                     post(i,j) = cellwrap(computeMarginals(eng,Q(i)));
                 end
             end
-%             if n == 1 && d == 1
-                post = unwrapCell(post);
-%             end
+            %             if n == 1 && d == 1
+            post = unwrapCell(post);
+            %             end
         end
         
         function varargout = computeFunPost(model,varargin)
             [Q,D,funcs,funcArgs] = processArgs(varargin,'+-query',Query(),'-data',DataSequence(),'-funcs','mode','-funcArgs',{});
             varargout = cell(1,numel(funcs));
             if ncases(D) > 1 ; notYetImplemented('not yet vectorized w.r.t. data - call once for each data case'); end
-            if ~isempty(Q)   ; notYetImplemented('queries not yet supported'); end 
+            if ~isempty(Q)   ; notYetImplemented('queries not yet supported'); end
             eng = enterEvidence(model.infEng,model,D);
             funcs = cellwrap(funcs);
             for f=1:numel(funcs)
@@ -91,8 +91,8 @@ classdef Hmm < ChainModel & LatentVarModel
                             nsamples  = 1;
                         end
                         M = computeSamples(eng,'-cached',true,'-nsamples',nsamples);
-                end 
-                varargout{f} = M; 
+                end
+                varargout{f} = M;
             end
         end
         
@@ -106,15 +106,15 @@ classdef Hmm < ChainModel & LatentVarModel
         
         
         function [observed,hidden] = sample(model,nsamples,lens)
-        % Sample nsamples from this HMM, each with length specified in
-        % the corresponding entry of lens. This returns data in the format
-        % expected by fit, inferLatent, etc. 
+            % Sample nsamples from this HMM, each with length specified in
+            % the corresponding entry of lens. This returns data in the format
+            % expected by fit, inferLatent, etc.
             
             if numel(lens) < nsamples, lens = repmat(lens(1),nsamples); end
             eDists = model.params.emissionDists;
             hid = cell(nsamples,1);
             obs = cell(nsamples,1);
-            pi = pmf(model.prior);
+            pi = pmf(model.params.initDist);
             A = pmf(model.params.transDist);
             for i=1:nsamples
                 hid{i} = mc_sample(pi,A,lens(i),1);

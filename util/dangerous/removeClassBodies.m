@@ -1,5 +1,5 @@
 function removeClassBodies(source)
-    
+    error('are you sure you know what you are doing!');
     fprintf('Source = %s\nPress enter to continue, or Ctrl-c to stop\n',source);
     pause;
     
