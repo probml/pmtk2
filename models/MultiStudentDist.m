@@ -91,8 +91,8 @@ classdef MultiStudentDist < MultivarDist
         
         function X = sample(model,n)
             % X(i,:) = sample for i=1:n
-            if statstoolboxInstalled
-                X = mvtrnd(model.params.Sigma, model.params.dof, n) + repmat(model.params.mu,n,1);
+            if statsToolboxInstalled
+                X = mvtrnd(model.params.Sigma, model.params.dof, n) + repmat(rowvec(model.params.mu),n,1);
             else
                 R = chol(model.params.Sigma);
                 X = repmat(mean(model)', n, 1) + (R'*trnd(model.params.dof, d, n))';

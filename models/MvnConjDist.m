@@ -15,24 +15,18 @@ classdef MvnConjDist < MvnDist & BayesModel
         function model = MvnConjDist(varargin)
             if nargin == 0; return; end
             [model.prior,model.covType,model.ndimensions,model.params.domain,model.params.mu,model.params.Sigma] =...
-                processArgs(varargin,'*-prior',[],'-covType','full','-ndimensions',[],'-domain',[],'-mu',[],'-Sigma',[]);
+                processArgs(varargin,'-prior',[],'-covType','full','-ndimensions',[],'-domain',[],'-mu',[],'-Sigma',[]);
             if isempty(model.prior)
                 model.prior = MvnInvWishartDist('-ndimensions',model.ndimensions);
             end
             if isempty(model.params.domain)
                 model.params.domain = 1:model.ndimensions;
             end
-            if isempty(model.params.mu)
-                model.params.mu = mean(model);  % mean of the model before fitting returns the mean of the prior predictive distribution
-            end
-            if isempty(model.params.Sigma)
-               model.params.Sigma = cov(model); % cov of the model before fitting, returns the cov of the prior predictive distribution 
-            end
             if ischar(model.prior), error('the prior must be an object, not a string. The prior classes, e.g. MvnInvWishartDist should autogenerate uninformative hyper parameters - no need for mkPrior functions that take data!');end
         end
         
         function model = fit(model,varargin)
-            [D,SS] = processArgs(varargin,'-data',DataTable(),'-suffStat');
+            [D,SS] = processArgs(varargin,'-data',DataTable(),'-suffStat',[]);
             if isempty(SS),SS = mkSuffStat(model,D); end
             if ~isempty(model.fitEng)
                 model = fit(model.fitEng,varargin{:});
@@ -52,8 +46,6 @@ classdef MvnConjDist < MvnDist & BayesModel
                         error('%s is not a supported prior',class(model.prior));
                 end
             end
-            model.params.mu    = mean(model); % mean of the predictive distribution!
-            model.params.Sigma = cov(mode);   % cov of the predictive distribution!
         end
         
         function m = marginalizeOutParams(model)
@@ -78,8 +70,28 @@ classdef MvnConjDist < MvnDist & BayesModel
             end
         end
         
-        function P = getParamPost(model)
-            P = model.paramDist; % type depends on the prior
+        function varargout = getParamPost(model,funstr)
+            if nargin < 2
+                varargout = {model.paramDist}; % type depends on the prior
+            else
+               switch funstr
+                   case 'mode'
+                   varargout = cell(1,2);
+                   switch class(model.paramDist)
+                       case 'MvnDist'
+                           varargout{1} = mode(model.paramDist);
+                           varargout{2} = model.params.Sigma;
+                       case {'MvnInvWishartDist','MvnInvGammaDist'}
+                           varargout{1} = mode(marginal(model.paramDist,Query('mu')));
+                           varargout{2} = mode(marginal(model.paramDist,Query('Sigma')));
+                       case 'InvWishartDist'
+                           varargout{1} = model.params.mu;
+                           varargout{2} = mode(model.paramDist);
+                   end
+                   otherwise
+                       notYetImplemented();
+               end
+            end
         end
         
         function m = mean(model)
@@ -116,9 +128,7 @@ classdef MvnConjDist < MvnDist & BayesModel
         
         function  M = infer(model,varargin)
             if isempty(model.infEng)
-                error('The posterior predictive distribution does not support general inference. Either specify an inference engine or consider clamping mu and Sigma to point estimates and performing inference using a plugin approximation, i.e. ''infer(MvnDist(mean(model),cov(model)),...)''');
-                 % note, we could do this automatically with this line but it might confuse users
-                 % M = infer(MvnDist(mean(model),cov(model),'-domain',model.domain),varargin{:});
+                error('The posterior predictive distribution does not support general inference. Either specify an inference engine or consider clamping mu and Sigma to point estimates and performing inference using a plugin approximation.');
             else
                 M = infer(model.infEng,varargin{:});
             end
@@ -179,7 +189,7 @@ classdef MvnConjDist < MvnDist & BayesModel
         end
         
         function model = fitMIWprior(model,SS)
-            hyperParams = model.parior.params;
+            hyperParams = model.prior.params;
             k0 = hyperParams.k;
             m0 = hyperParams.mu;
             S0 = hyperParams.Sigma;
@@ -187,8 +197,8 @@ classdef MvnConjDist < MvnDist & BayesModel
             n = SS.n;
             kn = k0 + n;
             vn = v0 + n;
-            Sn = S0 + n*SS.XX + (k0*n)/(k0+n)*(SS.xbar-colvec(m0))*(SS.xbar-colvec(m0))';
-            mn = (k0*colvec(m0) + n*SS.xbar)/kn;
+            Sn = S0 + n*SS.XX + (k0*n)/(k0+n)*(colvec(SS.xbar)-colvec(m0))*(colvec(SS.xbar)-colvec(m0))';
+            mn = (k0*colvec(m0) + colvec(n*SS.xbar))/kn;
             model.paramDist = MvnInvWishartDist('-mu', mn, '-Sigma', Sn, '-dof', vn, '-k', kn);
         end
         %% MARGINAL HELPERS

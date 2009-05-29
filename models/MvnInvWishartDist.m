@@ -77,7 +77,7 @@ classdef MvnInvWishartDist < MultivarDist
                     if d==1
                         mm = StudentDist(v, model.params.mu, model.params.Sigma/(model.params.k*v));
                     else
-                        mm = MvtDist(v-d+1, model.params.mu, model.params.Sigma/(model.params.k*(v-d+1)));
+                        mm = MultiStudentDist(v-d+1, model.params.mu, model.params.Sigma/(model.params.k*(v-d+1)));
                     end
                 otherwise
                     error(['unrecognized variable ' queryVar])

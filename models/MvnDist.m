@@ -150,7 +150,8 @@ classdef MvnDist < MultivarDist
                             Sigma = SS.XX;
                         end
                     otherwise
-                        [mu,Sigma] = fitMap(model,varargin);
+                        if isempty(SS),SS = mkSuffStat(model,D);end
+                        [mu,Sigma] = fitMap(model,SS);
                 end
                 switch model.covType
                     case 'diag', Sigma = diag(diag(Sigma)); % store as matrix not vector
@@ -259,7 +260,9 @@ classdef MvnDist < MultivarDist
         
         
         function [mu,Sigma] = fitMap(model,SS)
-            notYetImplemented('MVN Map Estimation');
+           delegate = MvnConjDist('-prior',model.prior,'-ndimensions',model.ndimensions,'-mu',model.params.mu,'-Sigma',model.params.Sigma); 
+           delegate = fit(delegate,'-suffStat',SS);
+           [mu,Sigma] = getParamPost(delegate,'mode');
         end
         
         
