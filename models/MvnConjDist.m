@@ -1,4 +1,10 @@
 classdef MvnConjDist < MvnDist & BayesModel
+% Multivariate Normal Conjugate Distribution    
+% Operations mean , mode , var , cov , entropy , logPdf , sample , plotPdf,
+% etc are w.r.t. the predictive distribution. If this model hasn't been fit
+% to data, they are w.r.t. to the prior predictive. You must specify a
+% prior to use this class - currently one of MvnDist, InvWishartDist,
+% MvnInvWishartDist, MvnInvGammaDist.
     
     properties
         paramDist; % always stores a distribution
@@ -22,6 +28,7 @@ classdef MvnConjDist < MvnDist & BayesModel
             if isempty(model.params.Sigma)
                model.params.Sigma = cov(model); % cov of the model before fitting, returns the cov of the prior predictive distribution 
             end
+            if ischar(model.prior), error('the prior must be an object, not a string. The prior classes, e.g. MvnInvWishartDist should autogenerate uninformative hyper parameters - no need for mkPrior functions that take data!');end
         end
         
         function model = fit(model,varargin)
@@ -30,7 +37,6 @@ classdef MvnConjDist < MvnDist & BayesModel
             if ~isempty(model.fitEng)
                 model = fit(model.fitEng,varargin{:});
             else
-                if ischar(model.prior), model = createPrior(model);  end
                 switch class(model.prior)
                     case 'MvnDist'
                         model = fitMVNprior(model,SS);
@@ -41,7 +47,7 @@ classdef MvnConjDist < MvnDist & BayesModel
                     case 'MvnInvWishartDist'
                         model = fitMIWprior(model,SS);
                     case {'NoPrior','double'}  % double for []
-                        model = fit@MvnDist(model,varargin{:});
+                        error('you must specify a prior to use this class. If you want to do MLE estimation, use MvnDist instead');
                     otherwise
                         error('%s is not a supported prior',class(model.prior));
                 end
@@ -51,7 +57,6 @@ classdef MvnConjDist < MvnDist & BayesModel
         end
         
         function m = marginalizeOutParams(model)
-            if ischar(model.prior), error('the prior must be an object, not a string. The prior classes, e.g. MvnInvWishartDist should autogenerate uninformative hyper parameters - no need for mkPrior functions that take data!');end
             if isempty(model.paramDist),model.paramDist = model.prior; end   
             % if we have not fit yet, marginalize out w.r.t the prior
             % instead - this is just a programming convenience to set
