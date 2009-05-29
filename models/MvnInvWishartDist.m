@@ -6,7 +6,7 @@ classdef MvnInvWishartDist < MultivarDist
         
         ndimensions;
         params;
-        prior;
+        prior = NoPrior();
         
     end
     
@@ -14,29 +14,10 @@ classdef MvnInvWishartDist < MultivarDist
     methods
         
         function model = MvnInvWishartDist(varargin)
-            [model.params.mu, model.params.Sigma, model.params.dof, model.params.k]...
-                = processArgs(varargin,'-mu',[],'-Sigma',[],'-dof',[],'-k',[]);
+            [model.params.mu, model.params.Sigma, model.params.dof, model.params.k,model.ndimensions]...
+                = processArgs(varargin,'-mu',[],'-Sigma',[],'-dof',[],'-k',[],'-ndimensions',[]);
             model = initialize(model);
         end
-        
-        
-        function cov(model,varargin)
-            %
-            notYetImplemented('MvnInvWishartDist.cov()');
-        end
-        
-        
-        function entropy(model,varargin)
-            %
-            notYetImplemented('MvnInvWishartDist.entropy()');
-        end
-        
-        
-        function fit(model,varargin)
-            %
-            notYetImplemented('MvnInvWishartDist.fit()');
-        end
-        
         
         function L = logPdf(model,mu,Sigma)
             if(nargin == 2) % as in logprob(obj,X) used by plot % vectorized w.r.t. both mu and Sigma
@@ -62,13 +43,18 @@ classdef MvnInvWishartDist < MultivarDist
             end
         end
         
-        
-        function mean(model,varargin)
-            %
-            notYetImplemented('MvnInvWishartDist.mean()');
+        function [m,S] = sample(model,n)
+            if (nargin < 2), n = 1; end;
+            mu = model.params.mu; k = model.params.k;
+            d = length(mu);
+            m = zeros(n,d);
+            SigmaDist = InvWishartDist(model.params.dof, model.params.Sigma);
+            S = sample(SigmaDist,n);
+            for s=1:n
+                m(s,:) = sample(MvnDist(mu, S(:,:,s) / k),1);
+            end
         end
-        
-        
+       
         function [mu,Sigma] = mode(model)
             d = size(obj.Sigma,1);
             mu = model.params.mu;
@@ -97,48 +83,54 @@ classdef MvnInvWishartDist < MultivarDist
                     error(['unrecognized variable ' queryVar])
             end
         end
+            
+        function cov(model,varargin)
+            %
+            notYetImplemented('MvnInvWishartDist.cov()');
+        end
         
-        
-        
-        
-        
-        
-        
+        function mean(model,varargin)
+            %
+            notYetImplemented('MvnInvWishartDist.mean()');
+        end
+         
         function plotPdf(model,varargin)
             %
             notYetImplemented('MvnInvWishartDist.plotPdf()');
         end
-        
-        
-        function [m,S] = sample(model,n)
-            if (nargin < 2), n = 1; end;
-            mu = model.params.mu; k = model.params.k;
-            d = length(mu);
-            m = zeros(n,d);
-            SigmaDist = InvWishartDist(model.params.dof, model.params.Sigma);
-            S = sample(SigmaDist,n);
-            for s=1:n
-                m(s,:) = sample(MvnDist(mu, S(:,:,s) / k),1);
-            end
-        end
-        
-        
+           
         function var(model,varargin)
             %
             notYetImplemented('MvnInvWishartDist.var()');
         end
         
+        function fit(model,varargin)
+           notYetImplemented('MvnInvWishartDist.fit()'); 
+        end
         
+        function entropy(model,varargin)
+            notYetImplemented('MvnInvWishartDist.entropy()');
+        end
     end
     
     methods(Access = 'protected')
         
         function model = initialize(model)
-            model.ndimensions = length(model.params.mu);
+            if isempty(model.ndimensions)
+                model.ndimensions = length(model.params.mu);
+            end
             if isempty(model.params.k)
                 model.params.k = model.ndimensions;
             end
-            
+            if isempty(model.params.mu)
+                model.params.mu = zeros(1,model.ndimensions);
+            end
+            if isempty(model.params.Sigma)
+               model.params.Sigma = eye(model.ndimensions); 
+            end
+            if isempty(model.params.dof)
+                model.params.dof = model.params.k + 1;
+            end
         end
         
     end

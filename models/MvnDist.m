@@ -23,7 +23,7 @@ classdef MvnDist < MultivarDist
                 model.prior     , model.ndimensions         ,...
                 model.infEng    , model.fitEng              ,...
                 model.covType   , model.params.domain       ,...
-                ] = processArgs(varargin                      ,...
+                ] = processArgs(varargin                    ,...
                 '-mu'          , []                         ,...
                 '-Sigma'       , []                         ,...
                 '-prior'       , NoPrior()                  ,...
@@ -202,15 +202,21 @@ classdef MvnDist < MultivarDist
         function v = var(model,varargin)
             v = diag(model.params.Sigma);
         end
+        
+        function [postmu, logevidence] = softCondition(pmu, py, A, y)
+            % Bayes rule for MVNs
+            Syinv = inv(py.params.Sigma);
+            Smuinv = inv(pmu.params.Sigma);
+            postSigma = inv(Smuinv + A'*Syinv*A);
+            postmu = postSigma*(A'*Syinv*(y-py.params.mu) + Smuinv*pmu.params.mu);
+            postmu = MvnDist(postmu, postSigma);
+            if nargout > 1
+                logevidence = logPdf(MvnDist(A*pmu.params.mu + py.params.mu, py.params.Sigma + A*pmu.params.Sigma*A'), y(:)');
+            end
+        end
     end
     
-    
-    
-    
-    
-    
-    methods(Access = 'protected')
-        
+    methods(Access = 'protected')    
         function model = initialize(model)
             % Make random params if none specified.
             % Infer values of other fields.
