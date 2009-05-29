@@ -15,7 +15,12 @@ classdef MixMvnMc < MixMvn & BayesModel
                 '-mixingDist'   , []                 ,...
                 '-mixtureComps' , {}                 ,...
                 '-fitEng'       , MixMvnGibbsFitEng()  );
-            model = model@MixMvn(args{:});
+            [ndimensions,template,remaining] = extractArgs(2:3,args);
+            if isempty(template)
+               remaining = addArgs(remaining,'-template',MvnConjDist('-ndimensions',ndimensions));
+            end
+            remaining = addArgs(remaining,'-ndimensions',ndimensions);
+            model = model@MixMvn(remaining{:});
         end
         
         function P = getParamPost(model)

@@ -27,11 +27,17 @@ classdef MixMvnGibbsFitEng < FitEng
         end
         
         function [model,latent] = fit(eng,model,X)
+            switch class(model.mixingDist.prior)
+                case 'DirichletDist'
+                    alpha = model.mixtureComps.prior.params.alpha;
+                otherwise
+                    alpha = ones(numel(model.mixtureComps),1);
+            end
             switch lower(eng.method)
                 case 'full'
-                    [muS, sigmaS, mixS, latent] = fullGibbsSampleMvnMix(model.mixtureComps, model.mixingDist, X, eng.Nsamples, eng.Nburnin, eng.thin, eng.verbose);
+                    [muS, sigmaS, mixS, latent] = fullGibbsSampleMvnMix(model.mixtureComps, pmf(model.mixingDist), X, alpha,eng.Nsamples, eng.Nburnin, eng.thin, eng.verbose);
                 case 'collapsed'
-                    [muS, sigmaS, mixS, latent] = collapsedGibbsSampleMvnMix(model.mixtureComps, model.mixingDist, X, eng.Nsamples, eng.Nburnin, eng.thin, eng.verbose);
+                    [muS, sigmaS, mixS, latent] = collapsedGibbsSampleMvnMix(model.mixtureComps, X, alpha , eng.Nsamples, eng.Nburnin, eng.thin, eng.verbose);
             end
             if(eng.fixlatent)
                 [muS, sigmaS, mixS, latent] = processLabelSwitching(muS, sigmaS, mixS, latent, X);
@@ -100,7 +106,7 @@ end
 % special purpose code after this point
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [muS, SigmaS, mixS, latentS] = fullGibbsSampleMvnMix(distributions, mixingWeights, data, varargin)
+function [muS, SigmaS, mixS, latentS] = fullGibbsSampleMvnMix(distributions, mixWeights, data,alpha, varargin)
     [Nsamples, Nburnin, thin, verbose] = processArgs(varargin, ...
         '-Nsamples'  , 1000, ...
         '-Nburnin'   , 500, ...
@@ -138,8 +144,8 @@ function [muS, SigmaS, mixS, latentS] = fullGibbsSampleMvnMix(distributions, mix
     % It will be convenient to work with mu as a row vector in this code
     mu = mu'; mu0 = mu0';
     
-    alpha = mixingWeights.prior.alpha;
-    mixWeights = mixingWeights.T;
+    %alpha = mixingWeights.prior.params.alpha;
+    %mixWeights = mixingWeights.T;
     if(verbose), fprintf('Full Gibbs Sampling initiated.  Starting to collect samples\n'); end;
     
     nSamples = ceil((Nsamples - Nburnin) / thin);
@@ -218,7 +224,7 @@ function [muS, SigmaS, mixS, latentS] = fullGibbsSampleMvnMix(distributions, mix
     
 end
 
-function [muS, sigmaS, mixS, latentS] = collapsedGibbsSampleMvnMix(distributions, mixingWeights, data, varargin)
+function [muS, sigmaS, mixS, latentS] = collapsedGibbsSampleMvnMix(distributions, data, alpha,varargin)
     % Collapsed Gibbs sampling for a mixture of MVNs
     [Nsamples, Nburnin, thin, verbose] = processArgs(varargin, ...
         '-Nsamples'  , 1000, ...
@@ -228,7 +234,7 @@ function [muS, sigmaS, mixS, latentS] = collapsedGibbsSampleMvnMix(distributions
     [nObs,d] = size(data); K = numel(distributions);
     nSamples = ceil((Nsamples - Nburnin) / thin); keep = 1;
     latent = zeros(nSamples, nObs);
-    alpha = mixingWeights.prior.alpha;
+    %alpha = mixingWeights.prior.params.alpha;
     if(verbose), fprintf('Collapsed Gibbs Sampling initiated.  Starting to collect samples\n'); end;
     
     latent(1,:) = unidrnd(K,1,nObs);
@@ -237,7 +243,7 @@ function [muS, sigmaS, mixS, latentS] = collapsedGibbsSampleMvnMix(distributions
     mup = zeros(d,K);
     kp = zeros(K,1); vp = zeros(K,1); Sp = zeros(d,d,K);
     for k=1:K
-        covtype{k} = distributions{k}.covtype;
+        covtype{k} = distributions{k}.covType;
         SS = MvnDist().mkSuffStat(data(latent(1,:)' == k,:));
         SSn(k) = SS.n;
         SSxbar(:,k) = SS.xbar;

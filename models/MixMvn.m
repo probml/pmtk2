@@ -16,9 +16,9 @@ classdef MixMvn < MixtureModel
                 template = MvnDist('-ndimensions',ndimensions);
             end
             if ~isempty(template)
-                remaining(end+1:end+2) = {'-template',template};
+                remaining = addArgs(remaining,'-template',template);
             else
-                remaining(end+1:end+2) = {'-template',MvnDist('-ndimensions',2)};
+                remaining = addArgs(remaining,'-template',MvnDist('-ndimensions',2));
             end
             model = model@MixtureModel(remaining{:});
         end

@@ -15,8 +15,12 @@ classdef DirichletDist < MultivarDist
     methods
         
         function model = DirichletDist(varargin)
-            [model.params.alpha,model.prior] = processArgs(varargin,'-alpha',[],'-prior',NoPrior());
-            model.ndimensions = size(model.params.alpha,2);
+            [model.params.alpha,model.prior] = processArgs(varargin,'-alpha',[],'-prior',NoPrior(),'-ndimensions',[]);
+            if isempty(model.ndimensions)
+                model.ndimensions = size(model.params.alpha,2);
+            elseif isempty(model.params.alpha)
+                model.params.alpha = ones(model.ndimensions,1);
+            end
             model.dof = model.ndimensions - 1;
         end
         
