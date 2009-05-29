@@ -1,13 +1,8 @@
 classdef DiscreteConjDist < DiscreteDist & BayesModel
-%DISCRETECONJDIST
-
 
 	properties
-
 		paramDist;
-
 	end
-
 
 	methods
 
