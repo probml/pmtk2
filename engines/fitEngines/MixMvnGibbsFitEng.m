@@ -18,7 +18,7 @@ classdef MixMvnGibbsFitEng < FitEng
             
             [eng.method, eng.fixlatent, eng.Nsamples, eng.Nburnin, eng.thin, eng.verbose] = processArgs(varargin, ...
                 '-method'       , 'collapsed' , ...
-                '-fixlatent'    , 'false'     , ...
+                '-fixlatent'    , false       , ...
                 '-Nsamples'     , 1000        , ...
                 '-Nburnin'      , 500         , ...
                 '-thin'         , 1           , ...
@@ -48,8 +48,8 @@ classdef MixMvnGibbsFitEng < FitEng
             K = numel(muS);
             mixComps = model.mixtureComps;
             for k=1:K
-                mixComps{k}.mu = colvec(mean(muS{k}));
-                mixComps{k}.Sigma = mean(sigmaS{k});
+                mixComps{k}.params.mu = colvec(mean(muS{k}));
+                mixComps{k}.params.Sigma = mean(sigmaS{k});
             end
             model.mixtureComps = mixComps;
             SS.counts = colvec(mean(mixS));
@@ -243,29 +243,30 @@ function [muS, sigmaS, mixS, latentS] = collapsedGibbsSampleMvnMix(distributions
     mup = zeros(d,K);
     kp = zeros(K,1); vp = zeros(K,1); Sp = zeros(d,d,K);
     for k=1:K
+        priorParams = distributions{k}.prior.params;
         covtype{k} = distributions{k}.covType;
-        SS = MvnDist().mkSuffStat(data(latent(1,:)' == k,:));
+        SS = mkSuffStat(MvnDist(),DataTable(data(latent(1,:)' == k,:)));
         SSn(k) = SS.n;
         SSxbar(:,k) = SS.xbar;
         SSXX(:,:,k) = SS.XX;
         SSXX2(:,:,k) = SS.XX2;
-        mup(:,k) = distributions{k}.prior.mu;
+        mup(:,k) = distributions{k}.prior.params.mu;
         switch lower(covtype{k})
             case 'full'
-                kp(k) = distributions{k}.prior.k;
-                vp(k) = distributions{k}.prior.dof;
-                Sp(:,:,k) = distributions{k}.prior.Sigma;
+                kp(k) = priorParams.k;
+                vp(k) = priorParams.dof;
+                Sp(:,:,k) = priorParams.Sigma;
             case 'diagonal'
-                kp(k) = distributions{k}.prior.Sigma;
-                if(any(distributions{k}.prior.a ~= distributions{k}.prior.a(1)))
+                kp(k) = priorParams.Sigma;
+                if(any(priorParams.a ~= priorParams.a(1)))
                     error('gibbs:diagonal:dofError', 'Require dof for each gamma prior to be equal within a cluster for conjugate MvnInvGamma prior');
                 end
-                vp(k) = distributions{k}.prior.a(1); % We assume (rather, require) shared degrees of freedom across the inverse gamma priors
-                Sp(:,:,k) = diag(distributions{k}.prior.b);
+                vp(k) = priorParams.a(1); % We assume (rather, require) shared degrees of freedom across the inverse gamma priors
+                Sp(:,:,k) = diag(priorParams.b);
             case 'spherical'
-                kp(k) = distributions{k}.prior.Sigma;
-                vp(k) = distributions{k}.prior.a;
-                Sp(:,:,k) = distributions{k}.prior.b*eye(d);
+                kp(k) = priorParams.Sigma;
+                vp(k) = priorParams.a;
+                Sp(:,:,k) = priorParams.b*eye(d);
         end
     end
     

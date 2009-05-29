@@ -1,6 +1,6 @@
-srcModel = MixMvn('-nmixtures',5,'-ndimensions',10);
-data = DataTable(sample(srcModel,1000));
+srcModel = MixMvn('-nmixtures',2,'-ndimensions',2);
+data = DataTable(sample(srcModel,30));
 
 
-model = MixMvnMc('-nmixtures',5,'-ndimensions',10);
+model = MixMvnMc('-nmixtures',2,'-ndimensions',2);
 model = fit(model,data);

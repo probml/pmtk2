@@ -35,7 +35,11 @@ classdef SampleDist < ParamFreeDist
         
         
         function m = mean(model)
-            m = mean(model.samples)';
+            %m = mean(model.samples)';
+            switch ndimsPMTK(model.samples)
+                case {1,2}, m = sum(bsxfun(@times, model.samples, model.weights), 2);
+                case 3, m = sum(bsxfun(@times, model.samples, shiftdim(model.weights,-1)), 3);
+            end
         end
         
         
