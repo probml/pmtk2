@@ -85,7 +85,7 @@ classdef EmFitEng < FitEng
             diagn.LL = [diagn.LL;currentLL];
             converged = convergenceTest(prevLL,currentLL,eng.convTol);
             if currentLL < prevLL && abs(currentLL-prevLL)/abs(currentLL) > 1e-3
-                warning('EmFitEng:LLdecrease','The log likelihood has increased from %g to %g',prevLL,currentLL);
+                warning('EmFitEng:LLdecrease','The log likelihood has decreased from %g to %g',prevLL,currentLL);
             end
         end
         
