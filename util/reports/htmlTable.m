@@ -66,7 +66,7 @@ function out = htmlTable(varargin)
       caption       , captionLoc    , captionFontSize , dataColors    , tableAlign      , tableValign     , ...
       colNameAlign  , colNameValign , rowNameAlign    , rowNameValign , rowNameColors   , colNameColors   , ...
       titleAlign    , titleValign   , titleFontSize   , dataFontSize  , rowNameFontSize , colNameFontSize , ...
-      titleBarColor ,...
+      titleBarColor , colSpan       , customCellAlign , ...
       ] = processArgs(varargin,...
         '*-data'             , []       ,...
         '-rowNames'          , {}       ,...
@@ -104,7 +104,9 @@ function out = htmlTable(varargin)
         '+-dataFontSize'     , 3        ,...
         '+-rowNameFontSize'  , 3        ,...
         '+-colNameFontSize'  , 3        ,...
-        '-titleBarColor'     ,'white');
+        '-titleBarColor'     ,'white'   ,...
+        '-colSpan'           ,[]        ,...
+        '-customCellAlign'   ,{});
     
 %%   
     if vertCols && ~isempty(colNames)
@@ -116,6 +118,11 @@ function out = htmlTable(varargin)
             end
             colNames{i} = newname;
         end
+    end
+    
+    nDataCols = size(data,2);
+    if isempty(colSpan)
+       colSpan = zeros(size(data,1),1); 
     end
     
     if ~isempty(title) && iscell(title)
@@ -282,13 +289,13 @@ function out = htmlTable(varargin)
                     if iscell(page{ii,jj}) && length(page{ii,jj})>1,
                         % create a sub table
                         tFORMAT = '%s';             % format for sting
-                        page{ii,jj} = htmlTable(page{ii,jj});
+                        page{ii,jj} = htmlTable(page{ii,jj},'-doshow',false);
                     elseif ischar(page{ii,jj}),
                         tFORMAT = '%s';             % format for sting
                     elseif length(page{ii,jj})>1,
                         % create a sub table
                         tFORMAT = '%s';             % format for sting
-                        page{ii,jj} = htmlTable(page{ii,jj});
+                        page{ii,jj} = htmlTable(page{ii,jj},'-doshow',false);
                     else
                         if isempty(dataFormat)
                             tFORMAT = '%g';
@@ -296,10 +303,24 @@ function out = htmlTable(varargin)
                             tFORMAT = dataFormat;         % use user format
                         end;
                     end;
-                    if isempty(dataColors)
-                        HTML = [HTML sprintf(['<TD BGCOLOR=%s ALIGN=%s VALIGN=%s><font size=%d>' tFORMAT  '</font></TD>'],bgColor,dataAlign,dataValign,dataFontSize,page{ii,jj})]; %#ok add data cell
+                    if colSpan(ii) == jj
+                       colspanText = sprintf('colspan = "%d"',nDataCols-jj+1); 
                     else
-                        HTML = [HTML sprintf(['<TD BGCOLOR=%s ALIGN=%s VALIGN=%s><font size=%d>' tFORMAT  '</font></TD>'],dataColors{ii,jj},dataAlign,dataValign,dataFontSize,page{ii,jj})]; %#ok add data cell
+                        colspanText = '';
+                    end
+                    if ~isempty(customCellAlign) && ~isempty(customCellAlign{ii,jj})
+                       currentAlign =  customCellAlign{ii,jj};
+                    else
+                        currentAlign = dataAlign;
+                    end
+                    
+                    
+                    if ~colSpan(ii) || colSpan(ii) >= jj
+                    if isempty(dataColors)
+                        HTML = [HTML sprintf(['<TD %s BGCOLOR=%s ALIGN=%s VALIGN=%s><font size=%d>' tFORMAT  '</font></TD>'],colspanText,bgColor,currentAlign,dataValign,dataFontSize,page{ii,jj})]; %#ok add data cell
+                    else
+                        HTML = [HTML sprintf(['<TD %s BGCOLOR=%s ALIGN=%s VALIGN=%s><font size=%d>' tFORMAT  '</font></TD>'],colspanText,dataColors{ii,jj},currentAlign,dataValign,dataFontSize,page{ii,jj})]; %#ok add data cell
+                    end
                     end
                 end;
             else  % if data is no a cell array

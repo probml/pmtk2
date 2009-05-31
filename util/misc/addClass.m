@@ -50,7 +50,7 @@ function addClass(varargin)
     
     
     txt = {classHeader
-        sprintf('%%%s\n',upper(className));
+        sprintf('%s\n','%#NotYetImplemented');
         sprintf('\n\tproperties\n')
         };
     

@@ -2,8 +2,12 @@ classdef MvnDist < MultivarDist
     % Multivariate Normal Distribution
     
     
+   
+    
+    
+    
     properties
-        dof;
+        dof; 
         ndimensions;
         params;
         prior;
@@ -16,6 +20,8 @@ classdef MvnDist < MultivarDist
     end
     
     methods
+        
+        
         
         function model = MvnDist(varargin)
             if nargin == 0; return ;end
@@ -216,6 +222,8 @@ classdef MvnDist < MultivarDist
             end
         end
     end
+    
+    
     
     methods(Access = 'protected')    
         function model = initialize(model)

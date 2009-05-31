@@ -11,8 +11,11 @@ function s = catString(c,delim)
 % s =
 % touch /tmp/foo && touch /tmp foo2 && mkdir /tmp/test
 
-   
-   if ischar(c), s=c; return; end
+   if nargin == 0; s = ''; return; end
+   if ischar(c), s=c; 
+        if strcmp(s,','),s = '';end
+       return; 
+   end
    if isempty(c),s=''; return;end
    if nargin < 2, delim = ',  '; end
    s = '';
@@ -20,4 +23,5 @@ function s = catString(c,delim)
       s = [s, rowvec(c{i}),rowvec(delim)]; %#ok
    end
     s(end-numel(delim)+1:end) = [];
+    if strcmp(s,','),s = '';end
 end

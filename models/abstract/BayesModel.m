@@ -1,5 +1,5 @@
 classdef BayesModel
- 
+% Abstract Bayesian Model  
   
     properties(Abstract = true)
        paramDist; 
