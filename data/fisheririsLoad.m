@@ -9,3 +9,4 @@ for c=1:3
   ndx = strmatch(classnames{c},species);
   y(ndx) = c;
 end
+save('C:\kmurphy\pmtk2\data\irisData.mat', 'X', 'y', 'classnames', 'varnames');

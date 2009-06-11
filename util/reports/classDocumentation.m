@@ -2,7 +2,7 @@ function classDocumentation(varargin)
 % Generate an html page showing class details
     
     doshow  = true;
-    doprint = true;
+    doprint = false; % true;
     
     
     [source,saveDir,includeProtected,fileName,mainTitle] = ...
