@@ -1,19 +1,19 @@
 classdef LatentVarModel < ParamModel
-%LATENTVARMODEL
+  %LATENTVARMODEL
+  
+  properties(Abstract = true)
+    ndimsLatent;
+  end
+  
+  
+  
+  
+  methods(Abstract = true)
     
-    properties(Abstract = true)
-       ndimsLatent; 
-    end
-
+    inferLatent;
     
     
-
-    methods(Abstract = true)
-        
-        inferLatent;
-     
-        
-        
-    end
+    
+  end
 end
 

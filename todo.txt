@@ -1,0 +1,9 @@
+- gaussMixPlot in figuresSource
+
+- mvnPlot2Ddemo
+
+- logregGradeMH
+
+- BinomDist and BetaBinom example
+
+- change dof() method to complexity(), to avoid confision in studentT case

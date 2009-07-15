@@ -1,9 +1,9 @@
-function h=gaussPlot2d(mu, Sigma, color)
-% function h=plot2dgauss(mu, Sigma, color)
+function h=gaussPlot2d(mu, Sigma, varargin)
+% function h=plot2dgauss(mu, Sigma, ...)
 % Plot an ellipse representing the covariance matrix of a Gaussian
 
 if size(Sigma) ~= [2 2], error('Sigma must be a 2 by 2 matrix'); end
-if nargin < 3, color = 'r'; end
+[color, plotMarker] = processArgs(varargin, '-color', 'r', '-plotMarker', false);
 
 mu = mu(:);
 [U, D] = eig(Sigma);
@@ -16,7 +16,9 @@ w = (k * U * sqrt(D)) * xy;
 z = repmat(mu, [1 n]) + w;
 h = plot(z(1, :), z(2, :), color, 'linewidth', 2);
 hold on
-hh=plot(mu(1), mu(2),  'x');
-set(hh,'color',color, 'linewidth', 2,  'markersize', 13);
-
-%axis('equal');           
+if plotMarker
+  hh=plot(mu(1), mu(2),  'x');
+  set(hh,'color',color, 'linewidth', 2,  'markersize', 13);
+end
+%axis('equal');    
+end

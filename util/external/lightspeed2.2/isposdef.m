@@ -6,4 +6,5 @@ function b = isposdef(a)
 % Written by Tom Minka
 
 [R,p] = chol(a);
-b = ~p && (det(a) > eps) && all(isfinite(a(:))) && rcond(a) > eps; % additional checks added by Matt
+b = ~p ;
+%&& (det(a) > eps) && all(isfinite(a(:))) && rcond(a) > eps; % additional checks added by Matt

@@ -232,4 +232,4 @@ function varargout = processArgs(userArgs,varargin)
     %% Relay Mode
     if nargout == 1 && (numel(varargin) > 2 || (numel(varargin) == 1 && isprefix('-',varargin{1})))
         varargout = {interweave(progArgNames,varargout)};
-    end
+    end 
